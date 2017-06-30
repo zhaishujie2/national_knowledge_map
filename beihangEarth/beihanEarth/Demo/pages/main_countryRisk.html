@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="assets/css/custom/common.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="assets/js/jquery-1.12.3/jquery.js"></script>
+    <script src="assets/js/highcharts/highcharts.js"></script>
+    <script src="assets/js/highcharts/modules/exporting.js"></script>
+    <script src="assets/js/jquery-nicescroll/jquery.nicescroll.js"></script>
+    <script src="assets/js/icheck/icheck.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/jquery.wordexport.js"></script>
+    <script src="../plugins/layer/layer.js"></script>
+    <!--<script src="../js/jquery.PrintArea.js"></script>-->
+    <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/jquery.jqprint-0.3.js"></script>
+    <script src="../js/function.js"></script>
+    <script src="../js/basic.js"></script>
+</head>
+<body>
+<div class="ks_head">
+    <div class="ks_container">
+        <div class="ks_user">
+            <div class="ks_photo">
+                <img src="assets/img/main/photo.png">
+            </div>
+            <div class="ks_name">@Administrators</div>
+        </div>
+        <div class="ks_menu ks_menu_left">
+            <a class="ks_menu_item dituHref" target="_self">
+                <img src="assets/img/main/icon_01.png">
+                <div class="ks_menu_title">地图</div>
+            </a>
+            <a class="ks_menu_item relationHref" target="_self">
+                <img src="assets/img/main/icon_02.png">
+                <div class="ks_menu_title">关系网络</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_03.png">
+                <div class="ks_menu_title">翻译</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_04.png">
+                <div class="ks_menu_title">图谱管理</div>
+            </a>
+        </div>
+        <div class="ks_search">
+            <input type="text">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <div class="ks_menu ks_menu_right">
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_05.png">
+                <div class="ks_menu_title">收藏</div>
+            </a>
+            <a class="ks_menu_item wordprint" href="#">
+                <img src="assets/img/main/icon_06.png">
+                <div class="ks_menu_title">打印</div>
+            </a>
+            <a class="ks_menu_item worddao" href="#">
+                <img src="assets/img/main/icon_07.png">
+                <div class="ks_menu_title">导出</div>
+            </a>
+            <a class="ks_menu_item" href="../main.html" target="_self" >
+                <img src="assets/img/main/icon_08.png">
+                <div class="ks_menu_title">返回地球</div>
+            </a>
+            <a class="ks_menu_item returnCountry">
+                <img src="assets/img/main/icon_09.png">
+                <div class="ks_menu_title">返回国家</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="ks_main">
+    <div class="ks_party">
+        <div class="ks_inner">
+            <div class="ks_party_flag">
+                <img src="assets/img/page02/p01.png">
+            </div>
+            <div class="ks_party_name">
+                &nbsp;&nbsp;土耳其风险评估&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+
+    <div class="w-100p ks_fl" style="padding: 0 10px; margin-bottom: 10px; box-sizing: border-box;">
+        <button class="ks_btn_orange" onclick="window.open('main_newsContent.html?EntityID=' + $.cookie('CountryEntityID') + '&type=' + $.cookie('CountryType'),'_blank')" >相关新闻资讯</button>
+        <div class="ks_fr">
+            <label class="ks_check">
+                <div class="icheckbox">
+                    <input type="checkbox" name="quux[1]">
+                </div>
+                项目风险评估
+            </label>
+
+            <label class="ks_check">
+                <div class="icheckbox">
+                    <input type="checkbox" name="quux[1]" checked>
+                </div>
+                国家风险评估
+            </label>
+            <button class="ks_btn_blue">生成报告</button>
+        </div>
+    </div>
+
+
+    <div class="wordContent">
+        <div class="w-50p ks_fl">
+            <div class="h-2x w-100p ks_fl" style="padding:0 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">相关资料</div>
+                    <div class="panel-body">
+                        <p style="line-height: 1.5;font-size: 1.6rem;">
+                            &emsp;&emsp;自2002年起，正发党在土耳其已连续执政14年。14年中，土耳其外交并非一成不变，经历过调整转换。对地缘政治的反思。自1923年共和国成立以来，土耳其将脱亚入欧作为外交战略的一个主要目标，而成为欧盟成员国是实现战略目标的量化指标。由于众所周知的原因，土耳其加入欧盟成为马拉松式的谈判，且从现在情况看绝非指日可待。土耳其无论是精英层面，还是民众层面，入欧热情也因此降低。近来发生的两个事件，更增加了土耳其对欧盟的失望感。一是土耳其和欧盟之间为解决难民问题而达成协议，但在协议涉及到土公民赴欧免签问题上，相互扯皮，分歧明显，免签问题被进一步拉伸延长。二是英国脱欧事件，这无疑是对欧洲一体化的打击，也在一定程度上稀释了土耳其加入欧盟的意愿。从土耳其角度看，两个事件叠加将促动土耳其进行外交反思，在地缘政治上向西方靠拢，是否站得住脚？是否还符合土耳其的利益？从这个角度看，土耳其重修与俄罗斯的关系，是土耳其对地缘政治外交的调整。
+                        </p>
+                        <div style="margin-bottom: 10px; border-bottom: 1px solid #d9d9d9;">
+                            <h4  style="margin-top: 20px;margin-bottom: 5px;">相关资料</h4>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="#">土耳其猛轰叙利亚境内库尔德武装数十平民丧生</a></li>
+                            <li class="list-group-item"><a href="#">土耳其感谢俄罗斯在叙利亚战场所提供支持_网易新闻</a></li>
+                            <li class="list-group-item"><a href="#">埃尔多安警告北约:不要庇护参与政变土耳其军人</a></li>
+                            <li class="list-group-item"><a href="#">土耳其伊斯坦布尔发生爆炸_新闻中心_新浪网</a></li>
+                            <li class="list-group-item"><a href="#">最近新闻上说的土耳其世俗化、世俗化是什...</a></li>
+                            <li class="list-group-item"><a href="#">土耳其新闻现场先炸车再枪战伊兹密尔遭恐袭- 热点- 21CN.COM</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-2x w-100p ks_fl" style="padding:0 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">外交政策</div>
+                    <div class="panel-body">
+                        <p style="line-height: 1.5;font-size: 1.6rem;">
+                            &emsp;&emsp;     以埃尔多安为总理的土耳其政府，改变了土耳其以往单维度、不平衡 的外交政策，开始向多维度、多样化的方向逐渐发展，积极扩展在中东、中亚、 高加索、巴尔干、非洲等地区的影响力，以改善与邻国的关系，其外交政策显示 出更大的独立性。尽管埃尔多安政府在外交上主要以西方国家尤其是美国作为外 交基轴，但并未一味地为迎合美国而在国际事务中处处跟随其后，而是着力扩大 国家影响力在国际舞台上寻求独立声音。中东剧变后，埃尔多安政府的外交政策 表现出延续性和灵活性。需要指出的是，埃尔多安政府外交政策的调整并不意味 着以西方国家为基轴的外交战略发生根本性扭转，外交政策的东移不过是亲西方 政策的补充，旨在更好地完善土耳其的外交政策。
+
+                        </p>
+                        <div style="margin-bottom: 10px; border-bottom: 1px solid #d9d9d9;">
+                            <h4  style="margin-top: 20px;margin-bottom: 5px;">相关资料</h4>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="#">土耳其猛轰叙利亚境内库尔德武装数十平民丧生</a></li>
+                            <li class="list-group-item"><a href="#">土耳其感谢俄罗斯在叙利亚战场所提供支持_网易新闻</a></li>
+                            <li class="list-group-item"><a href="#">埃尔多安警告北约:不要庇护参与政变土耳其军人</a></li>
+                            <li class="list-group-item"><a href="#">土耳其伊斯坦布尔发生爆炸_新闻中心_新浪网</a></li>
+                            <li class="list-group-item"><a href="#">最近新闻上说的土耳其世俗化、世俗化是什...</a></li>
+                            <li class="list-group-item"><a href="#">土耳其新闻现场先炸车再枪战伊兹密尔遭恐袭- 热点- 21CN.COM</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-2x w-100p ks_fl" style="padding:0 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">安全形势</div>
+                    <div class="panel-body">
+                        <p style="line-height: 1.5;font-size: 1.6rem;">
+                            &emsp;&emsp;       土耳其国内问题不少，其中安全问题最突出。自2015年以来，土国内频遭恐怖袭击，安全形势日趋恶化。无论是大城市安卡拉、伊斯坦布尔，还是东南部边陲省份，都有遭受恐怖袭击的记录。以往土国内零星的恐怖袭击时有发生，但大规模的集中爆发较为罕见。袭击土耳其的来源主要有两个：一是土耳其库尔德工人党武装，2015年土政府与库工党打破停火状态，双方武装重新交火，库尔德问题重回以暴制暴的轨道。除正面军事冲突外，库工党还不断对土耳其制造袭击事件；第二个是极端组织“伊斯兰国”，6月28日，伊斯坦布尔阿塔图尔科机场发生恐怖
+
+                        </p>
+
+                        <div style="margin-bottom: 10px; border-bottom: 1px solid #d9d9d9;">
+                            <h4  style="margin-top: 20px;margin-bottom: 5px;">相关资料</h4>
+                        </div>
+
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="#">土耳其猛轰叙利亚境内库尔德武装数十平民丧生</a></li>
+                            <li class="list-group-item"><a href="#">土耳其感谢俄罗斯在叙利亚战场所提供支持_网易新闻</a></li>
+                            <li class="list-group-item"><a href="#">埃尔多安警告北约:不要庇护参与政变土耳其军人</a></li>
+                            <li class="list-group-item"><a href="#">土耳其伊斯坦布尔发生爆炸_新闻中心_新浪网</a></li>
+                            <li class="list-group-item"><a href="#">最近新闻上说的土耳其世俗化、世俗化是什...</a></li>
+                            <li class="list-group-item"><a href="#">土耳其新闻现场先炸车再枪战伊兹密尔遭恐袭- 热点- 21CN.COM</a></li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+            <div class="h-2x w-100p ks_fl" style="padding:0 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">外交部风险评估报告</div>
+                    <div class="panel-body">
+                        <ul class="list-group" style="margin-bottom: 0;">
+                            <div class="row" >
+                                <div class="col-xs-6">
+                                    <ul class="list-group">
+                                    <li class="list-group-item"><a href="#">2000年外交部风险评估报告</a></li>
+                                    <li class="list-group-item"><a href="#">2001年外交部风险评估报告</a></li>
+                                    <li class="list-group-item"><a href="#">2002年外交部风险评估报告</a></li>
+                                    <li class="list-group-item"><a href="#">2003年外交部风险评估报告</a></li>
+                                    <li class="list-group-item"><a href="#">2004年外交部风险评估报告</a></li>
+                                    <li class="list-group-item"><a href="#">2005年外交部风险评估报告</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="#">2000年外交部风险评估报告</a></li>
+                                        <li class="list-group-item"><a href="#">2001年外交部风险评估报告</a></li>
+                                        <li class="list-group-item"><a href="#">2002年外交部风险评估报告</a></li>
+                                        <li class="list-group-item"><a href="#">2003年外交部风险评估报告</a></li>
+                                        <li class="list-group-item"><a href="#">2004年外交部风险评估报告</a></li>
+                                        <li class="list-group-item"><a href="#">2005年外交部风险评估报告</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="w-50p ks_fl">
+
+
+            <div class="h-2x w-100p ks_fl" style="padding:0 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">经济状况</div>
+                    <div class="panel-body">
+                        <p style="line-height: 1.5;font-size: 1.6rem;">
+                            &emsp;&emsp;今年中期的军事政变失败导致土耳其地缘政治状况恶化。此后，土耳其面临着难民涌入、失业率增长和投资减少的危机，投资者对土耳其经济增长的预期也发生了改变，GDP增长率预期也降至2.4%。穆迪投资公司（Moody‘s Investment Service）也将土耳其政府债券的评级下调至投资等级以下。穆迪公司表示，这样做的原因之一就是对土耳其法制状况的担忧。土耳其和欧盟的政治经济联系也受到了威胁。土耳其作为欧盟第五大的贸易伙伴，和欧盟的总贸易额达到1400亿欧元。明年初，土耳其将会和欧盟进行新一轮的贸易自由化谈判。这场谈判的目的在于完善土耳其法律规范，有力地保证整体投资的保护。
+
+                        </p>
+                        <div id="ks_chart1"></div>
+                        <div style="margin-bottom: 10px; border-bottom: 1px solid #d9d9d9;">
+                            <h4  style="margin-top: 20px;margin-bottom: 5px;">相关资料</h4>
+                        </div>
+
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="#">土耳其猛轰叙利亚境内库尔德武装数十平民丧生</a></li>
+                            <li class="list-group-item"><a href="#">土耳其感谢俄罗斯在叙利亚战场所提供支持_网易新闻</a></li>
+                            <li class="list-group-item"><a href="#">埃尔多安警告北约:不要庇护参与政变土耳其军人</a></li>
+                            <li class="list-group-item"><a href="#">土耳其伊斯坦布尔发生爆炸_新闻中心_新浪网</a></li>
+                            <li class="list-group-item"><a href="#">最近新闻上说的土耳其世俗化、世俗化是什...</a></li>
+                            <li class="list-group-item"><a href="#">土耳其新闻现场先炸车再枪战伊兹密尔遭恐袭- 热点- 21CN.COM</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-2x w-100p ks_fl" style="padding:0 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">对华态度</div>
+                    <div class="panel-body">
+                        <p style="line-height: 1.5;font-size: 1.6rem;">
+                            &emsp;&emsp;美国皮尤中心发布的《2014年全球民众态度与趋势研究报告》显示，在“一带一路”沿线国家中，土耳其、意大利、俄罗斯3国民众在经济对外开放的包容度上整体低于其他国家。土耳其的相关数据尤其偏低，在对外贸易接受度、对外贸易增加就业认可度、对外资投资建厂接受度上均列最末。调查结果也表明，土耳其民众对中国制造和中国品牌的赞誉度也相对较低，超过7成民众持负面印象，居沿线国家末位行列。
+
+                        </p>
+                        <div id="ks_chart2"></div>
+                        <div style="margin-bottom: 10px; border-bottom: 1px solid #d9d9d9;">
+                            <h4  style="margin-top: 20px;margin-bottom: 5px;">相关资料</h4>
+                        </div>
+
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="#">土耳其猛轰叙利亚境内库尔德武装数十平民丧生</a></li>
+                            <li class="list-group-item"><a href="#">土耳其感谢俄罗斯在叙利亚战场所提供支持_网易新闻</a></li>
+                            <li class="list-group-item"><a href="#">埃尔多安警告北约:不要庇护参与政变土耳其军人</a></li>
+                            <li class="list-group-item"><a href="#">土耳其伊斯坦布尔发生爆炸_新闻中心_新浪网</a></li>
+                            <li class="list-group-item"><a href="#">最近新闻上说的土耳其世俗化、世俗化是什...</a></li>
+                            <li class="list-group-item"><a href="#">土耳其新闻现场先炸车再枪战伊兹密尔遭恐袭- 热点- 21CN.COM</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    //        isLogin();
+    $(function () {
+
+        $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType") );
+        $(".dituHref").attr("href",  "main_earths.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".relationHref").attr("href",  "main_relation.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".worddao").on("click",function(e){
+            e.preventDefault();
+            $(".wordContent").wordExport();
+        });
+        $(".wordprint").on("click",function(e){
+            e.preventDefault();
+            $("body").jqprint();
+        });
+
+        $(".ks_head .ks_search span.glyphicon").on("click",function(){
+            var keyword = $(".ks_head .ks_search").find("input").val();
+            $.ajax({
+                type: "get",  //访问WebService使用get方式请求
+                url: HOST, //调用WebService的地址和方法名称组合
+                data: {
+                    method: "getAutoCart",
+                    keyword:encodeURI(keyword)
+                },
+                success: function (data) {
+                    var result = $(data).text();
+                    var resultData = JSON.parse(result);
+                    console.log(resultData);
+
+                    var width = $(window).width() / 1.5;
+                    var height = $(window).height() / 1.5;
+                    $.ajax({
+                        "type": "get",
+                        "url": "layer_autoCard.html",
+                        "success": function (response, status, xhr) {
+                            layer.open({
+                                type: 1,
+                                title: "自动卡片",
+                                skin: "layui-layer-lbf", //添加类名
+                                closeBtn: 1,
+                                area: [width + "px", height + "px"],
+                                shadeClose: true,
+                                content: response,
+                                success: function (layero,index) {
+                                    for (var i=0;i < resultData.length;i++){
+                                        $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                      <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+            });
+
+
+
+
+
+        });
+
+
+      $(".ks_btn_blue").on("click",function(){
+          $(".wordContent").wordExport();
+      });
+
+        $('.icheckbox').iCheck({
+            labelHover: false,
+            cursor: true
+        });
+        $('.nice-scroll').niceScroll({
+            styler: "fb",
+            cursorcolor: "#aaa",
+            cursorwidth: '6',
+            cursorborderradius: '15px',
+            background: '#eee',
+            cursorborder: '',
+            zindex: 5
+        });
+        $('#ks_chart1').height(250).highcharts({
+            colors:['#06335f','#068c42'],
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: '与周边国家比较可视化图'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+//                    max: 100,
+                title: {
+                    text: '',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: '%'
+            },
+//                plotOptions: {
+//                    spline: {
+//                        dataLabels: {
+//                            format:'{y}%',
+//                            enabled: true
+//                        }
+//                    }
+//                },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: '伊朗',
+                data:  [35,20,15,20,20,8,30,8,35,18,30,25]
+            },{
+                name: '土耳其',
+                data: [25,30,18,30,5,30,8,20,20,15,18,35]
+            }]
+        });
+        $('#ks_chart2').height(250).highcharts({
+            colors:['#0079ff','#d03600'],
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: ['2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                max: 100,
+                title: {
+                    text: '',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: '%'
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        format:'{y}%',
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: '积极',
+                data:  [60,60,45,60,45,60,60,45,45,60,45,60,60,45,60]
+            },{
+                name: '消极',
+                data: [40,40,55,40,55,40,40,55,55,40,55,40,40,55,40]
+            }]
+        });
+    });
+</script>

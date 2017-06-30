@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="assets/css/custom/common.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/icheck/all.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="assets/js/jquery-1.12.3/jquery.js"></script>
+    <script src="../../Build/Cesium/Cesium.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/jquery.wordexport.js"></script>
+    <!--<script src="../js/jquery.PrintArea.js"></script>-->
+    <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/jquery.jqprint-0.3.js"></script>
+    <script src="assets/js/icheck/icheck.js"></script>
+    <script src="../plugins/layer/layer.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/function.js"></script>
+    <script src="../js/basic.js"></script>
+    <style>
+        @import url(../../Build/Cesium/Widgets/widgets.css);
+    </style>
+</head>
+<body>
+<div class="ks_head">
+    <div class="ks_container">
+        <div class="ks_user">
+            <div class="ks_photo">
+                <img src="assets/img/main/photo.png">
+            </div>
+            <div class="ks_name">@Administrators</div>
+        </div>
+        <div class="ks_menu ks_menu_left">
+            <a class="ks_menu_item dituHref" target="_self">
+                <img src="assets/img/main/icon_01.png">
+                <div class="ks_menu_title">地图</div>
+            </a>
+            <a class="ks_menu_item relationHref" target="_self">
+                <img src="assets/img/main/icon_02.png">
+                <div class="ks_menu_title">关系网络</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_03.png">
+                <div class="ks_menu_title">翻译</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_04.png">
+                <div class="ks_menu_title">图谱管理</div>
+            </a>
+        </div>
+        <div class="ks_search">
+            <input type="text">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <div class="ks_menu ks_menu_right">
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_05.png">
+                <div class="ks_menu_title">收藏</div>
+            </a>
+            <a class="ks_menu_item wordprint" href="#">
+                <img src="assets/img/main/icon_06.png">
+                <div class="ks_menu_title">打印</div>
+            </a>
+            <a class="ks_menu_item worddao" href="#">
+                <img src="assets/img/main/icon_07.png">
+                <div class="ks_menu_title">导出</div>
+            </a>
+            <a class="ks_menu_item" href="../main.html" target="_self" >
+                <img src="assets/img/main/icon_08.png">
+                <div class="ks_menu_title">返回地球</div>
+            </a>
+            <a class="ks_menu_item returnCountry">
+                <img src="assets/img/main/icon_09.png">
+                <div class="ks_menu_title">返回国家</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div id="map" class="ks_map">
+</div>
+
+<div class="addpoint">
+    <span class="glyphicon glyphicon-pushpin"></span>
+</div>
+
+<form class="form-inline"  style="position: absolute; top: 137px;right: 90px;z-index: 10;">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" id="searchgeocoder" placeholder="输入关键字称搜索">
+            <div class="input-group-addon" id="searchgeocoder-addon" style="cursor: pointer;"><span class="glyphicon glyphicon-search"></span></div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
+<script>
+    $(function () {
+        $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType") );
+        $(".dituHref").attr("href",  "main_earths.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".relationHref").attr("href",  "main_relation.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".worddao").on("click",function(e){
+            e.preventDefault();
+            $("body").wordExport();
+        });
+        $(".wordprint").on("click",function(e){
+            e.preventDefault();
+//            $("body").printArea();
+            $("body").jqprint();
+        });
+
+
+        $(".ks_head .ks_search span.glyphicon").on("click",function(){
+            var keyword = $(".ks_head .ks_search").find("input").val();
+            $.ajax({
+                type: "get",  //访问WebService使用get方式请求
+                url: HOST, //调用WebService的地址和方法名称组合
+                data: {
+                    method: "getAutoCart",
+                    keyword:encodeURI(keyword)
+                },
+                success: function (data) {
+                    var result = $(data).text();
+                    var resultData = JSON.parse(result);
+                    console.log(resultData);
+
+                    var width = $(window).width() / 1.5;
+                    var height = $(window).height() / 1.5;
+                    $.ajax({
+                        "type": "get",
+                        "url": "layer_autoCard.html",
+                        "success": function (response, status, xhr) {
+                            layer.open({
+                                type: 1,
+                                title: "自动卡片",
+                                skin: "layui-layer-lbf", //添加类名
+                                closeBtn: 1,
+                                area: [width + "px", height + "px"],
+                                shadeClose: true,
+                                content: response,
+                                success: function (layero,index) {
+                                    for (var i=0;i < resultData.length;i++){
+                                        $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                      <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+            });
+
+
+
+
+
+        });
+
+
+        var viewer = new Cesium.Viewer('map', {  //cesiumContainer 为div的id标签
+//            imageryProvider: Cesium.createOpenStreetMapImageryProvider({
+//                url : 'https://a.tile.openstreetmap.org/'
+//            }),
+            animation: false, //是否创建动画小器件，左下角仪表   改控件为地球自转 背景星空的动画
+            baseLayerPicker: false, //baseLayerPicker小部件控制不显示    右上角 图层选择器
+            fullscreenButton: false, //fullscreenButton小部件控制不显示 右下角 显示全屏按钮
+            geocoder: false,//是否显示geocoder小器件，右上角查询按钮
+            homeButton: true,//是否显示Home按钮 右上角Home按钮
+            timeline: false, //时间线控制不显示 底部
+            navigationHelpButton: false, //帮助按钮控制不显示 右上角
+            imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+                url : 'http://120.197.252.52:6080/arcgis/rest/services/webearth/TURKEYwithoutPOI/MapServer'
+            }),
+            scene3DOnly: false,//如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+            sceneModePicker: false,//是否显示3D/2D选择器  必须scene3DOnly设置为false 才可以设置为true显示
+            selectionIndicator: true,//是否显示选取指示器组件  点击后是否显示选取框
+            sceneMode: Cesium.SceneMode.SCENE2D, ////初始场景模式
+            infoBox: true //点击图层对象后 是否显示该对象的信息 是否显示信息框 可在 geojson文件中 properties这个对象里 添加属性作为信息框的信息
+        });
+        var canvas = viewer.canvas;
+        var scene = viewer.scene;
+        var handler = new Cesium.ScreenSpaceEventHandler(canvas); // 为画布/元素 添加事件实例
+         scene.globe.baseColor = Cesium.Color.ALICEBLUE;
+//        viewer.imageryLayers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({
+//            url: "http://t0.tianditu.com/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cva&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg",
+//            layer: "tdtAnnoLayer",
+//            style: "default",
+//            format: "image/jpeg",
+//            tileMatrixSetID: "GoogleMapsCompatible"
+//        }));
+
+//        viewer.imageryLayers.addImageryProvider(new Cesium.ArcGisMapServerImageryProvider({
+//            url : 'http://120.197.252.51:6080/arcgis/rest/services/webearth/TURKEY/MapServer'
+//        }));
+
+
+
+        viewer.dataSources.add(Cesium.GeoJsonDataSource.load('../geoJson/Hospital.geojson', {
+            stroke: Cesium.Color.AQUAMARINE.withAlpha(0.5),
+            strokeWidth: 0.5,
+            fill: Cesium.Color.WHITE.withAlpha(0)
+        })).then(function(){
+            for(var i = 0; i <viewer.dataSources.length; i++ ){
+               if(viewer.dataSources._dataSources[i].name === "Hospital.geojson"){
+                  viewer.dataSources._dataSources[i].show = false;
+                    for(var k = 0; k < viewer.dataSources._dataSources[i].entities.values.length; k ++){
+                        viewer.dataSources._dataSources[i].entities.values[k].billboard = new Cesium.BillboardGraphics({
+                            image : '../sourceImg/hospital.png',
+                            show : true,
+                            width : 30,
+                            height : 30
+                        });
+                    }
+                   // viewer.dataSources._dataSources[i].show = false;
+               }
+            }
+        });
+
+
+        $("#searchgeocoder-addon").on("click",function(){  //自定义搜索
+            var searchList = [];
+            for(var i = 0; i <viewer.dataSources.length; i++ ){
+               for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                   viewer.dataSources._dataSources[i].entities.values[k].show = false;
+                   var re =  new RegExp($("#searchgeocoder").val());//设置正则表达式 search方法 查到即返回 无需g全局 无效i大小写
+                 
+                   var ostr = viewer.dataSources._dataSources[i].entities.values[k].name;//所要匹配的字符串，字符串第一个位置从0开始
+                   if(ostr !== undefined){
+                       var pos  = ostr.search(re);
+                       if(pos !== -1 ){
+                           searchList.push(viewer.dataSources._dataSources[i].entities.values[k]);
+                       }
+                   }
+               }
+            }
+
+            var height = $(window).height();
+            var width = $(window).width() / 5;
+            layer.closeAll();
+            layer.open({
+                type: 1,
+                title: "POI搜索列表",
+                closeBtn: 1,
+                skin: "layui-layer-earth", //添加类名
+                area: [width + "px", height - 155  + "px" ],
+                offset: ['145px', '0px'],
+                shade: 0,
+                content : '<div class="list-group searchList"></div>',
+                success:  function(layero, index){
+                    var LI = '';
+                    for (var i=0; i < searchList.length;i++){
+                         LI += "<a class='list-group-item' style='border-radius: 0px;cursor: pointer;' dataId='"+ searchList[i].id +"'>" + searchList[i].name + "</a>";
+                    }
+                    $(layero).find(".layui-layer-content").append(LI);
+
+                    $(layero).find(".layui-layer-content").find(".list-group-item").on("click",function(){
+                        for(var i = 0; i <viewer.dataSources.length; i++ ){
+                            viewer.dataSources._dataSources[i].show = true;
+                            for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                                var re =  new RegExp("^" + $(this).attr("dataId") + "$");//设置正则表达式 search方法 查到即返回 无需g全局 无效i大小写
+                                var ostr = viewer.dataSources._dataSources[i].entities.values[k].id;//所要匹配的字符串，字符串第一个位置从0开始
+                                if(ostr !== undefined){
+                                    var pos  = ostr.search(re);
+                                    if(pos !== -1 ){
+                                        viewer.dataSources._dataSources[i].entities.values[k].show =true;
+                                        //viewer.trackedEntity  =  viewer.dataSources._dataSources[i].entities.values[k]; //摄像机锁定实体
+                                        viewer.selectedEntity  =  viewer.dataSources._dataSources[i].entities.values[k]; //选中实体 弹出infobox
+                                    }else{
+                                        viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                                    }
+                                }
+                            }
+                        }
+
+                    });
+                }
+            });
+
+        });
+
+
+        viewer.camera.changed.addEventListener(function() {
+            for(var i = 0; i <  viewer.dataSources.length; i++ ){
+                viewer.dataSources._dataSources[i].show = true;
+                if(viewer.dataSources._dataSources[i].name === "Hospital.geojson" && (Math.ceil(viewer.camera.positionCartographic.height) < 20000)  ){
+                    if(viewer.selectedEntity !== undefined){
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                        viewer.selectedEntity.show =true;
+                    }else{
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =true;
+                        }
+                    }
+                }else if(viewer.dataSources._dataSources[i].name === "Hospital.geojson" && (Math.ceil(viewer.camera.positionCartographic.height) >= 20000)){
+                    if(viewer.selectedEntity !== undefined){
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                        viewer.selectedEntity.show =true;
+                    }else{
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                    }
+                }
+            }
+        });
+
+
+        viewer.camera.moveStart.addEventListener(function() {
+            for(var i = 0; i <  viewer.dataSources.length; i++ ){
+                viewer.dataSources._dataSources[i].show = true;
+                if(viewer.dataSources._dataSources[i].name === "Hospital.geojson" && (Math.ceil(viewer.camera.positionCartographic.height) < 20000)  ){
+                    if(viewer.selectedEntity !== undefined){
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                        viewer.selectedEntity.show =true;
+                    }else{
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =true;
+                        }
+                    }
+                }else if(viewer.dataSources._dataSources[i].name === "Hospital.geojson" && (Math.ceil(viewer.camera.positionCartographic.height) >= 20000)){
+                    if(viewer.selectedEntity !== undefined){
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                        viewer.selectedEntity.show =true;
+                    }else{
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                    }
+                }
+            }
+        });
+
+        viewer.camera.moveEnd.addEventListener(function() {
+            for(var i = 0; i <  viewer.dataSources.length; i++ ){
+                viewer.dataSources._dataSources[i].show = true;
+                if(viewer.dataSources._dataSources[i].name === "Hospital.geojson" && (Math.ceil(viewer.camera.positionCartographic.height) < 20000)  ){
+                    if(viewer.selectedEntity !== undefined){
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                        viewer.selectedEntity.show =true;
+                    }else{
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =true;
+                        }
+                    }
+                }else if(viewer.dataSources._dataSources[i].name === "Hospital.geojson" && (Math.ceil(viewer.camera.positionCartographic.height) >= 20000)){
+                    if(viewer.selectedEntity !== undefined){
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                        viewer.selectedEntity.show =true;
+                    }else{
+                        for(var k = 0;k < viewer.dataSources._dataSources[i].entities.values.length; k++ ){
+                            viewer.dataSources._dataSources[i].entities.values[k].show =false;
+                        }
+                    }
+                }
+            }
+        });
+
+
+//        var tianditu = viewer.imageryLayers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({ // WMTS层(网络地图瓦片服务)
+//            /*全球影像中文注记服务*/
+//            //url: "http://{s}.tianditu.com/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg",
+//            /*全球矢量中文注记服务*/
+//            //url : "http://t0.tianditu.com/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cva&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg",
+//            /*全球矢量地图服务*/
+//            url: "http://{s}.tianditu.com/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles",
+//            /*全球影像地图服务*/
+//            //url: "http://t0.tianditu.com/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles",
+//            layer: "vec", //WMTS请求的图层名称。
+//            style: "default",     //WMTS请求的样式名称。
+//            format: "tiles", //从服务器检索的图像的MIME类型。
+//            tileMatrixSetID: "w", //用于WMTS请求的TileMatrixSet的标识符。
+//            subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'] //轮询机制
+//
+//        }));
+
+//        viewer.imageryLayers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({ // WMTS层(网络地图瓦片服务)
+//            /*全球影像中文注记服务*/
+//            //url: "http://{s}.tianditu.com/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg",
+//            /*全球矢量中文注记服务*/
+//            url: "http://{s}.tianditu.com/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cva&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg",
+//            /*全球矢量地图服务*/
+//            //url: "http://t0.tianditu.com/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles",
+//            /*全球影像地图服务*/
+//            //url: "http://t0.tianditu.com/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles",
+//            layer: "cva", //WMTS请求的图层名称。
+//            style: "default",     //WMTS请求的样式名称。
+//            format: "tiles", //从服务器检索的图像的MIME类型。
+//            tileMatrixSetID: "w", //用于WMTS请求的TileMatrixSet的标识符。
+//            subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'] //轮询机制
+//        }));
+
+        //点击Home按钮 回到的镜头位置和方向
+        viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function () {
+            Cesium.requestAnimationFrame(function () {
+                viewer.camera.flyTo({  //图片动画飞向指定坐标
+                    destination: Cesium.Cartesian3.fromDegrees(35, 39.1, 4000000.0), //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+                    orientation: {
+                        heading: 0.0, //头部
+                        pitch: -Cesium.Math.PI_OVER_TWO, //俯仰
+                        roll: 0.35 //滚动  0.35
+                    }
+                });
+            });
+        });
+
+
+        //设置整体实例默认镜头位置与方向
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(35, 39.1, 4000000.0), //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+            orientation: {
+                heading: 0.0, //头部
+                pitch: 0.0, //俯仰
+                roll: 0.0 //滚动  0.35
+            }
+        });
+        viewer.scene.screenSpaceCameraController.maximumZoomDistance = 4000000.0; //镜头最小高度设置
+
+        viewer._cesiumWidget._creditContainer.style.display = 'none'; //隐藏cesium水印
+
+        $(".addpoint").on("click", function () {
+            layer.open({
+                type: 0,
+                btn: ['确定', '关闭'],
+                title: "添加标注点",
+                area: ['450px', 'auto'],
+                content: "<div class='form-horizontal'>\
+                    <div class='form-group'>\
+                    <label for='lot' class='col-xs-3 control-label'>经度</label>\
+                    <div class='col-xs-9'>\
+                    <input type='text' class='form-control' id='lot' placeholder='填写经度'>\
+                    </div>\
+                    </div>\
+                    <div class='form-group'>\
+                    <label for='lat' class='col-xs-3 control-label'>纬度</label>\
+                    <div class='col-xs-9'>\
+                    <input type='text' class='form-control' id='lat' placeholder='填写纬度'>\
+                    </div>\
+                    </div>\
+                    <div class='form-group'>\
+                    <label for='lat' class='col-xs-3 control-label'>鼠标获取</label>\
+                    <div class='col-xs-9'>\
+                     <button class='btn btn-primary mouse-btn'><span class='glyphicon glyphicon-globe'></span> 鼠标点击获取经纬度</button>\
+                    </div>\
+                    </div>\
+                    <div class='form-group'>\
+                    <label for='size' class='col-xs-3 control-label'>标注大小</label>\
+                    <div class='col-xs-9'>\
+                    <input type='number' class='form-control' id='size' placeholder='填写标注大小'>\
+                    </div>\
+                    </div>\
+                    </div>",
+                success: function(layero, index){
+
+                     $(layero).find(".layui-layer-content").find(".mouse-btn").on("click",function(){
+
+                         $(".layui-layer-shade,.layui-layer").hide();
+
+                         var label = viewer.entities.add({
+                             id: "latandlotlabel",
+                             label: {
+                                 show: false,
+                                 showBackground: true,
+                                 font: '14px monospace',
+                                 horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                                 verticalOrigin: Cesium.VerticalOrigin.TOP,
+                                 pixelOffset: new Cesium.Cartesian2(15, 0)
+                             }
+                         });
+                         handler.setInputAction(function (movement) {
+                             var cartesian = viewer.camera.pickEllipsoid(movement.endPosition, scene.globe.ellipsoid);
+                             if (cartesian) {
+                                 $("canvas").css("cursor", "crosshair");
+                                 var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                                 var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+                                 var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+                                 label.position = cartesian;
+                                 label.label.show = true;
+                                 label.label.text =
+                                         '经度: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
+                                         '\n纬度: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
+                                         '\n双击确定选择坐标';
+                                 handler.setInputAction(function (movement) {
+                                     $("#lot").val(Cesium.Math.toDegrees(cartographic.longitude));
+                                     $("#lat").val(Cesium.Math.toDegrees(cartographic.latitude));
+                                     $(".layui-layer-shade,.layui-layer").show();
+                                     $("canvas").css("cursor", "default");
+                                     viewer.entities.remove(viewer.entities.getById('latandlotlabel'));
+                                     handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+                                     handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+                                 }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+                             } else {
+                                 $("canvas").css("cursor", "default");
+                                 label.label.show = false;
+                                 handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+                             }
+                         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+
+
+                     });
+                },
+                yes: function (index, layero) {
+                    if($(layero).find("#lot").val() > 180 || $(layero).find("#lot").val() < -180){
+                        return alert("经度的取值范围-180~180");
+                    }else if($(layero).find("#lat").val() > 86 || $(layero).find("#lat").val() < -86){
+                        return alert("纬度的取值范围-86~86");
+                    }else if($(layero).find("#size").val() > 20 ||  $(layero).find("#size").val() < 0){
+                        return alert("标注大小的取值范围0~20");
+                    }else if($(layero).find("#lot").val() == "" || $(layero).find("#lat").val() == "" || $(layero).find("#size").val() == ""){
+                        return alert("请将经纬度、标注大小等信息补充完整");
+                    }
+                    //添加标注
+                    viewer.entities.add({
+                        position: Cesium.Cartesian3.fromDegrees($(layero).find("#lot").val(), $(layero).find("#lat").val()),
+                        point: { //圆点
+                            pixelSize: $(layero).find("#size").val(),
+                            color: Cesium.Color.RED,
+                            outlineColor: Cesium.Color.WHITE,
+                            outlineWidth: 2
+                        }
+                    });
+                    layer.close(index);
+                    viewer.camera.setView({
+                        destination: Cesium.Cartesian3.fromDegrees($(layero).find("#lot").val(), $(layero).find("#lat").val(), 1000000.0) //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+                    });
+                },
+                btn2: function (index, layero) {
+//                    return false; //按钮2自带关闭功能 return false 可以取消默认关闭事件
+                }
+
+
+            });
+
+//            var lotAndlat = "   <input type='text'> <input type='text'>    "
+//            layer.confirm(lotAndlat, {
+//                btn: ['确定', '关闭'] //按钮
+//            }, function () {
+//                layer.msg('的确很重要', {icon: 1});
+//            }, function () {
+//                layer.close();
+//            });
+
+        });
+
+
+
+
+
+    });
+
+
+</script>

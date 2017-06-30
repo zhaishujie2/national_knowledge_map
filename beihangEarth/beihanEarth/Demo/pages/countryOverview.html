@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>国家概览</title>
+    <link href="../css/level2style.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery-nicescroll/jquery.nicescroll.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/function.js"></script>
+</head>
+<body>
+<div class="level2_body">
+    <div class="level2_left">
+        <div><img src="../sourceImg/level2logo.png" class="level2logo"></div>
+        <div class="level2_menu">
+            <ul class="menu-link">
+                <li class="countryOverview"><a><img src="../sourceImg/level2gj.png">
+                    <div>国家概览</div>
+                </a></li>
+                <li class="news"><a><img src="../sourceImg/level2news.png">
+                    <div>最新动态</div>
+                </a></li>
+                <li class="servicedata"><a><img src="../sourceImg/level2yw.png">
+                    <div>业务数据</div>
+                </a></li>
+                <li class="serviceapplication"><a><img src="../sourceImg/level2jy.png">
+                    <div>业务应用</div>
+                </a></li>
+                <li><a href="../main.html" target="_self"><img src="../sourceImg/level2back.png">
+                    <div>返回</div>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="level2_right">
+        <div class="level2_top">
+            <div class="level2_countryscore">
+                <img class="countrylogo" alt="国家logo">
+                <span style=" margin: 0 8px;font-size: 40px; letter-spacing:5px;font-style:oblique;"
+                      class="countryname"></span>
+                <span>风险评估值:</span>
+                <span style="color: #ff0000;font-size: 52px; font-style:oblique;">80</span></div>
+        </div>
+        <div class="level2_content" style="display: inherit">
+            <div id="level2_contentleft">
+                <div id="level2_lefttitle" class="countryBasicInfo"
+                     style="cursor:pointer">国家基础信息
+                </div>
+                <div>
+                    <div class="level2_lefttitle2">基本概况</div>
+                    <div id="basicInfo" class="level2_leftfont"></div>
+                </div>
+                <div>
+                    <div class="level2_lefttitle2">地理信息</div>
+                    <div id="geoInfo" class="level2_leftfont"></div>
+                </div>
+                <div>
+                    <div class="level2_lefttitle2" style="letter-spacing:10px;">政治</div>
+                    <div id="politicalInfo" class="level2_leftfont"></div>
+                </div>
+            </div>
+
+            <div id="level2_contentright">
+                <div id="level2_rightup">
+                    <div style="height: 1px;"></div>
+                    <div class="level2_righttitle"
+                         onclick="window.open('main_countryCard.html?EntityID=' + $.cookie('CountryEntityID') + '&type=' + $.cookie('CountryType'),'_blank')"
+                         style="cursor:pointer">政党和组织
+                    </div>
+                    <div class="level2_rightcontentdiv"
+                         style="text-align: center;display: inline-block;margin-bottom: 30px;">
+                        <div class="level2_rightcontent level2_rightcontentblue party">
+                            <div class="level2_rightcontenttitle">主要政党<br>（<span class="num"></span>）</div>
+                            <div class="level2_rightcontentfont"></div>
+                        </div>
+                        <div class="level2_rightcontent level2_rightcontentblue force">
+                            <div class="level2_rightcontenttitle">地方势力<br>（<span class="num"></span>）</div>
+                            <div class="level2_rightcontentfont">
+                            </div>
+                        </div>
+                        <div class="level2_rightcontent level2_rightcontentyellow extremist">
+                            <div class="level2_rightcontenttitle">恐怖组织<br> （<span class="num"></span>）</div>
+                            <div class="level2_rightcontentfont"></div>
+                        </div>
+                        <div class="level2_rightcontent level2_rightcontentred eastern">
+
+                            <div class="level2_rightcontenttitle">东突反华<br>（<span class="num"></span>）</div>
+                            <div class="level2_rightcontentfont"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="level2_rightdown">
+                    <div style="height: 1px;"></div>
+                    <div class="level2_righttitle" onclick="window.open('main_attitudeChina.html?EntityID=' + $.cookie('CountryEntityID') + '&type=' + $.cookie('CountryType'),'_blank')"
+                         style="cursor:pointer">对华态度
+                    </div>
+                    <div id="level2_percentdiv">
+                        <ul>
+                            <li>
+                                <div class="level2_percentfont">积极</div>
+                                <div class="level2_percent">
+                                    <div class="Bar">
+                                        <div><span></span></div>
+                                    </div>
+                                </div>
+                                <div class="level2_percentfont">59%</div>
+                            <li>
+                            <li>
+                            <li>
+                                <div class="level2_percentfont">消极</div>
+                                <div class="level2_percent">
+                                    <div class="Bars">
+                                        <div><span></span></div>
+                                    </div>
+                                </div>
+                                <div class="level2_percentfont">18%</div>
+                            <li>
+                            <li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+
+</html>
+<script>
+    //    isLogin();
+    $(function () {
+
+        component_loading("body", "append"); //加载loading
+        $(document).ajaxStart(function () {
+            $('html, body').animate({scrollTop: 0}, 1);
+            $(".bgscreen").css("display", "table");
+            $("body").css("overflow", "hidden");
+        }).ajaxStop(function () {
+            $(".bgscreen").hide();
+            $("body").css("overflow", "auto");
+        });
+
+
+        $(".level2_leftfont,.level2_rightcontentfont").niceScroll({
+            styler: "fb",
+            cursorcolor: "#1BDCE3",
+            cursorwidth: '4',
+            cursorborderradius: '15px',
+            cursorborder: '0'
+
+
+        });
+
+        $(".countryBasicInfo").on("click", function () {
+            window.open('main_countryInfo.html?EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType"), '_blank');
+        });
+        $(".menu-link").find(".countryOverview").find("a").attr("href", "countryOverview.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType") );
+        $(".menu-link").find(".news").find("a").attr("href", "news.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType") );
+        $(".menu-link").find(".servicedata").find("a").attr("href", "servicedata.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType"));
+        $(".menu-link").find(".serviceapplication").find("a").attr("href", "serviceapplication.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType"));
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getCountryAndLogo",
+                EntityID: $.cookie("CountryEntityID")
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultJSON = JSON.parse(result);
+                $(".level2_top").find(".countryname").text(resultJSON.EntityName);
+
+                $(".countrylogo").attr("src", resultJSON.Logo);
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getCountryBasicInfo",
+                EntityID: $.cookie("CountryEntityID")
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultJSON = JSON.parse(result);
+                for (var i in resultJSON) {
+                    $("#" + i).text(resultJSON[i]);
+                }
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getPartyAnOrganization",
+                EntityID: $.cookie("CountryEntityID")
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultJSON = JSON.parse(result);
+                for (var i in resultJSON) {
+                    if (resultJSON[i].num > 0) {
+                        $("." + i).find(".num").text(resultJSON[i].num);
+                        for (var k in resultJSON[i].names) {
+                            $("." + i).find(".level2_rightcontentfont").append(resultJSON[i].names[k] + "<br/>");
+                        }
+                    } else {
+                        $("." + i).find(".num").text(0);
+                    }
+                }
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+    });
+
+
+</script>

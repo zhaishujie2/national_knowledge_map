@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="assets/css/custom/common.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/icheck/all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="assets/css/custom/context.standalone.css">
+    <script src="assets/js/jquery-1.12.3/jquery.js"></script>
+    <script src="../../Build/Cesium/Cesium.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/jquery.wordexport.js"></script>
+    <!--<script src="../js/jquery.PrintArea.js"></script>-->
+    <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/jquery.jqprint-0.3.js"></script>
+    <script src="assets/js/icheck/icheck.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="assets/js/bootstrap/bootstrap.js"></script>
+    <script src="../plugins/layer/layer.js"></script>
+    <script src="../js/context.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/function.js"></script>
+    <script src="../js/basic.js"></script>
+    <style>
+        @import url(../../Build/Cesium/Widgets/widgets.css);
+    </style>
+</head>
+<body>
+<div class="ks_head">
+    <div class="ks_container">
+        <div class="ks_user">
+            <div class="ks_photo">
+                <img src="assets/img/main/photo.png">
+            </div>
+            <div class="ks_name">@Administrators</div>
+        </div>
+        <div class="ks_menu ks_menu_left">
+            <a class="ks_menu_item dituHref" target="_self">
+                <img src="assets/img/main/icon_01.png">
+                <div class="ks_menu_title">地图</div>
+            </a>
+            <a class="ks_menu_item relationHref" target="_self">
+                <img src="assets/img/main/icon_02.png">
+                <div class="ks_menu_title">关系网络</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_03.png">
+                <div class="ks_menu_title">翻译</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_04.png">
+                <div class="ks_menu_title">图谱管理</div>
+            </a>
+        </div>
+        <div class="ks_search">
+            <input type="text">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <div class="ks_menu ks_menu_right">
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_05.png">
+                <div class="ks_menu_title">收藏</div>
+            </a>
+            <a class="ks_menu_item wordprint" href="#">
+                <img src="assets/img/main/icon_06.png">
+                <div class="ks_menu_title">打印</div>
+            </a>
+            <a class="ks_menu_item worddao" href="#">
+                <img src="assets/img/main/icon_07.png">
+                <div class="ks_menu_title">导出</div>
+            </a>
+            <a class="ks_menu_item" href="../main.html" target="_self" >
+                <img src="assets/img/main/icon_08.png">
+                <div class="ks_menu_title">返回地球</div>
+            </a>
+            <a class="ks_menu_item returnCountry">
+                <img src="assets/img/main/icon_09.png">
+                <div class="ks_menu_title">返回国家</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div id="map" class="ks_map">
+</div>
+<div class="slide">
+    <span> <img src="assets/img/main/hide.png" alt="收缩"> </span>
+</div>
+</body>
+</html>
+<script>
+    $(function () {
+
+
+
+        $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".dituHref").attr("href",  "main_earths.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")     );
+        $(".relationHref").attr("href",  "main_relation.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")     );
+        $(".worddao").on("click",function(e){
+            e.preventDefault();
+            $("body").wordExport();
+        });
+        $(".wordprint").on("click",function(e){
+            e.preventDefault();
+            $("body").jqprint();
+        });
+        $(".ks_head .ks_search span.glyphicon").on("click",function(){
+            var keyword = $(".ks_head .ks_search").find("input").val();
+            $.ajax({
+                type: "get",  //访问WebService使用get方式请求
+                url: HOST, //调用WebService的地址和方法名称组合
+                data: {
+                    method: "getAutoCart",
+                    keyword:encodeURI(keyword)
+                },
+                success: function (data) {
+                    var result = $(data).text();
+                    var resultData = JSON.parse(result);
+                    console.log(resultData);
+
+                    var width = $(window).width() / 1.5;
+                    var height = $(window).height() / 1.5;
+                    $.ajax({
+                        "type": "get",
+                        "url": "layer_autoCard.html",
+                        "success": function (response, status, xhr) {
+                            layer.open({
+                                type: 1,
+                                title: "自动卡片",
+                                skin: "layui-layer-lbf", //添加类名
+                                closeBtn: 1,
+                                area: [width + "px", height + "px"],
+                                shadeClose: true,
+                                content: response,
+                                success: function (layero,index) {
+                                    for (var i=0;i < resultData.length;i++){
+                                        $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                      <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+            });
+
+
+
+
+
+        });
+
+
+
+        var viewer = new Cesium.Viewer('map', {  //cesiumContainer 为div的id标签
+//            imageryProvider: Cesium.createOpenStreetMapImageryProvider({
+//                url : 'https://a.tile.openstreetmap.org/'
+//            }),
+            animation: false, //是否创建动画小器件，左下角仪表   改控件为地球自转 背景星空的动画
+            baseLayerPicker: false, //baseLayerPicker小部件控制不显示    右上角 图层选择器
+            fullscreenButton: false, //fullscreenButton小部件控制不显示 右下角 显示全屏按钮
+            geocoder: false,//是否显示geocoder小器件，右上角查询按钮
+            homeButton: true,//是否显示Home按钮 右上角Home按钮
+            timeline: false, //时间线控制不显示 底部
+//            imageryProvider: Cesium.createTileMapServiceImageryProvider({
+//                url : '../bingMap/tiles',
+//                fileExtension: 'jpg',
+//                maximumLevel : 9
+//            }),
+//            imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+//                url : 'http://120.197.252.51:6080/arcgis/rest/services/webearth/TURKEY/MapServer'
+//            }),
+            imageryProvider : false,
+            navigationHelpButton: false, //帮助按钮控制不显示 右上角
+            scene3DOnly: false,//如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+            sceneModePicker: false,//是否显示3D/2D选择器  必须scene3DOnly设置为false 才可以设置为true显示
+            selectionIndicator: true,//是否显示选取指示器组件  点击后是否显示选取框
+            sceneMode: Cesium.SceneMode.SCENE2D, ////初始场景模式
+            infoBox: true //点击图层对象后 是否显示该对象的信息 是否显示信息框 可在 geojson文件中 properties这个对象里 添加属性作为信息框的信息
+        });
+        var canvas = viewer.canvas;
+        var scene = viewer.scene;
+        var handler = new Cesium.ScreenSpaceEventHandler(canvas); // 为画布/元素 添加事件实例
+        scene.globe.baseColor = Cesium.Color.ALICEBLUE;
+
+        $(document).on("contextmenu",function(e){
+            return false;
+        });
+
+
+
+if(GetQueryString("country") == "Turkey" && GetQueryString("flag") == 2 ){
+    $.ajax({
+        "type": "get",
+        "url": "layer_earth.html",
+        "success": function (response, status, xhr) {
+            var height = $(window).height();
+            var width = $(window).width() / 5;
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                skin: "layui-layer-earth", //添加类名
+                area: [width + "px", height - 155  + "px" ],
+                offset: ['145px', '0px'],
+                shade: 0,
+                content: response,
+                success: function () {
+
+                    //加载机构数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "JG",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+
+                            var result = $(data).text();
+                            var JSONresult = JSON.parse(result);
+                            console.log(JSONresult);
+
+                            if(JSON.parse(JSONresult.GFJG).length > 0){
+                                $("#official").attr("obj",JSONresult.GFJG);
+                            }
+
+                            if(JSON.parse(JSONresult.FZFZZ).length > 0){
+                                $("#not-official").attr("obj",JSONresult.FZFZZ);
+                            }
+
+                            if(JSON.parse(JSONresult.ZZJG).length > 0){
+                                $("#china-official").attr("obj",JSONresult.ZZJG);
+                            }
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+
+
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+
+                                $(this).find(".earth-title").find(".badge").text(klength);
+                            });
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'not-official' || GetQueryString('data') == 'china-official' || GetQueryString('data') == 'official' ){
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行id=a的事件
+                            }
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+                    //加载项目数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "XM",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+                            var result = $(data).text();
+                            var JSONresult = JSON.parse(result);
+                            if(JSON.parse(JSONresult.GQ).length > 0){
+                                $("#china-enterprise").attr("obj",JSONresult.GQ);
+                            }
+
+                            if(JSON.parse(JSONresult.MQ).length > 0){
+                                $("#people-enterprise").attr("obj",JSONresult.MQ);
+                            }
+
+                            if(JSON.parse(JSONresult.YQ).length > 0){
+                                $("#central-enterprise").attr("obj",JSONresult.YQ);
+                            }
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+                                $(this).find(".ks_title").find(".ks_badge").text(klength);
+                            });
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'china-enterprise' || GetQueryString('data') == 'people-enterprise' || GetQueryString('data') == 'central-enterprise' ){
+                                $("#xm").trigger("click");//模拟执行的事件
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行的事件
+                            }
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+                    //加载人员数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "RY",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+                            var result = $(data).text();
+                            var JSONresult = JSON.parse(result);
+                            if(JSON.parse(JSONresult.SWHY).length > 0){
+                                $("#Marriage").attr("obj",JSONresult.SWHY);
+                            }
+
+                            if(JSON.parse(JSONresult.SJRK).length > 0){
+                                $("#population").attr("obj",JSONresult.SJRK);
+                            }
+
+                            if(JSON.parse(JSONresult.LXS).length > 0){
+                                $("#overseasStudent").attr("obj",JSONresult.LXS);
+                            }
+
+                            if(JSON.parse(JSONresult.WG).length > 0){
+                                $("#workers").attr("obj",JSONresult.WG);
+                            }
+
+                            if(JSON.parse(JSONresult.LY).length > 0){
+                                $("#tourism").attr("obj",JSONresult.LY);
+                            }
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+                                $(this).find(".ks_title").find(".ks_badge").text(klength);
+                            });
+
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'Marriage' || GetQueryString('data') == 'population' || GetQueryString('data') == 'overseasStudent' || GetQueryString('data') == 'tourism' ||  GetQueryString('data') == 'workers' ){
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行的事件
+                            }
+
+
+
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+                    //加载境外人员防线小组数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "JWRYFXXZ",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+                            var result = $(data).text();
+                            console.log(result);
+                            var JSONresult = JSON.parse(result);
+                            if(JSON.parse(JSONresult.ABLXR).length > 0){
+                                $("#securityContact").attr("obj",JSONresult.ABLXR);
+                            }
+
+                            if(JSON.parse(JSONresult.ABXZ).length > 0){
+                                $("#securityTeam").attr("obj",JSONresult.ABXZ);
+                            }
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+                                $(this).find(".ks_title").find(".ks_badge").text(klength);
+                            });
+
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'securityContact' || GetQueryString('data') == 'securityTeam'  ){
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行的事件
+                            }
+
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+
+                    $(".slide").css({
+                        'left': width + "px",
+                        'top': $(".layui-layer.layui-layer-earth").height() / 2 + $(".slide").height() / 2  + "px"
+                    });
+
+                    $(".slide").on("click",function(){
+                        if($(this).css("left") !== "0px" ){
+                            $(".layui-layer.layui-layer-earth").animate({
+                                left : - $(".layui-layer.layui-layer-earth").width() + "px"
+                            },500);
+                            $(this).animate({
+                                left : 0
+                            },500)
+                        }else {
+                            $(".layui-layer.layui-layer-earth").animate({
+                                left : 0
+                            },500);
+                            $(this).animate({
+                                left :  $(".layui-layer.layui-layer-earth").width() + "px"
+                            },500)
+                        }
+                    });
+
+                    $('input[name=specific]').iCheck({
+                        checkboxClass: 'icheckbox_flat-red',
+                        radioClass: 'iradio_flat-red',
+                        increaseArea: '20%' // 增加可点击区域给定
+                    });
+                    //$('input[name=specific]').iCheck('disable');
+
+                    $('input[name=specific]').on('ifClicked', function (event) {
+                        if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                            var dataValue = JSON.parse($(this).attr("obj"));
+                            if(!$(this).is(":checked")){            //判断当前复选框是否处于没有选中状态
+                                var idLength = 0;
+                                for(var d=0;d<viewer.dataSources.length;d++){
+                                    if(viewer.dataSources.get(d).name == $(this).attr("id")){
+                                        viewer.dataSources.get(d).show = true;
+                                        idLength++;
+                                    }
+                                }
+                                if(idLength > 0){
+                                    return;
+                                }
+                                var czml = [{
+                                    "id" : "document",
+                                    "name" : $(this).attr("id"),
+                                    "version" : "1.0"
+                                }];
+                                for(var i =0;i<dataValue.length;i++){
+
+                                    var descriptionHtml = "";
+                                    for(var k in dataValue[i]){
+                                        descriptionHtml += "<p>"+ k + ":" + dataValue[i][k] + "</p>";
+                                    }
+
+
+                                    czml.push({
+                                        "name":dataValue[i].Name,
+                                        "description": descriptionHtml,
+                                        "billboard" : {
+                                            "image" : "assets/img/main/zhongguo.png",
+                                            "width": 45,
+                                            "height" : 45
+                                        },
+                                        "position" : {
+                                            "cartographicDegrees" : [dataValue[i].Lon, dataValue[i].Lat, 0.0]
+                                        }
+
+                                    });
+                                    viewer.dataSources.add(Cesium.CzmlDataSource.load(czml));
+//                                        console.log(viewer.dataSources);
+                                }
+                                //alert("没选中");  //没有选中则删除所有复选框的默认选中
+                            }else{
+                                for(var d=0;d<viewer.dataSources.length;d++){
+                                    if(viewer.dataSources.get(d).name == $(this).attr("id")){
+                                        viewer.dataSources.get(d).show = false;
+                                    }
+                                }
+                                //console.log(viewer.dataSources);
+                                // alert("选中");   //选中则为所有复选框添加所有选中
+                            }
+                        }
+                    });
+
+                }
+            });
+
+        },
+        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+        }
+    });
+
+            //设置整体实例默认镜头位置与方向
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(35, 39.1, 4000000.0), //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+                orientation: {
+                    heading: 0.0, //头部
+                    pitch: 0.0, //俯仰
+                    roll: 0.0 //滚动  0.35
+                }
+            });
+
+
+            viewer.imageryLayers.addImageryProvider(new Cesium.ArcGisMapServerImageryProvider({
+                url : 'http://120.197.252.52:6080/arcgis/rest/services/webearth/TURKEYwithoutPOI/MapServer'
+            }));
+
+            viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function () {
+                Cesium.requestAnimationFrame(function () {
+                    viewer.camera.flyTo({  //图片动画飞向指定坐标
+                        destination: Cesium.Cartesian3.fromDegrees(35, 39.1, 4000000.0), //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+                        orientation: {
+                            heading: 0.0, //头部
+                            pitch: -Cesium.Math.PI_OVER_TWO, //俯仰
+                            roll: 0.35 //滚动  0.35
+                        }
+                    });
+                });
+            });
+
+}else if(GetQueryString("country") == "Turkey" && GetQueryString("flag") == 1){
+    $.ajax({
+        "type": "get",
+        "url": "layer_earth2.html",
+        "success": function (response, status, xhr) {
+            var height = $(window).height();
+            var width = $(window).width() / 5;
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                skin: "layui-layer-earth", //添加类名
+                area: [width + "px", height - 155  + "px" ],
+                offset: ['145px', '0px'],
+                shade: 0,
+                content: response,
+                success: function () {
+
+                    //加载机构数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "JG",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+                            var result = $(data).text();
+                            var JSONresult = JSON.parse(result);
+
+                            if(JSON.parse(JSONresult.GFJG).length > 0){
+                                $("#official").attr("obj",JSONresult.GFJG);
+                            }
+
+                            if(JSON.parse(JSONresult.FZFZZ).length > 0){
+                                $("#not-official").attr("obj",JSONresult.FZFZZ);
+                            }
+
+                            if(JSON.parse(JSONresult.WZJG).length > 0){
+                                $("#wai-official").attr("obj",JSONresult.WZJG);
+                            }
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+                                $(this).find(".earth-title").find(".badge").text(klength);
+                            });
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'not-official' || GetQueryString('data') == 'wai-official' || GetQueryString('data') == 'official' ){
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行id=a的事件
+                            }
+
+
+
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+
+                    //加载项目数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "XM",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+                            var result = $(data).text();
+                            var JSONresult = JSON.parse(result);
+
+
+                            if(JSONresult.length > 0){
+                                $("#central-enterprise").attr("obj",JSON.stringify(JSONresult));
+                            }
+
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+                                $(this).find(".ks_title").find(".ks_badge").text(klength);
+                            });
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'central-enterprise'){
+                                $("#xm").trigger("click");//模拟执行id=a的事件
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行id=a的事件
+                            }
+
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+                    //加载人员数据
+                    $.ajax({
+                        "type": "get",
+                        "url": HOST,
+                        "data": {
+                            method: "getBusinessData",
+                            country : GetQueryString("country"),
+                            type : "RY",
+                            flag : Number(GetQueryString("flag"))
+                        },
+                        "success": function (data) {
+                            var result = $(data).text();
+                            var JSONresult = JSON.parse(result);
+                            if(JSON.parse(JSONresult.SWHY).length > 0){
+                                $("#Marriage").attr("obj",JSONresult.SWHY);
+                            }
+
+                            if(JSON.parse(JSONresult.SJRK).length > 0){
+                                $("#population").attr("obj",JSONresult.SJRK);
+                            }
+
+                            if(JSON.parse(JSONresult.LXS).length > 0){
+                                $("#overseasStudent").attr("obj",JSONresult.LXS);
+                            }
+
+                            if(JSON.parse(JSONresult.WG).length > 0){
+                                $("#workers").attr("obj",JSONresult.WG);
+                            }
+
+                            if(JSON.parse(JSONresult.LY).length > 0){
+                                $("#tourism").attr("obj",JSONresult.LY);
+                            }
+
+                            $('input[name=specific]').each(function(index){
+                                if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                                    var dataValue = JSON.parse($(this).attr("obj"));
+                                    $(this).parents(".list-group-item").find(".badge").text(dataValue.length);
+                                }
+                            });
+
+                            $(".panel-heading").find(".badge").each(function(index){
+                                var tlength = 0;
+                                $(this).parents(".panel").find(".list-group-item").find(".badge").each(function(index){
+                                    tlength += parseInt($(this).text());
+                                });
+                                $(this).text(tlength);
+                            });
+
+                            $(".layui-layer-page .layui-layer-content").find(".ks_inner").each(function(){
+                                var klength = 0;
+                                $(this).find(".ks-panel").find(".panel-heading").find(".panel-title").find(".badge").each(function(){
+                                    klength += parseInt($(this).text());
+                                });
+                                $(this).find(".ks_title").find(".ks_badge").text(klength);
+                            });
+
+                            //模拟点击
+                            if(GetQueryString('data') == 'Marriage' || GetQueryString('data') == 'population' || GetQueryString('data') == 'overseasStudent' || GetQueryString('data') == 'tourism' ||  GetQueryString('data') == 'workers' ){
+                                $("label[for="+ GetQueryString('data') +"]").trigger("click");//模拟执行的事件
+                            }
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+                    });
+
+
+                    $(".slide").css({
+                        'left': width + "px",
+                        'top': $(".layui-layer.layui-layer-earth").height() / 2 + $(".slide").height() / 2  + "px"
+                    });
+
+                    $(".slide").on("click",function(){
+                        if($(this).css("left") !== "0px" ){
+                            $(".layui-layer.layui-layer-earth").animate({
+                                left : - $(".layui-layer.layui-layer-earth").width() + "px"
+                            },500);
+                            $(this).animate({
+                                left : 0
+                            },500)
+                        }else {
+                            $(".layui-layer.layui-layer-earth").animate({
+                                left : 0
+                            },500);
+                            $(this).animate({
+                                left :  $(".layui-layer.layui-layer-earth").width() + "px"
+                            },500)
+                        }
+                    });
+
+                    $('input[name=specific]').iCheck({
+                        checkboxClass: 'icheckbox_flat-red',
+                        radioClass: 'iradio_flat-red',
+                        increaseArea: '20%' // 增加可点击区域给定
+                    });
+                    //$('input[name=specific]').iCheck('disable');
+
+                    $('input[name=specific]').on('ifClicked', function (event) {
+                        if(($(this).attr("obj") !== undefined) && ($(this).attr("obj") !== "") ){
+                            var dataValue = JSON.parse($(this).attr("obj"));
+                            if(!$(this).is(":checked")){            //判断当前复选框是否处于没有选中状态
+                                var idLength = 0;
+                                for(var d=0;d<viewer.dataSources.length;d++){
+                                    if(viewer.dataSources.get(d).name == $(this).attr("id")){
+                                        viewer.dataSources.get(d).show = true;
+                                        idLength++;
+                                    }
+                                }
+                                if(idLength > 0){
+                                    return;
+                                }
+                                var czml = [{
+                                    "id" : "document",
+                                    "name" : $(this).attr("id"),
+                                    "version" : "1.0"
+                                }];
+                                for(var i =0;i<dataValue.length;i++){
+
+                                    var descriptionHtml = "";
+                                    for(var k in dataValue[i]){
+                                        descriptionHtml += "<p>"+ k + ":" + dataValue[i][k] + "</p>";
+                                    }
+
+                                    czml.push({
+                                        "name":dataValue[i].Name,
+                                        "description": descriptionHtml,
+                                        "billboard" : {
+                                            "image" : "assets/img/main/zhongguo.png",
+                                            "width": 45,
+                                            "height" : 45
+                                        },
+                                        "position" : {
+                                            "cartographicDegrees" : [dataValue[i].Lon, dataValue[i].Lat, 0.0]
+                                        }
+
+                                    });
+                                    viewer.dataSources.add(Cesium.CzmlDataSource.load(czml));
+//                                        console.log(viewer.dataSources);
+                                }
+                                //alert("没选中");  //没有选中则删除所有复选框的默认选中
+                            }else{
+                                for(var d=0;d<viewer.dataSources.length;d++){
+                                    if(viewer.dataSources.get(d).name == $(this).attr("id")){
+                                        viewer.dataSources.get(d).show = false;
+                                    }
+                                }
+                                //console.log(viewer.dataSources);
+                                // alert("选中");   //选中则为所有复选框添加所有选中
+                            }
+                        }
+                    });
+
+                }
+            });
+
+        },
+        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+        }
+    });
+
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(100,35, 8000000.0), //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+            orientation: {
+                heading: 0.0, //头部
+                pitch: 0.0, //俯仰
+                roll: 0.0 //滚动  0.35
+            }
+        });
+
+        viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function () {
+            Cesium.requestAnimationFrame(function () {
+                viewer.camera.flyTo({  //图片动画飞向指定坐标
+                    destination: Cesium.Cartesian3.fromDegrees(100, 35, 8000000.0), //经度 纬度 视距高度  /该方法返回一个笛卡尔坐标 Cesium.Cartesian3.fromDegrees(28.88,41.10,150000.0)
+                    orientation: {
+                        heading: 0.0, //头部
+                        pitch: -Cesium.Math.PI_OVER_TWO, //俯仰
+                        roll: 0.35 //滚动  0.35
+                    }
+                });
+            });
+        });
+
+}
+
+
+
+        viewer.scene.screenSpaceCameraController.maximumZoomDistance = 8000000.0; //镜头最小高度设置
+        viewer._cesiumWidget._creditContainer.style.display = 'none'; //隐藏cesium水印
+
+
+
+
+
+
+
+    });
+
+
+</script>

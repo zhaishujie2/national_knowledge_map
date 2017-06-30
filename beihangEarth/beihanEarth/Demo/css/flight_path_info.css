@@ -1,0 +1,40 @@
+table {  
+  
+     border-collapse: collapse;  
+  
+     font-family: Futura, Arial, sans-serif; 
+     
+     
+     width:80%;
+     width:80%;
+     margin: 10px auto;
+
+
+  
+}  
+  
+caption {  
+  
+     font-size: 15;  
+  	 color:white; 
+     margin: 1em auto;  
+  
+}  
+  
+th,td {  
+  
+     padding: .65em;  
+     font-size: 10px;
+     color:white;  
+  
+}  
+  
+th,td {  
+  
+     border-bottom: 1px solid rgba(0,0,0,0.9);  
+  
+   border-top: 1px solid rgba(0,0,0,0.9);  
+  
+   text-align: center;  
+  
+}

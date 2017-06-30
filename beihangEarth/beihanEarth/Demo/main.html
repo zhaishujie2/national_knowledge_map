@@ -1,0 +1,731 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title></title>
+    <link href="pages/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/index.css" rel="stylesheet" type="text/css"/>
+    <script src="../Build/Cesium/Cesium.js"></script>
+    <script src="css/iconfont.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="pages/assets/js/bootstrap/bootstrap.js"></script>
+    <script src="js/function.js"></script>
+    <script src="js/config.js"></script>
+    <script src="plugins/layer/layer.js"></script>
+    <script src="js/jquery.SuperSlide.2.1.js"></script>
+    <script src="js/jquery.cookies.js"></script>
+    <script src="pages/assets/js/jquery-nicescroll/jquery.nicescroll.js"></script>
+
+    <style>
+        @import url(../Build/Cesium/Widgets/widgets.css);
+
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !importantfont-family;
+        }
+
+        .cesium-viewer .cesium-widget-credits {
+            display: none;
+        }
+
+
+
+    </style>
+
+
+</head>
+<body>
+<div id="app">
+    <div class="index_avatar"></div>
+    <div class="index_time_display">
+        <div class="index_time_font">
+            <label id="today"><label>
+        </div>
+        <div class="index_last_refresh">
+            <label class="index_rtitle">最后更新时间<label>
+                <label id="recent_update" class="index_rcontent"><label>
+        </div>
+    </div>
+
+    <div id="index_statistics">
+
+
+        <div class="home-button">
+            <img src="sourceImg/home_button.png" alt="homebutton">
+        </div>
+
+        <div class="level2_search">
+            <div><input type="text" id="searchinput"></div>
+            <div class="level2_searchbottondiv"><input id="searchbotton" type="image"
+                                                       src="sourceImg/level2searchbotton.png"></div>
+        </div>
+
+
+        <div class="index_statistics">
+            <img src="sourceImg/6.png"/>
+            <div class="index_statistics_bg">
+                <div class="index_statistics_bg_cell">
+                    <div id="country" class="index_statistics_bg_cell_num"></div>
+                    <div class="index_statistics_bg_cell_item">国家</div>
+                </div>
+                <div class="index_statistics_bg_cell">
+                    <div id="organization" class="index_statistics_bg_cell_num"></div>
+                    <div class="index_statistics_bg_cell_item">组织</div>
+                </div>
+                <div class="index_statistics_bg_cell">
+                    <div id="figure" class="index_statistics_bg_cell_num"></div>
+                    <div class="index_statistics_bg_cell_item">人物</div>
+                </div>
+                <div class="index_statistics_bg_cell">
+                    <div id="event" class="index_statistics_bg_cell_num"></div>
+                    <div class="index_statistics_bg_cell_item">事件</div>
+                </div>
+                <div class="index_statistics_bg_cell">
+                    <div id="news" class="index_statistics_bg_cell_num"></div>
+                    <div class="index_statistics_bg_cell_item">资讯</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="index_statistical_chart">
+        <div class="index_statistical_chart_title"></div>
+        <div class="index_statistical_chart_button"><img src="sourceImg/chart_button.png"/></div>
+        <div id="index_percentdiv">
+            <ul>
+                <li class="highrisk">
+                    <div class="index_percentfont">　高风险</div>
+                    <div class="index_percent">
+                        <div class="index_red_percent"><span></span></div>
+                    </div>
+                    <div class="index_percentfont num"></div>
+                </li>
+                <li class="certainrisk">
+                    <div class="index_percentfont">一定风险</div>
+                    <div class="index_percent">
+                        <div class="index_orange_percent"><span></span></div>
+                    </div>
+                    <div class="index_percentfont num"></div>
+                </li>
+                <li class="potentialrisk">
+                    <div class="index_percentfont">潜在风险</div>
+                    <div class="index_percent">
+                        <div class="index_yellow_percent"><span></span></div>
+                    </div>
+                    <div class="index_percentfont num"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="index_information_container_one">
+        <div class="index_information_container_one_tip">
+            涉华动态
+        </div>
+        <div class="index_information_one">
+            <div class="txtMarquee-top">
+                <div class="bdf active">
+                    <ul class="infoList listChina">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="index_information_container_two">
+        <div class="index_information_container_two_tip">
+            <div class="index_info_tab info-table index_info_tab_selected" data-class="terror">
+                <div>暴恐</div>
+            </div>
+            <div class="index_info_tab info-table" data-class="politics">
+                <div>政治</div>
+            </div>
+            <div class="index_info_tab info-table" data-class="coup">
+                <div>政变</div>
+            </div>
+            <div class="index_info_tab info-table" data-class="relations">
+                <div>外交</div>
+            </div>
+            <div class="index_info_tab info-table" data-class="economics">
+                <div>经济</div>
+            </div>
+            <div class="index_info_tab info-table" data-class="other">
+                <div>其他</div>
+            </div>
+        </div>
+
+
+        <div class="index_information_two">
+            <div class="txtMarquee-top">
+                <div class="bd terror active">
+                    <ul class="infoList listone">
+                    </ul>
+                </div>
+                <div class="bd politics">
+                    <ul class="infoList listtwo">
+                    </ul>
+                </div>
+                <div class="bd coup">
+                    <ul class="infoList listthree">
+                    </ul>
+                </div>
+                <div class="bd relations">
+                    <ul class="infoList listfour">
+                    </ul>
+                </div>
+                <div class="bd economics">
+                    <ul class="infoList listfive">
+                    </ul>
+                </div>
+                <div class="bd other">
+                    <ul class="infoList listsix">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+    <!-- 加载地图的容器 -->
+    <div id="cesiumContainer" style="position:absolute;"></div>
+    <div class="rotateEarth">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-tingzhi"></use>
+        </svg>
+    </div>
+
+
+
+    <form class="form-inline"  style="position: absolute; top: 7px;right: 85px;z-index: 10;">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchgeocoder" placeholder="输入国家名称搜索">
+                <div class="input-group-addon" id="searchgeocoder-addon" style="cursor: pointer;"><span class="glyphicon glyphicon-search"></span></div>
+            </div>
+        </div>
+    </form>
+
+
+
+    <!-- 幕布 -->
+    <div class="bgscreen">
+        <div class="middle">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+
+
+//    $(document).ajaxStart(function () {
+//        $(".bgscreen").css("display", "table");
+//
+//    }).ajaxStop(function () {
+//        $(".bgscreen").hide();
+//    });
+
+    $(function () {
+        var width = $(window).width() / 1.5;
+        var height = $(window).height() / 1.5;
+        $(".index_statistical_chart_button").find("img").on("click", function () {
+            $.ajax({
+                "type": "get",
+                "url": "pages/layer_allRisk.html",
+                 global: false,
+                "success": function (response, status, xhr) {
+                    layer.open({
+                        type: 1,
+                        title: "全球高危国家社会安全局势动态",
+                        skin: "layui-layer-risk", //添加类名
+                        area: [width + "px", height + "px"],
+                        shadeClose: true,
+                        content: response,
+                        success: function () {
+                            if (BrowserDetect.browser != "Chrome") {
+                                setTimeout(function () {
+                                    $(".layui-layer-risk .layui-layer-content").niceScroll({
+                                        styler: "fb",
+                                        cursorcolor: "#959595",
+                                        cursorwidth: '6',
+                                        cursorborderradius: '15px',
+                                        background: '#d3d3d3',
+                                        cursorborder: '',
+                                        zindex: 5,
+                                        autohidemode: false //是否开启不隐藏滚动条
+                                    });
+                                }, 10);
+                            }
+                        }
+                    });
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+
+            });
+        });
+
+
+        //获取当前时间
+        var date = new Date();
+        var year = date.getFullYear();      //获取当前年
+        var month = date.getMonth() + 1;    //获取当前月
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        var day = date.getDate();   //获取当前日
+        if (day >= 1 && day <= 9) {
+            day = "0" + day;
+        }
+        var today = year + "-" + month + "-" + day;
+        $("#today").html(today);
+
+        //获取最后更新时间
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getUpdateDate"
+            },
+            success: function (data) {
+                var result = $(data).text();
+                $("#recent_update").html(result);
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        //获取右上角统计信息
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getCurretCover"
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultJSON = JSON.parse(result);
+                for (var i in resultJSON) {
+
+                    if (parseInt(resultJSON[i]) < 1000) {
+                        $("#" + i).html(resultJSON[i]);
+                    }
+                    //当数值超过一万时采用万作为单位
+                    else {
+                        $("#" + i).html((parseInt(resultJSON[i]) / 10000).toFixed(1) +  "<span style='font-size:20px;'>万</span>");
+                    }
+                }
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+        $(".info-table").on("click", function () {
+            var className = $(this).attr("data-class");
+            $(".bd").hide();
+            $("." + className).show();
+            $(this).siblings().removeClass('index_info_tab_selected').end().addClass("index_info_tab_selected");
+        });
+
+        var viewer = new Cesium.Viewer('cesiumContainer', {
+            animation: false,
+            baseLayerPicker: false,
+            fullscreenButton: false,
+            timeline: false,
+            navigationHelpButton: false,
+            scene3DOnly: true,
+            selectionIndicator: false,
+            infoBox:false,
+            geocoder:false,
+            imageryProvider: Cesium.createTileMapServiceImageryProvider({
+                url : './bingMap/tiles',
+                fileExtension: 'jpg',
+                maximumLevel : 9
+            }),
+            clock: new Cesium.Clock({
+                startTime: Cesium.JulianDate.fromIso8601("2013-12-25"),
+                currentTime: Cesium.JulianDate.fromIso8601("2013-12-25"),
+                stopTime: Cesium.JulianDate.fromIso8601("2100-12-26"),
+                multiplier: 5.0,
+                clockStep: Cesium.ClockStep.TICK_DEPENDENT
+            })
+        });
+
+
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(35.2526321418599, 38.9548530579223, 25000000.0)
+        });
+
+
+        // 取消鼠标双击事件
+        viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+        var canvas = viewer.canvas;
+        var handler = new Cesium.ScreenSpaceEventHandler(canvas);
+
+        function ClearBr(key) {
+            key = key.replace(/<\/?.+?>/g,"");
+            key = key.replace(/[\r\n]/g, "");
+            return key;
+        }
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            global: false,
+            data: {
+                method: "getEarth"
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultJSON = JSON.parse(result);
+                var heightRisk = [];
+                var centerRisk = [];
+                var smallRisk = [];
+                for(var i =0; i <resultJSON.length;i++){
+                    if(resultJSON[i].GeoJson !== null){
+                        var color;
+                        if(resultJSON[i].Risk === 3){
+                            color = Cesium.Color.RED;
+                            heightRisk.push(resultJSON[i]);
+                        }else if(resultJSON[i].Risk === 2){
+                            color = Cesium.Color.DARKORANGE;
+                            centerRisk.push(resultJSON[i]);
+                        }else if(resultJSON[i].Risk === 1){
+                            color = Cesium.Color.YELLOW;
+                            smallRisk.push(resultJSON[i]);
+                        }
+                        var geojson = ClearBr(resultJSON[i].GeoJson);
+                        viewer.dataSources.add(Cesium.GeoJsonDataSource.load(JSON.parse(geojson),{
+                                        stroke: Cesium.Color.BLACK,
+                                        strokeWidth: 1,
+                                        fill: color,
+                                        markerSymbol: '?'
+                        }));
+
+                        viewer.entities.add({
+                            position : Cesium.Cartesian3.fromDegrees(resultJSON[i].Lon, resultJSON[i].Lat),
+                            label : {
+                                showBackground : true,
+                                backgroundColor : Cesium.Color.WHITE,
+                                backgroundPadding : new Cesium.Cartesian2(2, 2),
+                                font: '16px monospace',
+                                horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+                                text : resultJSON[i].CountryName,
+                                verticalOrigin : Cesium.VerticalOrigin.TOP,
+                                style : Cesium.LabelStyle.FILL,
+                                fillColor:Cesium.Color.BLACK,
+                                disableDepthTestDistance : Number.POSITIVE_INFINITY, //不应用深度测试
+                                distanceDisplayCondition  : new Cesium.DistanceDisplayCondition(0, 25000000), //label显示的距离范围
+                                pixelOffset : new Cesium.Cartesian2(-25, 0)
+                            }
+                        });
+                    }
+                }
+
+                $(".highrisk").find(".index_percentfont.num").html(heightRisk.length);
+                $(".highrisk").find(".index_red_percent").css("width", heightRisk.length * 7 + "px");
+                $(".certainrisk").find(".index_percentfont.num").html(centerRisk.length);
+                $(".certainrisk").find(".index_orange_percent").css("width", centerRisk.length * 7 + "px");
+                $(".potentialrisk").find(".index_percentfont.num").html(smallRisk.length);
+                $(".potentialrisk").find(".index_yellow_percent").css("width", smallRisk.length * 7 + "px");
+
+
+                handler.setInputAction(function (movement) {
+                    var pickedObject = viewer.scene.pick(movement.position);
+                    if (Cesium.defined(pickedObject) && pickedObject.id instanceof Cesium.Entity) {
+                        // alert(JSON.stringify(pickedObject.id.properties));
+                        // 每个pickedObject.id为点击的实体对应的属性，该属性为实体对应的GeoJson中的字段
+                        //获取右上角统计信息
+                        for (var k = 0; k < resultJSON.length; k++) {
+                            if (resultJSON[k].EntityEnName == pickedObject.id.properties.name) {
+                                $.cookie("CountryEntityID",resultJSON[k].EntityID);
+                                $.cookie("CountryType","Country");
+                                window.location.href = "pages/countryOverview.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType")
+                            }
+                        }
+                    }
+                }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+                $("#searchgeocoder-addon").on("click",function(){  //自定义搜索
+                    var value = $("#searchgeocoder").val();
+                    for (var u = 0; u < resultJSON.length; u++) {
+                        if (value == resultJSON[u].EntityEnName || value == resultJSON[u].CountryName ) {
+                            viewer.camera.flyTo({
+                                destination: Cesium.Cartesian3.fromDegrees(resultJSON[u].Lon, resultJSON[u].Lat, 24999999.0)
+                            });
+                        }
+                    }
+                });
+
+
+               //enter搜索
+                $(document).keydown(function(e){
+                    if(e.which == 13){
+                        var value = $("#searchgeocoder").val();
+                        for (var u = 0; u < resultJSON.length; u++) {
+                            if (value == resultJSON[u].EntityEnName || value == resultJSON[u].CountryName ) {
+                                viewer.camera.flyTo({
+                                    destination: Cesium.Cartesian3.fromDegrees(resultJSON[u].Lon, resultJSON[u].Lat, 24999999.0)
+                                });
+                            }
+                        }
+                    }
+                });
+
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+        //取消cesium 默认的enter事件
+        $(document).keydown(function(e){
+            if(e.which == 13){
+                return false;
+            }
+        });
+
+
+        viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function () {
+            Cesium.requestAnimationFrame(function () {
+                viewer.camera.flyTo({
+                    destination: Cesium.Cartesian3.fromDegrees(35.2526321418599, 38.9548530579223, 25000000.0)
+                });
+            });
+        });
+
+
+
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : ""
+            },
+            success: function (data) {
+                var result = $(data).text();
+
+                if (result == "") {
+                  return false;
+                }else{
+                    var resultJSON = JSON.parse(result);
+                    for(var i = 0;i < 5;i++ ){
+                        $(".txtMarquee-top").find(".bdf").find(".listChina").append("<li>\
+                               <h1>"+ resultJSON[i].title +"</h1>\
+                               <div>" + resultJSON[i].abstrct + "</div>\
+                                </li>");
+                    }
+
+                    jQuery(".txtMarquee-top").slide({mainCell:".bdf ul.listChina",autoPlay:true,effect:"topMarquee",vis:2,interTime:50});
+                }
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+
+        });
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : encodeURI("其他")
+            },
+            success: function (data) {
+                var result = JSON.parse($(data).text());
+                for(var i = 0;i < 5;i++ ){
+                  $(".txtMarquee-top").find(".other").find(".infoList").append("<li>"+result[i].title+"</li>");
+                }
+                jQuery(".txtMarquee-top").slide({mainCell:".bd ul.listsix",autoPlay:true,effect:"topMarquee",vis:5,interTime:50});
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : encodeURI("暴恐")
+            },
+            success: function (data) {
+                var result = JSON.parse($(data).text());
+                for(var i = 0;i < 5;i++ ){
+                    $(".txtMarquee-top").find(".terror").find(".infoList").append("<li>"+result[i].title+"</li>");
+                }
+                jQuery(".txtMarquee-top").slide({mainCell:".bd ul.listone",autoPlay:true,effect:"topMarquee",vis:5,interTime:50});
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : encodeURI("政治")
+            },
+            success: function (data) {
+                var result = JSON.parse($(data).text());
+                for(var i = 0;i < 5;i++ ){
+                    $(".txtMarquee-top").find(".politics").find(".infoList").append("<li>"+result[i].title+"</li>");
+                }
+                jQuery(".txtMarquee-top").slide({mainCell:".bd ul.listtwo",autoPlay:true,effect:"topMarquee",vis:5,interTime:50});
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : encodeURI("政变")
+            },
+            success: function (data) {
+                var result = JSON.parse($(data).text());
+                for(var i = 0;i < 5;i++ ){
+                    $(".txtMarquee-top").find(".coup").find(".infoList").append("<li>"+result[i].title+"</li>");
+                }
+                jQuery(".txtMarquee-top").slide({mainCell:".bd ul.listthree",autoPlay:true,effect:"topMarquee",vis:5,interTime:50});
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : encodeURI("外交")
+            },
+            success: function (data) {
+                var result = JSON.parse($(data).text());
+                for(var i = 0;i < 5;i++ ){
+                    $(".txtMarquee-top").find(".relations").find(".infoList").append("<li>"+result[i].title+"</li>");
+                }
+                jQuery(".txtMarquee-top").slide({mainCell:".bd ul.listfour",autoPlay:true,effect:"topMarquee",vis:5,interTime:50});
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getNewsFromES",
+                key: encodeURI("中国"),
+                type : encodeURI("经济")
+            },
+            success: function (data) {
+                var result = JSON.parse($(data).text());
+                for(var i = 0;i < 5;i++ ){
+                    $(".txtMarquee-top").find(".economics").find(".infoList").append("<li>"+result[i].title+"</li>");
+                }
+                jQuery(".txtMarquee-top").slide({mainCell:".bd ul.listfive",autoPlay:true,effect:"topMarquee",vis:5,interTime:50});
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        var scene = viewer.scene;
+        var clock = viewer.clock;
+
+        // 地球自转事件
+        function rotateEvent(scene, time){
+            if (scene.mode !== Cesium.SceneMode.SCENE3D) {
+                return;
+            }
+            var icrfToFixed = Cesium.Transforms.computeIcrfToFixedMatrix(time);
+            if (Cesium.defined(icrfToFixed)) {
+                //设置地球初始状态为自转
+                clock.multiplier = 0.01 * 60 * 60;
+                var camera = viewer.camera;
+                var offset = Cesium.Cartesian3.clone(camera.position);
+                var transform = Cesium.Matrix4.fromRotationTranslation(icrfToFixed);
+                camera.lookAtTransform(transform, offset);
+            }
+        }
+
+        // 停止地球自转事件
+        function stopRotateEvent() {
+            scene.completeMorph();
+            scene.tweens.removeAll();
+            viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+            clock.multiplier = 1.0;
+            scene.preRender.removeEventListener(rotateEvent);
+        }
+
+        function viewInICRF() {
+            scene.preRender.addEventListener(rotateEvent);
+            scene.morphComplete.addEventListener(function() {
+                Sandcastle.reset();
+            });
+        }
+
+        viewInICRF();
+
+        $(".rotateEarth").on("click",function(){
+            if($(this).find("use").attr("xlink:href") == "#icon-xuanzhuan" ){
+                $(this).find("use").attr("xlink:href","#icon-tingzhi");
+                viewInICRF();
+            }else if($(this).find("use").attr("xlink:href") == "#icon-tingzhi"){
+                $(this).find("use").attr("xlink:href","#icon-xuanzhuan");
+                stopRotateEvent();
+            }
+        });
+
+// 
+    });
+
+
+</script>

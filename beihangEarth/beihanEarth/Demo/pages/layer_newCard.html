@@ -1,0 +1,172 @@
+
+<div class="newCard new">
+    <div class="col-xs-8 left">
+        <div class="tab">
+            <ul>
+                <li class="active" data-class="info">基本信息</li>
+                <li data-class="organization">组织架构</li>
+            </ul>
+        </div>
+        <div class="tab-content info ">
+            <div class="basic-info">
+                <div class="row">
+                    <div class="col-xs-2 title">卡片名称</div>
+                    <div class="col-xs-10 value">
+                        <button class="btn btn-default">伊斯兰国</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 title">卡片类型</div>
+                    <div class="col-xs-10 value">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                丐帮 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">丐帮</a></li>
+                                <li><a href="#">少林</a></li>
+                                <li><a href="#">武当</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 title">英 文 名</div>
+                    <div class="col-xs-10 value">
+                        <button class="btn btn-default">Qiao feng</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-10 consult-value">
+                        <div class="col-xs-1">参考值:</div>
+                        <div class="col-xs-11">
+                            <p>Islamic garden 来源 <a href="###">中华新闻网</a></p>
+                            <p>Graye 来源 <a href="###">凤凰网</a></p>
+                            <p>Cassiopeia 来源 <a href="###">中华新闻网</a></p>
+                            <p>christian 来源 <a href="###">凤凰网</a></p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-2 title">领　　袖</div>
+                    <div class="col-xs-10 value">
+                        <button class="btn btn-default">虚竹</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 title">领　　袖</div>
+                    <div class="col-xs-10 value">
+                        <button class="btn btn-default">鸠摩智</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 title">领　　袖</div>
+                    <div class="col-xs-10 value">
+                        <button class="btn btn-default">乔峰</button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <p class="btn-p text-center">
+                <button class="btn btn-primary">创建卡片</button>
+            </p>
+        </div>
+
+        <div class="tab-content organization">
+                组织架构开发中...
+        </div>
+
+    </div>
+    <div class="col-xs-4 right">
+        <div class="search">
+            <div class="col-xs-11">
+                <input type="text" class="search-input">
+            </div>
+            <div class="col-xs-1">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+        </div>
+        <div class="right-content">
+            <h1>专题资源</h1>
+            <ul>
+                <li>伊斯兰国专题资源一</li>
+                <li>伊斯兰国专题资源二</li>
+                <li>伊斯兰国专题资源三</li>
+                <li>伊斯兰国专题资源四</li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <h1>专题资源</h1>
+            <ul>
+                <li>伊斯兰国专题资源一</li>
+                <li>伊斯兰国专题资源二</li>
+                <li>伊斯兰国专题资源三</li>
+                <li>伊斯兰国专题资源四</li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <h1>专题资源</h1>
+            <ul>
+                <li>伊斯兰国专题资源一</li>
+                <li>伊斯兰国专题资源二</li>
+                <li>伊斯兰国专题资源三</li>
+                <li>伊斯兰国专题资源四</li>
+            </ul>
+        </div>
+        <p class="btn-p text-right">
+            <button class="btn btn-warning ">自动填充</button>
+        </p>
+
+    </div>
+
+</div>
+<script>
+    $(function(){
+        $(".btn-warning,.btn-primary").on("click",function(){
+            layer.close(1); //关闭层
+            var width  = $(window).width()/1.5;
+            var height  = $(window).height()/1.5;
+            $.ajax({
+                "type":"get",
+                "url" : "layer_newRelation.html",
+                "success" : function(response,status,xhr){
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        skin: "layui-layer-card", //添加类名
+                        area: [width + "px", height + "px"],
+                        shadeClose: true,
+                        content: response,
+                        success: function(layero, index){
+                            $(".newRelation").find(".left").css("min-height",height + "px");
+                            $(".newRelation").find(".right").css("min-height", $(".newRelation").find(".left").outerHeight(true) + "px");
+                            $(".layui-layer-card .new .right .right-content ul,.layui-layer-page .layui-layer-content,.layui-layer-card .newRelation .card-table tbody").niceScroll({
+                                styler: "fb",
+                                cursorcolor: "#959595",
+                                cursorwidth: '6',
+                                cursorborderradius: '15px',
+                                background: '#eee',
+                                cursorborder: '',
+                                zindex: 5
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $(".newCard").find(".tab li").on("click",function(){
+            $(this).siblings().removeClass("active").end().addClass("active");
+            $(".newCard").find(".tab-content").hide();
+            var className = $(this).attr("data-class");
+            $("."+ className).fadeIn(300);
+        });
+    });
+
+</script>

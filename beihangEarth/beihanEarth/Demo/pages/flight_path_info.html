@@ -1,0 +1,454 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+            @import url(../css/flight_path_info.css);
+            body {
+                margin: 0;
+            }
+
+            .anchorBL{
+                display: none;
+            }
+            caption{
+                text-align: center !important;
+                color: #fff !important;
+                font-size: 1.7rem !important;
+                font-weight: bold !important;
+            }
+
+        </style>
+        <link href="assets/css/custom/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css">
+        <script src="../js/config.js"></script>
+        <script src="../js/jquery.min.js"></script>
+        <script src="../plugins/layer/layer.js"></script>
+        <script src="../js/echarts.js"></script>
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+        <script src="../js/function.js"></script>
+        <script src="../js/FileSaver.min.js"></script>
+        <script src="../js/jquery.wordexport.js"></script>
+        <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+        <script src="../js/jquery.jqprint-0.3.js"></script>
+
+    </head>
+    <body style="overflow: hidden;">
+    <div class="ks_head">
+        <div class="ks_container">
+            <div class="ks_user">
+                <div class="ks_photo">
+                    <img src="assets/img/main/photo.png">
+                </div>
+                <div class="ks_name">@Administrators</div>
+            </div>
+            <div class="ks_menu ks_menu_left">
+                <a class="ks_menu_item dituHref" target="_self">
+                    <img src="assets/img/main/icon_01.png">
+                    <div class="ks_menu_title">地图</div>
+                </a>
+                <a class="ks_menu_item relationHref" target="_self">
+                    <img src="assets/img/main/icon_02.png">
+                    <div class="ks_menu_title">关系网络</div>
+                </a>
+                <a class="ks_menu_item" href="#">
+                    <img src="assets/img/main/icon_03.png">
+                    <div class="ks_menu_title">翻译</div>
+                </a>
+                <a class="ks_menu_item" href="#">
+                    <img src="assets/img/main/icon_04.png">
+                    <div class="ks_menu_title">图谱管理</div>
+                </a>
+            </div>
+            <div class="ks_search">
+                <input type="text">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <div class="ks_menu ks_menu_right">
+                <a class="ks_menu_item" href="#">
+                    <img src="assets/img/main/icon_05.png">
+                    <div class="ks_menu_title">收藏</div>
+                </a>
+                <a class="ks_menu_item wordprint" href="#">
+                    <img src="assets/img/main/icon_06.png">
+                    <div class="ks_menu_title">打印</div>
+                </a>
+                <a class="ks_menu_item worddao" href="#">
+                    <img src="assets/img/main/icon_07.png">
+                    <div class="ks_menu_title">导出</div>
+                </a>
+                <a class="ks_menu_item" href="../main.html" target="_self" >
+                    <img src="assets/img/main/icon_08.png">
+                    <div class="ks_menu_title">返回地球</div>
+                </a>
+                <a class="ks_menu_item returnCountry">
+                    <img src="assets/img/main/icon_09.png">
+                    <div class="ks_menu_title">返回国家</div>
+                </a>
+            </div>
+        </div>
+    </div>
+        <div id="main" style="position: relative;"></div>
+
+        <div id="bigTable">
+        <script src="../js/flight_path_info.js"></script>
+        <div id="table" style="position:absolute; bottom:40px;left:100px;width:400px;height:300px;"></div>
+        <script type="text/javascript">
+        
+            require.config({
+                paths: {
+                    echarts: '../js'
+                }
+            });
+
+            require(
+                [
+                    'echarts',
+                    'echarts/chart/bar'
+                ],
+                function (ec) {
+                    var myChart = ec.init(document.getElementById('table')); 
+                    
+                    option = {
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        title: {
+                            x: 'center',
+                            y:20,
+                            text: '近三日入境量排行（国家）',
+                            textStyle:{
+                                color:'#fff'
+                            }
+                        },
+                        grid: {
+                            borderWidth: 0,
+                            x:'10%',
+                            x2:'10%',
+                            y: '20%',
+                            y2: '20%',
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                show: true,
+                                data : ['德\n国','俄\n罗\n斯','法\n国','意\n大\n利','英\n国','伊\n拉\n克','沙特\n阿拉\n伯','乌\n克\n兰','伊\n朗','荷\n兰'],
+                                splitLine:{show:false},
+                                axisLabel:{
+                                    show:true,
+                                    textStyle:{
+                                        fontSize:4,
+                                        color:'white'
+
+                                    }
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                show: true,
+                                splitLine:{show:false},
+                                axisLabel:{
+                                    show:true,
+                                    textStyle:{
+                                        fontSize:4,
+                                        color:'white'
+
+                                    }
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '近三日出境量排行（国家）',
+                                type: 'bar',
+                                barWidth:20,
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params) {
+                                            // build a color map as your need.
+                                            var colorList = [
+                                              '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+                                               '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                                               '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+                                            ];
+                                            return colorList[params.dataIndex]
+                                        },
+                                        label: {
+                                            show: true,
+                                            position: 'top',
+                                            formatter: '{c}'
+                                        }
+                                    }
+                                },
+                                data: [340, 93, 71, 70, 69,59,55,52,51,46],
+                                
+                            }
+                        ]
+                    };
+
+            
+                    // 为echarts对象加载数据 
+                    myChart.setOption(option); 
+                }
+            );
+        </script>
+        <div id="table2" style="position:absolute; bottom:40px;right:50px;width: 400px;height:300px;"></div>
+        <script type="text/javascript">
+        
+            require.config({
+                paths: {
+                    echarts: '../js'
+                }
+            });
+            
+            
+            require(
+                [
+                    'echarts',
+                    'echarts/chart/bar'
+                ],
+                function (ec) {
+                    var myChart = ec.init(document.getElementById('table2')); 
+                    
+                    option = {
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        title: {
+                            x: 'center',
+                            y:20,
+                            text: '近三日出境量排行（国家）',
+                            textStyle:{
+                                color:'#fff'
+                            }
+                        },
+                        grid: {
+                            borderWidth: 0,
+                            x:'10%',
+                            x2:'10%',
+                            y: '20%',
+                            y2: '20%',
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                show: true,
+                                data : ['德\n国','俄\n罗\n斯','意\n大\n利','英\n国','法\n国', '伊\n拉\n克','沙特\n阿拉\n伯','乌\n克\n兰','伊\n朗','荷\n兰'],
+                                splitLine:{show:false},
+                                axisLabel:{
+                                    show:true,
+                                    textStyle:{
+                                        fontSize:4,
+                                        color:'white'
+
+                                    }
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                show: true,
+                                data: [338, 82, 73, 71, 68,63,53,50,49,46],
+                                splitLine:{show:false},
+                                axisLabel:{
+                                    show:true,
+                                    textStyle:{
+                                        fontSize:4,
+                                        color:'white'
+
+                                    }
+                                }
+                            }
+
+                        ],
+                        series: [
+                            {
+                                name: '近三日出境量排行（国家）',
+                                type: 'bar',
+                                barWidth:20,
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params) {
+                                            // build a color map as your need.
+                                            var colorList = [
+                                              '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+                                               '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                                               '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+                                            ];
+                                            return colorList[params.dataIndex]
+                                        },
+                                        
+                                        label: {
+                                            show: true,
+                                            position: 'top',
+                                            formatter: '{c}'
+                                        }
+                                    }
+                                },
+                                data: [338, 82, 73, 71, 68,63,53,50,49,46],
+                                
+                            }
+                        ]
+                    };
+
+            
+                    // 为echarts对象加载数据 
+                    myChart.setOption(option); 
+                }
+            );
+        </script>
+        <div id="table3" style="position:absolute; top:150px;left:100px;width:400px;height:280px;background-color:rgba(0,0,0,0.2);">
+            <table class="table">
+            <caption>近三日土耳其至中国流量排行</caption>  
+            <thead>  
+                <tr>  
+                    <th>排名  
+                    <th>机场  
+                    <th>流量  
+            </thead>  
+            <tbody>  
+                <tr>  
+                    <td>1  
+                    <td>北京首都国际机场  
+                    <td>3  
+                <tr>  
+                    <td>1  
+                    <td>广州白云机场  
+                    <td>3
+                <tr>  
+                    <td>1 
+                    <td>上海浦东机场  
+                    <td>3  
+                <tr>  
+                    <td>1 
+                    <td>桃园国际机场  
+                    <td>3
+                <tr>  
+                    <td>1 
+                    <td>香港国际机场(赤腊角)  
+                    <td>3  
+                 
+            </tbody>  
+            </table>
+        </div>
+        <div id="table4" style="position:absolute; top:150px;right:50px;width:400px;height:280px;background-color:rgba(0,0,0,0.2);">
+            <table class="table">
+            <caption>近三日中国至土耳其流量排行</caption>  
+            <thead>  
+                <tr>  
+                    <th>排名  
+                    <th>机场  
+                    <th>流量  
+            </thead>  
+                <tbody>
+                    <tr>  
+                        <td>1 
+                        <td>上海浦东机场  
+                        <td>4  
+                    <tr>  
+                        <td>1 
+                        <td>桃园国际机场  
+                        <td>4
+                    <tr>  
+                        <td>1 
+                        <td>香港国际机场(赤腊角)  
+                        <td>4
+                    <tr>  
+                        <td>2  
+                        <td>北京首都国际机场  
+                        <td>3  
+                    
+                    <tr>  
+                        <td>2  
+                        <td>广州白云机场  
+                        <td>3  
+                     
+                </tbody>  
+            </table>  
+        </div>
+        </div>
+
+        <div id="time" style="position:absolute; bottom:5px;left:100px;width:85%;height:20px;background-color:rgba(0,0,0,0.5);">
+        </div>
+        <div id="time2" style="color:#000;font-size:10px;position:absolute; bottom:5px;left:100px;width:60%;height:20px;background-color:rgba(255,255,255,0.5);text-align:left;line-height:20px;text-indent: 10px;">
+        时间：2016.11.06 01:00
+        </div>
+        <div id="time2" style="color:#000;font-size:10px;position:absolute; bottom:5px;right:3%;width:38;height:20px;background-color:rgba(255,255,255,0.5);text-align:center;line-height:20px;">
+        全部
+        </div>
+    </body>
+</html>
+<script>
+$(function(){
+    $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" +  GetQueryString("EntityID") + "&type=" +  GetQueryString("type") );
+    $(".dituHref").attr("href",  "main_earths.html?EntityID=" +  GetQueryString("EntityID") + "&type=" +  GetQueryString("type")   );
+    $(".relationHref").attr("href",  "main_relation.html?EntityID=" +  GetQueryString("EntityID") + "&type=" +  GetQueryString("type")   );
+    $(".worddao").on("click",function(e){
+        e.preventDefault();
+        $("#bigTable").wordExport();
+    });
+    $(".wordprint").on("click",function(e){
+        e.preventDefault();
+        $("body").jqprint();
+    });
+
+    $(".ks_head .ks_search span.glyphicon").on("click",function(){
+        var keyword = $(".ks_head .ks_search").find("input").val();
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getAutoCart",
+                keyword:encodeURI(keyword)
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultData = JSON.parse(result);
+                var width = $(window).width() / 1.5;
+                var height = $(window).height() / 1.5;
+                $.ajax({
+                    "type": "get",
+                    "url": "layer_autoCard.html",
+                    "success": function (response, status, xhr) {
+                        layer.open({
+                            type: 1,
+                            title: "自动卡片",
+                            skin: "layui-layer-lbf", //添加类名
+                            closeBtn: 1,
+                            area: [width + "px", height + "px"],
+                            shadeClose: true,
+                            content: response,
+                            success: function (layero,index) {
+                                for (var i=0;i < resultData.length;i++){
+                                    $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard" style="height: auto;">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                       <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                }
+                            }
+                        });
+                    }
+                });
+
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+
+
+
+    });
+
+
+});
+</script>

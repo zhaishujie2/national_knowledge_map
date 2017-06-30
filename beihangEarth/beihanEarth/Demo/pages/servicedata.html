@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>业务数据</title>
+    <link href="../css/level2style.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../js/config.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.roundabout.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easing.1.3.js"></script>
+    <script src="../pages/assets/js/jquery-nicescroll/jquery.nicescroll.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/function.js"></script>
+</head>
+<body>
+<div class="level2_body">
+    <div class="level2_left">
+        <div><img src="../sourceImg/level2logo.png" class="level2logo"></div>
+        <div class="level2_menu">
+            <ul class="menu-link">
+                <li class="countryOverview"><a><img src="../sourceImg/level2gj.png">
+                    <div>国家概览</div>
+                </a></li>
+                <li class="news"><a><img src="../sourceImg/level2news.png">
+                    <div>最新动态</div>
+                </a></li>
+                <li class="servicedata"><a><img src="../sourceImg/level2yw.png">
+                    <div>业务数据</div>
+                </a></li>
+                <li class="serviceapplication"><a><img src="../sourceImg/level2jy.png">
+                    <div>业务应用</div>
+                </a></li>
+                <li><a href="../main.html" target="_self"><img src="../sourceImg/level2back.png">
+                    <div>返回</div>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="level2_right">
+        <div class="level2_top" style="height: 100px;">
+        </div>
+        <div class="level2_newscontent">
+            <div class="level2_newscontentdiv">
+                <div class="level2_rightdowntitle" style="margin-top:45px;">业务数据</div>
+                <div class="level2_servicedatabg">
+                    <div class="row">
+                        <div class="col-xs-4 col-md-4">
+                            <div class="level2_left_title">
+                                <img id="leftTitle" style="width: 100%; height: auto; cursor: pointer" src="../sourceImg/title-left.png">
+                                <ul class="left_item_background">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <div class="level2_left_title">
+                                <img id="centerTitle" style="width: 100%; height: auto; cursor: pointer" src="../sourceImg/title-center.png">
+                                <ul class="center_item_background">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <div class="level2_left_title">
+                                <div style="width: 100%; height: auto; background-image: url(../sourceImg/right-background.png)">
+                                    <img id="flightInfo" style="width: 100%; height: auto; cursor: pointer" src="../sourceImg/title-right.png">
+                                    <img style="margin-top: 10px; width: 100%; height: auto;" src="../sourceImg/table-green.png">
+                                    <img style="margin-top: 10px; width: 100%; height: auto;" src="../sourceImg/table-yellow.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    //    isLogin();
+    $(function () {
+
+        component_loading("body", "append"); //加载loading
+        $(document).ajaxStart(function () {
+            $('html, body').animate({scrollTop: 0}, 1);
+            $(".bgscreen").css("display", "table");
+            $("body").css("overflow", "hidden");
+        }).ajaxStop(function () {
+            $(".bgscreen").hide();
+            $("body").css("overflow", "auto");
+        });
+
+        $(".menu-link").find(".countryOverview").find("a").attr("href", "countryOverview.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType") );
+        $(".menu-link").find(".news").find("a").attr("href", "news.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType") );
+        $(".menu-link").find(".servicedata").find("a").attr("href", "servicedata.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType"));
+        $(".menu-link").find(".serviceapplication").find("a").attr("href", "serviceapplication.html?EntityID=" + $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType"));
+
+        $('#featured-area ul').roundabout({
+            easing: 'easeOutInCirc',
+            duration: 500,
+            enableDrag: true
+        });
+
+        $(".level2_newscontent").niceScroll({
+            styler: "fb",
+            cursorcolor: "#00d3e6",
+            cursorwidth: '6',
+            cursorborderradius: '15px',
+            background: '#012537',
+            cursorborder: '',
+            zindex: 5,
+            autohidemode: false //是否开启不隐藏滚动条
+        });
+
+
+        //获取当前国家名称
+        $.ajax({
+            "type": "get",
+            "url": HOST,
+            "data": {
+                method: "getCountryAndLogo",
+                EntityID : $.cookie("CountryEntityID"),
+            },
+            "success": function (data) {
+                var result = $(data).text();
+                var JSONresult = JSON.parse(result);
+                var EntityCountryName = JSONresult.EntityEnName;  //获取当前国家名
+                $('#leftTitle').click(function() {
+                    location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=2&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType");
+                });
+                $('#centerTitle').click(function() {
+                    location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=1&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType");
+                });
+                $('#flightInfo').click(function() {
+                    location.href = './flight_path_info.html?&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType");
+                });
+
+
+
+               //土耳其
+                //获取机构列表
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country : EntityCountryName,
+                        type : "JG",
+                        flag :2
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+                        for(var i in JSONresult){
+                            switch(i){
+                                case 'FZFZZ' :
+                                $(".left_item_background").append("<li data='not-official'>非政府机构</li>");
+                                break;
+                                case 'GFJG' :
+                                    $(".left_item_background").append("<li data='official'>官方机构</li>");
+                                    break;
+                                case 'ZZJG' :
+                                    $(".left_item_background").append("<li data='china-official'>中资机构</li>");
+                                    break;
+                                default :
+                                    $(".left_item_background").append("<li>"+ i +"</li>");
+                                    break;
+                            }
+                        }
+
+                        $(".left_item_background").find("li").off("click").on("click",function(){
+                              window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=2&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+                //获取项目列表
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country : EntityCountryName,
+                        type : "XM",
+                        flag : 2
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+                        for(var i in JSONresult){
+                            switch(i){
+                                case 'GQ' :
+                                    $(".left_item_background").append("<li  data='china-enterprise'>国企</li>");
+                                    break;
+                                case 'MQ' :
+                                    $(".left_item_background").append("<li  data='people-enterprise'>民企</li>");
+                                    break;
+                                case 'YQ' :
+                                    $(".left_item_background").append("<li  data='central-enterprise'>央企</li>");
+                                    break;
+                                default :
+                                    $(".left_item_background").append("<li>"+ i +"</li>");
+                                    break;
+                            }
+                        }
+
+                        $(".left_item_background").find("li").off("click").on("click",function(){
+                            window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=2&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+                //获取人员列表
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country :EntityCountryName,
+                        type : "RY",
+                        flag : 2
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+                        for(var i in JSONresult){
+                            switch(i){
+                                case 'WG' :
+                                    $(".left_item_background").append("<li data='workers'>务工</li>");
+                                    break;
+                                case 'SWHY' :
+                                    $(".left_item_background").append("<li data='Marriage'>涉外婚姻</li>");
+                                    break;
+                                case 'SJRK' :
+                                    $(".left_item_background").append("<li data='population'>散居人口</li>");
+                                    break;
+                                case 'LXS' :
+                                    $(".left_item_background").append("<li data='overseasStudent'>留学生</li>");
+                                    break;
+                                case 'LY' :
+                                    $(".left_item_background").append("<li data='tourism'>旅游</li>");
+                                    break;
+                                default :
+                                    $(".left_item_background").append("<li >"+ i +"</li>");
+                                    break;
+                            }
+                        }
+
+                        $(".left_item_background").find("li").off("click").on("click",function(){
+                            window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=2&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+                //获取境外人员防线小组列表
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country : EntityCountryName,
+                        type : "JWRYFXXZ",
+                        flag : 2
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+                        for(var i in JSONresult){
+                            switch(i){
+                                case 'ABLXR' :
+                                    $(".left_item_background").append("<li data='securityContact'>安保联系人</li>");
+                                    break;
+                                case 'ABXZ' :
+                                    $(".left_item_background").append("<li data='securityTeam'>安保小组</li>");
+                                    break;
+                                default :
+                                    $(".left_item_background").append("<li>"+ i +"</li>");
+                                    break;
+                            }
+                        }
+
+                        $(".left_item_background").find("li").off("click").on("click",function(){
+                            window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=2&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+                //中国
+                //加载机构数据
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country : EntityCountryName,
+                        type : "JG",
+                        flag : 1
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+                        for(var i in JSONresult){
+                            switch(i){
+                                case 'FZFZZ' :
+                                    $(".center_item_background").append("<li data='not-official'>非政府机构</li>");
+                                    break;
+                                case 'GFJG' :
+                                    $(".center_item_background").append("<li data='official'>官方机构</li>");
+                                    break;
+                                case 'WZJG' :
+                                    $(".center_item_background").append("<li data='wai-official'>外资机构</li>");
+                                    break;
+                                default :
+                                    $(".center_item_background").append("<li>"+ i +"</li>");
+                                    break;
+                            }
+                        }
+
+                        $(".center_item_background").find("li").off("click").on("click",function(){
+                            window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=1&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+                //加载项目数据
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country : EntityCountryName,
+                        type : "XM",
+                        flag : 1
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+
+                        for(var i =0; i < JSONresult.length; i++){
+                            $(".center_item_background").append("<li data='central-enterprise'>项目</li>");
+                        }
+
+
+                        $(".center_item_background").find("li").off("click").on("click",function(){
+                            window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=1&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+
+
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+                //加载人员数据
+
+                //加载人员数据
+                $.ajax({
+                    "type": "get",
+                    "url": HOST,
+                    "data": {
+                        method: "getBusinessData",
+                        country : EntityCountryName,
+                        type : "RY",
+                        flag : 1
+                    },
+                    "success": function (data) {
+                        var result = $(data).text();
+                        var JSONresult = JSON.parse(result);
+
+                        console.log(JSONresult);
+                        for(var i in JSONresult){
+                            switch(i){
+                                case 'WG' :
+                                    $(".center_item_background").append("<li data='workers'>务工</li>");
+                                    break;
+                                case 'SWHY' :
+                                    $(".center_item_background").append("<li data='Marriage'>涉外婚姻</li>");
+                                    break;
+                                case 'SJRK' :
+                                    $(".center_item_background").append("<li data='population'>散居人口</li>");
+                                    break;
+                                case 'LXS' :
+                                    $(".center_item_background").append("<li data='overseasStudent'>留学生</li>");
+                                    break;
+                                case 'LY' :
+                                    $(".center_item_background").append("<li data='tourism'>旅游</li>");
+                                    break;
+                                default :
+                                    $(".center_item_background").append("<li>"+ i +"</li>");
+                                    break;
+                            }
+                        }
+
+                        $(".center_item_background").find("li").off("click").on("click",function(){
+                            window.location.href = './main_dataEarths.html?country='+ EntityCountryName +'&flag=1&EntityID=' + $.cookie("CountryEntityID") + '&type=' + $.cookie("CountryType") + '&data=' + $(this).attr('data');
+                        });
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+
+
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+
+
+
+
+    });
+</script>
+</html>

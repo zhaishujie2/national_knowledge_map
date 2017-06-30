@@ -1,0 +1,118 @@
+<style>
+    .layui-layer-relation .layui-layer-content {
+        position: static;
+    }
+    .layui-layer-relation .layui-layer-content .panel-default > .panel-heading{
+      background-color: #626262;
+        color: #fff;
+
+    }
+    .layui-layer-relation .layui-layer-content .panel-title{
+        font-size: 18px;
+    }
+    .layui-layer-relation .layui-layer-content .panel-title > a:hover, .layui-layer-relation .layui-layer-content .panel-title > a:active, .layui-layer-relation .layui-layer-content .panel-title > a:focus{
+        text-decoration: none;
+    }
+</style>
+<div class="layer-content">
+    <div class="tab">
+        <ul>
+            <li data-class="selected" class="tab-select">已选</li>
+            <li class="active" data-class="list">列表</li>
+        </ul>
+    </div>
+
+    <div class="selected tab-content">
+       请选择节点
+    </div>
+    <div class="list tab-content">
+        <div class="list-relation">
+            <h1 class="well well-sm">关联</h1>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                               aria-expanded="true" aria-controls="collapseOne">
+                                实体 <span class="glyphicon glyphicon-triangle-bottom"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in relation_entity" role="tabpanel"
+                         aria-labelledby="headingOne">
+                        <ul class="list-group">
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                               aria-expanded="true" aria-controls="collapseTwo">
+                                事件  <span class="glyphicon glyphicon-triangle-right"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse relation_event" role="tabpanel"
+                         aria-labelledby="headingTwo">
+                        <ul class="list-group">
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="correlation-table">
+            <h1>相关文档</h1>
+            <table class="table table-bordered relation_table">
+                <thead>
+                <tr>
+                    <th>标签</th>
+                    <th>文件名</th>
+                    <th>类型</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="correlation-table list-video-table">
+            <h1>多媒体</h1>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script>
+        $(".layer-content").find(".tab").find("li").on("click", function () {
+            $(this).siblings().removeClass("active").end().addClass("active");
+            $(".tab-content").hide();
+            var className = $(this).attr("data-class");
+            $("." + className).fadeIn(300);
+        });
+
+        $(".list-relation").find(".panel-title").find("a").on("click",function(){
+
+            $(this).parents(".panel").siblings().find(".panel-title").find("span").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-right");
+
+          if($(this).find("span").hasClass("glyphicon-triangle-bottom")){
+              $(this).find("span").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-right");
+          }else if($(this).find("span").hasClass("glyphicon-triangle-right")){
+              $(this).find("span").removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-bottom");
+          }
+
+
+        });
+    </script>

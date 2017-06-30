@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="assets/css/custom/common.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css">
+    <script src="assets/js/jquery-1.12.3/jquery.js"></script>
+    <script src="assets/js/highcharts/highcharts.js"></script>
+    <script src="assets/js/highcharts/modules/exporting.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/jquery.wordexport.js"></script>
+    <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/jquery.jqprint-0.3.js"></script>
+    <script src="../plugins/layer/layer.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/function.js"></script>
+    <script src="../js/basic.js"></script>
+</head>
+<body>
+<div class="ks_head">
+    <div class="ks_container">
+        <div class="ks_user">
+            <div class="ks_photo">
+                <img src="assets/img/main/photo.png">
+            </div>
+            <div class="ks_name">@Administrators</div>
+        </div>
+        <div class="ks_menu ks_menu_left">
+            <a class="ks_menu_item dituHref" target="_self">
+                <img src="assets/img/main/icon_01.png">
+                <div class="ks_menu_title">地图</div>
+            </a>
+            <a class="ks_menu_item relationHref" target="_self">
+                <img src="assets/img/main/icon_02.png">
+                <div class="ks_menu_title">关系网络</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_03.png">
+                <div class="ks_menu_title">翻译</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_04.png">
+                <div class="ks_menu_title">图谱管理</div>
+            </a>
+        </div>
+        <div class="ks_search">
+            <input type="text">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <div class="ks_menu ks_menu_right">
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_05.png">
+                <div class="ks_menu_title">收藏</div>
+            </a>
+            <a class="ks_menu_item wordprint" href="#">
+                <img src="assets/img/main/icon_06.png">
+                <div class="ks_menu_title">打印</div>
+            </a>
+            <a class="ks_menu_item worddao" href="#">
+                <img src="assets/img/main/icon_07.png">
+                <div class="ks_menu_title">导出</div>
+            </a>
+            <a class="ks_menu_item" href="../main.html" target="_self" >
+                <img src="assets/img/main/icon_08.png">
+                <div class="ks_menu_title">返回地球</div>
+            </a>
+            <a class="ks_menu_item returnCountry">
+                <img src="assets/img/main/icon_09.png">
+                <div class="ks_menu_title">返回国家</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="ks_main" id="ks_main">
+
+    <div class=" h-3x w-60p ks_fl"  style="padding: 0 10px">
+        <div class="panel panel-default" style="margin-bottom: 0;">
+            <div class="panel-heading">土耳其对华态度</div>
+            <div class="panel-body">
+                <div id="ks_chart">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-3x w-40p ks_fl"  style="padding: 0 10px">
+        <div class="panel panel-default" style="margin-bottom: 0;">
+        <div class="panel-heading">土耳其对华态度</div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">http://chinapower.csis.org/global-views/#views4</a>
+                </li>
+            </ul>
+            <div class="ks_tip">国外关民众对华态度的调研报告（目前有日本等国家的），以及与此相关的对中国经济、政治等的态度及观点等的调研报告</div>
+        </div>
+    </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="ks_panel hot-news-h w-100p ks_fl" >
+        <div class="hot-news tab-content default">
+
+            <div class="w-100p">
+                <div class="clearfix"></div>
+                <div style="padding: 0 10px">
+                    <div class="page-header">
+                        <h3 ><span style="color: #449d44;">热点新闻</span> <small onclick="window.open('main_newsContent.html?EntityID=' +  $.cookie('CountryEntityID') + '&type=' +  $.cookie('CountryType'));">更多</small></h3>
+                    </div>
+                </div>
+                <div class="ks_fl w-50p" style="padding:0 10px;" v-for="(value,key) in newsContent" v-if="key < 2">
+                    <div class="panel panel-hotnews" >
+                        <div class="panel-heading"><span @click="openUrl(value)">{{value.title }} </span></div>
+                        <div class="panel-body"  @click="openUrl(value)">
+                            {{value.abstrct}}
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+    var ks_main = new Vue({
+        el: "#ks_main",
+        data: {
+            newsContent: ""
+        },
+        methods: {
+            "openUrl": function (val) {
+                var width = $(window).width() / 1.5;
+                var height = $(window).height() / 1.5;
+                $.ajax({
+                    "type": "get",
+                    "url": "layer_module.html",
+                    "success": function (response, status, xhr) {
+                        layer.open({
+                            type: 1,
+                            title: val.title,
+                            skin: "layui-layer-lbf", //添加类名
+                            closeBtn: 1,
+                            area: [width + "px", height + "px"],
+                            shadeClose: true,
+                            content: response,
+                            success: function () {
+                                $(".text-area").html(val.abstrct);
+                                $(".news-container").find('h2').html(val.title);
+                            }
+                        });
+                    }
+                });
+            }
+        },
+        mounted: function () {
+            $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" +   $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType") );
+            $(".dituHref").attr("href",  "main_earths.html?EntityID=" +   $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType")   );
+            $(".relationHref").attr("href",  "main_relation.html?EntityID=" +   $.cookie("CountryEntityID") + "&type=" + $.cookie("CountryType")   );
+            $(".worddao").on("click",function(e){
+                e.preventDefault();
+                $(".ks_daochu").wordExport();
+            });
+            $(".wordprint").on("click",function(e){
+                e.preventDefault();
+                $("body").jqprint();
+            });
+            $('#ks_chart').highcharts({
+                colors:['#0079ff','#d03600'],
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: ['2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    max: 100,
+                    title: {
+                        text: '',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: '%'
+                },
+                plotOptions: {
+                    column: {
+                        dataLabels: {
+                            format:'{y}%',
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '积极',
+                    data:  [60,60,45,60,45,60,60,45,45,60,45,60,60,45,60]
+                },{
+                    name: '消极',
+                    data: [40,40,55,40,55,40,40,55,55,40,55,40,40,55,40]
+                }]
+            });
+
+            $.ajax({
+                type: "get",  //访问WebService使用get方式请求
+                url: HOST, //调用WebService的地址和方法名称组合
+                data: {
+                    method: "getCountryAndLogo",
+                    EntityID:  $.cookie("CountryEntityID")
+                },
+                success: function (data) {
+                    var result = $(data).text();
+                    var resultJSON = JSON.parse(result);
+                    var countryName = resultJSON.EntityName;
+                    $.ajax({
+                        type: "get",  //访问WebService使用get方式请求
+                        url: HOST, //调用WebService的地址和方法名称组合
+                        data: {
+                            method: "getNewsFromES",
+                            key: encodeURI(countryName),
+                            type : ""
+                        },
+                        success: function (data) {
+                            var result = $(data).text();
+                            var resultJSON = JSON.parse(result);
+                            ks_main.newsContent = resultJSON;
+
+                        },
+                        "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                            alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                        }
+
+                    });
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+
+            });
+        }
+
+
+
+    });
+    $(".ks_head .ks_search span.glyphicon").on("click",function(){
+        var keyword = $(".ks_head .ks_search").find("input").val();
+        $.ajax({
+            type: "get",  //访问WebService使用get方式请求
+            url: HOST, //调用WebService的地址和方法名称组合
+            data: {
+                method: "getAutoCart",
+                keyword:encodeURI(keyword)
+            },
+            success: function (data) {
+                var result = $(data).text();
+                var resultData = JSON.parse(result);
+                console.log(resultData);
+
+                var width = $(window).width() / 1.5;
+                var height = $(window).height() / 1.5;
+                $.ajax({
+                    "type": "get",
+                    "url": "layer_autoCard.html",
+                    "success": function (response, status, xhr) {
+                        layer.open({
+                            type: 1,
+                            title: "自动卡片",
+                            skin: "layui-layer-lbf", //添加类名
+                            closeBtn: 1,
+                            area: [width + "px", height + "px"],
+                            shadeClose: true,
+                            content: response,
+                            success: function (layero,index) {
+                                for (var i=0;i < resultData.length;i++){
+                                    $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                      <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                }
+                            }
+                        });
+                    }
+                });
+
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+
+
+
+
+    });
+</script>

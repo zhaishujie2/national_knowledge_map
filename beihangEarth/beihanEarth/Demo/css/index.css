@@ -1,0 +1,1220 @@
+.icon {
+	width: 1em; height: 1em;
+	vertical-align: -0.15em;
+	fill: currentColor;
+	overflow: hidden;
+}
+.info-table{
+	cursor: pointer;
+}
+
+.bgscreen{
+	background: rgba(0,0,0,1);
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: none;
+
+}
+.bgscreen .middle{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.spinner {
+	margin: 100px auto;
+	width: 50px;
+	height: 60px;
+	text-align: center;
+	font-size: 10px;
+
+}
+.layer-countryInfo .layui-layer-title{
+	/*background: url(../sourceImg/13.png) no-repeat 0px 0px;*/
+	background-color: transparent;
+	border-bottom-color: transparent;
+}
+
+.layer-countryInfo{
+	background-color: transparent !important;
+
+}
+
+.layer-countryInfo .layui-layer-content{
+	background:url(../sourceImg/13.png) no-repeat 0px 0px;
+	background-size: 100% 100%;
+	padding-top: 45px;
+	padding-left: 30px;
+	color: #fff;
+	font-size: 15px;
+}
+.spinner > div {
+	background-color: #fff;
+	height: 100%;
+	width: 6px;
+	display: inline-block;
+
+	-webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+	animation: stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+	-webkit-animation-delay: -1.1s;
+	animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+	-webkit-animation-delay: -1.0s;
+	animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+	-webkit-animation-delay: -0.9s;
+	animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+	-webkit-animation-delay: -0.8s;
+	animation-delay: -0.8s;
+}
+
+@-webkit-keyframes stretchdelay {
+	0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+	20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes stretchdelay {
+	0%, 40%, 100% {
+		transform: scaleY(0.4);
+		-webkit-transform: scaleY(0.4);
+	}  20% {
+		   transform: scaleY(1.0);
+		   -webkit-transform: scaleY(1.0);
+	   }
+}
+.level2_search{
+	display: inline-block;
+	float:right;
+	position: absolute;
+	right: 35px;
+	top: 10px;
+	z-index: 2;
+	padding-left: 15px;
+	background:url(../sourceImg/level2search.png) no-repeat;
+	background-size: cover;
+	display: none;
+}
+.level2_search div {
+	display: inline;
+}
+#searchinput{
+	outline:medium;
+	border-style: none;
+	background:none;
+	font-size: 14px;
+	color: #FFFFFF;
+}
+#searchbotton{
+	border:none;
+	border-style: none;
+	width:27px;
+	height: 27px;
+	margin-bottom: -8px;
+}
+.all-risk{
+	padding: 30px;
+}
+.all-risk .row .col-xs-4{
+	font-size: 16px;
+}
+.all-risk .row .col-xs-4 span{
+	margin-right: 10px;
+}
+.all-risk .row .col-xs-4 .btn{
+	padding-left:10px;
+	padding-right:10px;
+}
+ .layui-layer-risk .layui-layer-title{
+	 background:#4d4f4f ;
+	 color: #fff;
+	 font-size: 16px;
+	 text-align: center;
+	 font-weight: bold;
+ }
+.layui-layer-risk .textarea{
+	padding: 20px;
+	background: #e6e6e6;
+	margin-top: 15px;
+	font-size: 16px;
+	line-height: 180%;
+	text-align: justify;
+	border-radius: 1%;
+}
+.layui-layer-risk .layui-layer-setwin .layui-layer-close1 {
+	background: url(../plugins/layer/skin/default/icon2.png) -80px -40px;
+}
+
+
+.layui-layer-risk .layui-layer-content::-webkit-scrollbar{
+	width: 6px;
+}
+/*定义滚动条的轨道，内阴影及圆角*/
+.layui-layer-risk .layui-layer-content::-webkit-scrollbar-track{
+	background-color: #d3d3d3;
+	border-radius: 3px;
+}
+/*定义滑块，内阴影及圆角*/
+.layui-layer-risk .layui-layer-content::-webkit-scrollbar-thumb{
+	/*width: 10px;*/
+	border-radius: 3px;
+	background-color: #959595;
+}
+.home-button{
+	position: absolute;
+	z-index: 2;
+	display: none;
+}
+.home-button img{
+	cursor: pointer;
+}
+.home-button img:active{
+	outline:rgba(2,147,191,1) solid 1px;
+}
+@media screen and (min-width: 1367px) {
+	/* 本例子css */
+	.txtMarquee-top{ width:100%; height: 100%;  overflow:hidden; position:relative; }
+	.txtMarquee-top .bd{ padding:20px 15px 15px 15px; display: none; }
+	.txtMarquee-top .bd.active{ display: block; }
+	.txtMarquee-top .bdf{ padding:20px 15px 15px 15px; display: none; }
+	.txtMarquee-top .bdf.active{ display: block; }
+	.txtMarquee-top .infoList li{ height:30px; line-height:30px; color: #fff; text-indent: 10px;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		font-size:16px ;
+		margin-bottom: 3px;
+		cursor: pointer;
+	}
+	.txtMarquee-top .infoList li:hover{
+		color: #00a1f1;
+	}
+	.txtMarquee-top .infoList li .date{ float:right; color:#999;  }
+
+	.txtMarquee-top .listChina li{
+		height: 120px;
+		line-height:1;
+		width: 100%;
+	}
+
+	.txtMarquee-top .listChina li:hover h1,.txtMarquee-top .listChina li:hover div{
+		color: #00a1f1;
+	}
+
+	.txtMarquee-top .listChina li h1{
+		font-size: 17px;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		color: #fff;
+		text-indent: 15px;
+
+	}
+	.txtMarquee-top .listChina li div{
+		height: 60px;
+		white-space: normal;
+		line-height: 25px;
+		color: #aaaaaa;
+		font-size: 15px;
+		padding: 0px 10px;
+	}
+
+	.level2_search{
+		width: 400px ;
+		height: 50px;
+	}
+	#searchinput {
+		margin: 11px 0 0 20px;
+		width: 300px;
+		height: 35px;
+		line-height: 35px;
+	}
+	#searchbotton{
+		width: 27px;
+		height: 27px;
+		margin-bottom: -10px;
+	}
+	.home-button{
+		top: 20px;
+		right: 10px;
+	}
+	.home-button img{
+		transform: scale(1.2);
+	}
+	#index_percentdiv{
+		margin-top: 15px;
+	}
+	/* 头像 */
+	.index_avatar {
+		width: 168px;
+		height: 175px;
+		position: absolute;
+		z-index: 2;
+		background: url(../sourceImg/level2logo.png) no-repeat 0px 0px;
+		background-size: cover
+	}
+
+	/* 时间显示板 */
+	.index_time_display {
+		margin-top: 100px;
+		margin-left: 90px;
+		width: 405px;
+		height: 157px;
+		position: absolute;
+		z-index: 2;
+		background: url(../sourceImg/1.png) no-repeat 0px 0px;
+		background-size: cover
+	}
+
+	.index_time_font {
+		padding-top: 18px;
+		padding-left: 25%
+	}
+
+	.index_time_font label {
+		width: 100%;
+		height: 100%;
+		font-size: 40px;
+		font-weight: 400;
+		color: #FFFFFF
+	}
+
+	.index_last_refresh {
+		padding-left: 20%;
+	}
+
+	.index_rtitle {
+		font-size: 16px;
+		font-weight: 300;
+		color: #CFA608;
+		float: left
+	}
+
+	.index_rcontent {
+		font-size: 24px;
+		font-weight: 400;
+		color: #CFA608;
+		padding-left: 30px
+	}
+
+	/* 项目统计板 */
+	.index_statistics {
+		width: 458px;
+		height: 168px;
+		top: 50px;
+		right: 0px;
+		position: absolute;
+		z-index: 2;
+		background: url(../sourceImg/5.png) no-repeat 0px 0px;
+		background-size: cover;
+	}
+
+	.index_statistics img {
+		margin-top: 25px;
+		margin-left: 55px;
+		z-index: 2;
+		position: absolute
+	}
+
+	.index_statistics_bg {
+		width: 80%;
+		height: 100%;
+		margin-left: 10%;
+		text-align: center
+	}
+
+	.index_statistics_bg_cell {
+		width: 20%;
+		height: 100%;
+		float: left
+	}
+
+	.index_statistics_bg_cell_num {
+		width: 100%;
+		margin-top: 80%;
+		font-size: 40px;
+		font-weight: 500;
+		color: #FFFFFF;
+		white-space:nowrap;
+	}
+
+	.index_statistics_bg_cell_item {
+		font-size: 14px;
+		font-weight: 800;
+		color: #CFA608
+	}
+
+	/* 风险分析图 */
+	.index_statistical_chart {
+		width: 729px;
+		height: 256px;
+		bottom: 0px;
+		position: absolute;
+		z-index: 2;
+		background: url(../sourceImg/11.png) no-repeat 0px 0px;
+		background-size: cover
+	}
+
+	.index_statistical_chart_title {
+		width: 118px;
+		height: 28px;
+		margin-left: 50px;
+		margin-top: 20px;
+		background: url(../sourceImg/99.png) no-repeat 0px 0px;
+		background-size: cover;
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	.index_statistical_chart_button{
+		width: 141px;
+		height: 30px;
+		margin-left: 20px;
+		margin-top: 20px;
+		display: inline-block;
+		cursor: pointer;
+		vertical-align: top;
+	}
+
+	.index_statistical_chart_button img{
+		width: 100%;
+		height: 100%;
+	}
+
+
+	/* 新闻资讯 */
+	.index_information_container_one {
+		bottom: 250px;
+		right: 0px;
+		position: absolute;
+		z-index: 2;
+	}
+
+	.index_information_container_one_tip {
+		height: 35px;
+		background: url(../sourceImg/8.png) no-repeat 20px;
+		color: #FFFFFF;
+		padding-left: 80px;
+		line-height: 30px;
+		font-size: 22px;
+	}
+
+	.index_information_container_two {
+		bottom: 0px;
+		right: 0px;
+		position: absolute;
+		z-index: 2;
+	}
+	.index_information_container_two_tip{
+		/*padding-left:90px;*/
+		height:30px;
+		margin-left: 20px;
+	}
+	.index_information_one {
+		width: 450px;
+		height: 205px;
+		background: url(../sourceImg/7.png) no-repeat 0px 0px;
+		background-size: cover;
+		overflow: hidden;
+	}
+
+	.index_information_two {
+		width: 450px;
+		height: 205px;
+		background: url(../sourceImg/12.png) no-repeat 0px 0px;
+		background-size: cover
+	}
+
+	.index_information_list {
+		margin-left: 10px;
+		padding-top: 20px
+	}
+
+	.index_information_list_img {
+		width: 75px;
+		height: 75px;
+		float: left;
+		background: url(../sourceImg/level2logo.png) no-repeat 0px 0px;
+		background-size: cover
+	}
+
+	.index_information_list_content {
+		width: 80%;
+		color: #FFFFFF;
+		float: left
+	}
+
+	.index_information_list_content_title {
+		width: 100%;
+		padding-left: 10px;
+		display:block;
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		font-size: 18px;
+		height: 24px
+	}
+
+	.index_information_list_content_content {
+		width: 100%;
+		padding-left: 10px;
+		text-overflow: ellipsis;
+		line-height: 150%;
+		font-size: 14px;
+		word-wrap:break-word;
+	}
+
+
+	.red_scoll {
+		overflow-y: auto;
+	}
+	/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+	.red_scoll::-webkit-scrollbar{
+		width: 4px;
+	}
+	/*定义滚动条的轨道，内阴影及圆角*/
+	.red_scoll::-webkit-scrollbar-track{
+		-webkit-box-shadow: inset 0 0 6px rgba(243,3,97,.3);
+		background-color: #FFFFFF00;
+
+	}
+	/*定义滑块，内阴影及圆角*/
+	.red_scoll::-webkit-scrollbar-thumb{
+		/*width: 10px;*/
+		height: 30px;
+		-webkit-box-shadow: inset 0 0 6px rgba(243,3,97,.3);
+		background-color: #FD0168;
+	}
+
+	.cesium-viewer-toolbar{
+		right: 45px !important;
+	}
+    .rotateEarth{
+		box-sizing: border-box;
+		width: 32px;
+		height: 32px;
+		text-align: center;
+		line-height: 32px;
+		border-radius: 14%;
+		padding: 0;
+		vertical-align: middle;
+		position: absolute;
+		right: 7px;
+		top: 5px;
+		display: inline-block;
+		background: #303336;
+		border: 1px solid #444;
+		color: #edffff;
+		fill: #edffff;
+		margin: 2px 3px;
+		cursor: pointer;
+		overflow: hidden;
+	}
+
+
+	.rotateEarth:hover{
+		color: #fff;
+		fill: #fff;
+		background: #48b;
+		border-color: #aef;
+		box-shadow: 0 0 8px #fff;
+	}
+	.rotateEarth:active {
+		color: #000;
+		fill: #000;
+		background: #adf;
+		border-color: #fff;
+		box-shadow: 0 0 8px #fff;
+	}
+
+
+	#searchgeocoder-addon{
+		background: #303336;
+		border: 1px solid #444;
+		color: #edffff;
+		fill: #edffff;
+	}
+
+
+	#searchgeocoder-addon:hover{
+		color: #fff;
+		fill: #fff;
+		background: #48b;
+		border-color: #aef;
+		box-shadow: 0 0 8px #fff;
+	}
+	#searchgeocoder-addon:active {
+		color: #000;
+		fill: #000;
+		background: #adf;
+		border-color: #fff;
+		box-shadow: 0 0 8px #fff;
+	}
+	#searchgeocoder{
+		background-color: #444;
+		border: 1px solid #666;
+		color: #fff;
+		height: 32px;
+	}
+
+	#searchgeocoder::-webkit-input-placeholder{
+		 color: #fff;
+	}
+	#searchgeocoder::-moz-placeholder{
+		color: #fff;
+	}
+	#searchgeocoder:-ms-input-placeholder{
+		color: #fff;
+	}
+
+
+	.index_info_tab_selected {
+		width: 90px;
+		height: 40px;
+		line-height: 35px;
+		text-align: center;
+		float: left;
+		margin-left: 10px;
+		transform: skew(-30deg);
+		-webkit-transform: skew(-30deg);
+		-moz-transform: skew(-30deg);
+		-o-transform: skew(-30deg);
+		color: #FFFFFF;
+		background-color: rgba(2, 147, 191, 1)
+	}
+	.green_scoll {
+		overflow-y: auto;
+
+	}
+	/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+	.green_scoll::-webkit-scrollbar{
+		width: 4px;
+		height: 4px;
+	}
+	/*定义滚动条的轨道，内阴影及圆角*/
+	.green_scoll::-webkit-scrollbar-track{
+		-webkit-box-shadow: inset 0 0 6px rgba(27,220,227,.3);
+		background-color: #FFFFFF00;
+	}
+	/*定义滑块，内阴影及圆角*/
+	.green_scoll::-webkit-scrollbar-thumb{
+		/*width: 10px;*/
+		height: 30px;
+		-webkit-box-shadow: inset 0 0 6px rgba(27,220,227,.3);
+		background-color: #1BDCE3;
+	}
+
+
+
+	.index_info_tab_selected div {
+		transform: skew(30deg);
+		-webkit-transform: skew(30deg);
+		-moz-transform: skew(30deg);
+		-o-transform: skew(30deg);
+	}
+
+	.index_info_tab {
+		font-size: 16px;
+		width: 55px;
+		height: 35px;
+		line-height: 35px;
+		text-align: center;
+		float: left;
+		margin-left: 10px;
+		transform: skew(-30deg);
+		-webkit-transform: skew(-30deg);
+		-moz-transform: skew(-30deg);
+		-o-transform: skew(-30deg);
+		color: rgba(0, 255, 255, 1);
+		background-color: rgba(0, 255, 255, 0.35)
+		/* background: url(../sourceImg/9.png) no-repeat 0 0; */
+		/* background-size:cover; */
+	}
+
+
+	.index_info_tab_selected {
+		transform:skew(-30deg);
+		-webkit-transform: skew(-30deg);
+		-moz-transform: skew(-30deg);
+		-o-transform:skew(-30deg);
+		color: #FFFFFF;
+		background-color:rgba(2,147,191,1)
+	}
+
+	.index_info_tab div {
+		transform: skew(30deg);
+		-webkit-transform: skew(30deg);
+		-moz-transform: skew(30deg);
+		-o-transform: skew(30deg);
+	}
+
+	#index_percentdiv{
+		margin-top: 15px;
+	}
+	#index_percentdiv ul li {
+		line-height: 40px;
+		list-style-type: none;
+	}
+
+	/*  percent bar */
+	.index_percentfont {
+		font-size: 25px;
+		display: inline-block;
+		margin: 0 10px;
+		color: #ffffff;
+	}
+
+	.index_percent {
+		display: inline-block;
+	}
+
+	.index_percentvalue {
+		display: inline-block;
+	}
+
+	.index_red_percent {
+		display: block;
+		position: relative;
+		border-radius: 15px;
+		background-image: url(../sourceImg/level2_red.png);
+		color: #333333;
+		height: 14px; /* 高度 */
+		line-height: 14px; /* 必须和高度一致，文本才能垂直居中 */
+		border: 1px solid #FFFFFF
+	}
+
+	.index_orange_percent {
+		display: block;
+		position: relative;
+		border-radius: 15px;
+		background-image: url(../sourceImg/level2_orange.png);
+		color: #333333;
+		height: 14px; /* 高度 */
+		line-height: 14px; /* 必须和高度一致，文本才能垂直居中 */
+		border: 1px solid #FFFFFF
+	}
+
+	.index_yellow_percent {
+		display: block;
+		position: relative;
+		border-radius: 15px;
+		background-image: url(../sourceImg/level2_yellow.png);
+		color: #333333;
+		height: 14px; /* 高度 */
+		line-height: 14px; /* 必须和高度一致，文本才能垂直居中 */
+		border: 1px solid #FFFFFF
+	}
+}
+
+
+@media screen and (max-width: 1367px) {
+
+
+	/* 本例子css */
+	.txtMarquee-top{ width:100%; height: 100%;  overflow:hidden; position:relative; }
+	.txtMarquee-top .bd{ padding:15px 15px 15px 15px; display: none; }
+	.txtMarquee-top .bd.active{ display: block; }
+	.txtMarquee-top .bdf{ padding:15px 15px 15px 15px; display: none; }
+	.txtMarquee-top .bdf.active{ display: block; }
+	.txtMarquee-top .infoList li{ height:22px; line-height:22px; color: #fff; text-indent: 10px;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		font-size:12px ;
+		cursor: pointer;
+	}
+	.txtMarquee-top .infoList li:hover{
+		color: #00a1f1;
+	}
+	.txtMarquee-top .infoList li .date{ float:right; color:#999;  }
+
+	.txtMarquee-top .listChina li{
+		height: 120px;
+		line-height:1;
+		width: 100%;
+	}
+	.txtMarquee-top .listChina li:hover h1,.txtMarquee-top .listChina li:hover div{
+		color: #00a1f1;
+	}
+	.txtMarquee-top .listChina li h1{
+		font-size: 14px;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		color: #fff;
+		text-indent: 10px;
+	}
+	.txtMarquee-top .listChina li div{
+		height: 60px;
+		white-space: normal;
+		line-height: 20px;
+		color: #aaaaaa;
+		font-size: 13px;
+		padding: 0px 10px;
+	}
+	.rotateEarth{
+		box-sizing: border-box;
+		width: 32px;
+		height: 32px;
+		text-align: center;
+		line-height: 32px;
+		border-radius: 14%;
+		padding: 0;
+		vertical-align: middle;
+		position: absolute;
+		right: 7px;
+		top: 5px;
+		display: inline-block;
+		background: #303336;
+		border: 1px solid #444;
+		color: #edffff;
+		fill: #edffff;
+		margin: 2px 3px;
+		cursor: pointer;
+		overflow: hidden;
+	}
+	.rotateEarth:hover{
+		color: #fff;
+		fill: #fff;
+		background: #48b;
+		border-color: #aef;
+		box-shadow: 0 0 8px #fff;
+	}
+	.rotateEarth:active {
+		color: #000;
+		fill: #000;
+		background: #adf;
+		border-color: #fff;
+		box-shadow: 0 0 8px #fff;
+	}
+	.cesium-viewer-toolbar{
+		right: 45px !important;
+	}
+	#searchgeocoder-addon{
+		background: #303336;
+		border: 1px solid #444;
+		color: #edffff;
+		fill: #edffff;
+	}
+
+
+	#searchgeocoder-addon:hover{
+		color: #fff;
+		fill: #fff;
+		background: #48b;
+		border-color: #aef;
+		box-shadow: 0 0 8px #fff;
+	}
+	#searchgeocoder-addon:active {
+		color: #000;
+		fill: #000;
+		background: #adf;
+		border-color: #fff;
+		box-shadow: 0 0 8px #fff;
+	}
+	#searchgeocoder{
+		background-color: #444;
+		border: 1px solid #666;
+		color: #fff;
+		height: 32px;
+	}
+
+	#searchgeocoder::-webkit-input-placeholder{
+		color: #fff;
+	}
+	#searchgeocoder::-moz-placeholder{
+		color: #fff;
+	}
+	#searchgeocoder:-ms-input-placeholder{
+		color: #fff;
+	}
+	.level2_search{
+		width: 300px ;
+		height: 40px;
+	}
+	#searchinput {
+		margin: 5px 0 0 25px;
+		width: 215px;
+		height: 30px;
+		line-height: 30px;
+	}
+	#searchbotton{
+		width: 20px;
+		height: 20px;
+		margin-bottom: -7px;
+	}
+	.home-button{
+		top: 17px;
+		right: 10px;
+	}
+	.home-button img{
+		transform: scale(0.9);
+	}
+	#index_percentdiv{
+		margin-top: 15px;
+	}
+	/* 头像 */
+	.index_avatar{
+		width:120px;
+		height: 125px;
+		position:absolute;
+		z-index:2;
+		background:url(../sourceImg/level2logo.png) no-repeat 0px 0px;
+		background-size:cover
+	}
+
+	/* 时间显示板 */
+	.index_time_display{
+		margin-top:70px;
+		margin-left:65px;
+		width:300px;
+		height: 116px;
+		position:absolute;
+		z-index:2;
+		background:url(../sourceImg/1.png) no-repeat 0px 0px;
+		background-size:cover
+	}
+	.index_time_font{
+		padding-top: 14px;
+		padding-left:25%
+	}
+	.index_time_font label{
+		width: 100%;
+		height: 100%;
+		font-size: 30px;
+		font-weight: 400;
+		color: #FFFFFF
+	}
+	.index_last_refresh{
+		padding-left:20%;
+	}
+	.index_rtitle{
+		font-size: 14px;
+		font-weight: 300;
+		color: #CFA608;
+		float:left.index_statistical_chart_button
+	}
+	.index_rcontent{
+		font-size: 18px;
+		font-weight: 400;
+		color: #CFA608;
+		padding-left: 30px
+	}
+
+	/* 项目统计板 */
+	.index_statistics{
+		width:350px;
+		height: 128px;
+		top: 50px;
+		right: 0px;
+		position:absolute;
+		z-index:2;
+		background:url(../sourceImg/5.png) no-repeat 0px 0px;
+		background-size:cover;
+	}
+	.index_statistics img{
+		margin-top: 15px;
+		margin-left: 35px;
+		z-index:2;
+		position:absolute
+	}
+	.index_statistics_bg{
+		width: 80%;
+		height: 100%;
+		margin-left: 10%;
+		text-align: center
+	}
+	.index_statistics_bg_cell{
+		width: 20%;
+		height: 100%;
+		float: left
+	}
+	.index_statistics_bg_cell_num{
+		width: 100%;
+		margin-top: 60%;
+		font-size: 34px;
+		font-weight: 500;
+		color: #FFFFFF;
+		white-space:nowrap;
+	}
+	.index_statistics_bg_cell_item{
+		font-size: 12px;
+		font-weight: 800;
+		color: #CFA608
+	}
+
+	/* 风险分析图 */
+	.index_statistical_chart{
+		/*width:729px; */
+		/*height: 256px; */
+		width:550px;
+		height: 176px;
+		bottom: 0px;
+		position:absolute;
+		z-index:2;
+		background:url(../sourceImg/11.png) no-repeat 0px 0px;
+		background-size:cover
+	}
+	.index_statistical_chart_title{
+		/*width: 118px; */
+		/*height: 28px;*/
+		width: 68px;
+		height: 16px;
+		margin-left: 50px;
+		margin-top: 20px;
+		float: left;
+		background:url(../sourceImg/99.png) no-repeat 0px 0px;
+		background-size:cover;
+		display: inline-block;
+	}
+
+	.index_statistical_chart_button{
+		width: 100px;
+		height: 21px;
+		margin-top: 20px;
+		margin-left: 20px;
+		background-size: cover;
+		display: inline-block;
+		cursor: pointer;
+	}
+	.index_statistical_chart_button img{
+		width: 100%;
+		height: 100%;
+	}
+
+	/* 新闻资讯 */
+	.index_information_container_one{
+		bottom: 180px;
+		right: 0px;
+		position:absolute;
+		z-index:2;
+	}
+	.index_information_container_one_tip{
+		height:25px;
+		background:url(../sourceImg/8.png) no-repeat 10px;
+		color: #FFFFFF;
+		padding-left:60px;
+		line-height:25px; font-size: 12px;
+	}
+	.index_information_container_two{
+		bottom: 8px;
+		right: 0px;
+		position:absolute;
+		z-index:2;
+	}
+	.index_information_container_two_tip{
+		padding-left:10px;
+		height:20px;
+	}
+	.index_information_one{
+		/*width:510px; */
+		/*height: 205px;*/
+		width:300px;
+		height: 140px;
+		background:url(../sourceImg/7.png) no-repeat 0px 0px;
+		background-size:cover
+	}
+	.index_information_two{
+		width:300px;
+		height: 140px;
+		background:url(../sourceImg/12.png) no-repeat 0px 0px;
+		background-size:cover
+	}
+	.index_information_list{
+		/*width: 64%;*/
+		margin-left: 10px;
+		padding-top:10px
+	}
+	.index_information_list_img{
+		width: 45px;
+		height: 45px;
+		float: left;
+		background:url(../sourceImg/level2logo.png) no-repeat 0px 0px;
+		background-size:cover
+	}
+	.index_information_list_content{
+		width: 80%;
+		color: #FFFFFF;
+		float: left
+	}
+	.index_information_list_content_title{
+		width: 100%;
+		padding-left: 10px;
+		display:block;
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		font-size: 12px;
+		height: 18px;
+		font-weight: bold;
+	}
+	.index_information_list_content_content{
+		width: 100%;
+		height: 43px;
+		padding-left: 10px;
+		text-overflow: ellipsis;
+		font-size: 12px;
+		word-wrap:break-word;
+	}
+
+	.red_scoll {
+		overflow-y: auto;
+	}
+	/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+	.red_scoll::-webkit-scrollbar{
+		width: 4px;
+		height: 4px;
+	}
+	/*定义滚动条的轨道，内阴影及圆角*/
+	.red_scoll::-webkit-scrollbar-track{
+		-webkit-box-shadow: inset 0 0 6px rgba(243,3,97,.3);
+		background-color: #FFFFFF00;
+
+	}
+	/*定义滑块，内阴影及圆角*/
+	.red_scoll::-webkit-scrollbar-thumb{
+		/*width: 10px;*/
+		height: 30px;
+		-webkit-box-shadow: inset 0 0 6px rgba(243,3,97,.3);
+		background-color: #FD0168;
+	}
+	.green_scoll {
+		overflow-y: auto;
+	}
+	/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+	.green_scoll::-webkit-scrollbar{
+		width: 4px;
+		height: 4px;
+	}
+	/*定义滚动条的轨道，内阴影及圆角*/
+	.green_scoll::-webkit-scrollbar-track{
+		-webkit-box-shadow: inset 0 0 6px rgba(27,220,227,.3);
+		background-color: #FFFFFF00;
+	}
+	/*定义滑块，内阴影及圆角*/
+	.green_scoll::-webkit-scrollbar-thumb{
+		/*width: 10px;*/
+		height: 30px;
+		-webkit-box-shadow: inset 0 0 6px rgba(27,220,227,.3);
+		background-color: #1BDCE3;
+	}
+
+	.index_info_tab_selected div{
+		transform:skew(30deg);
+		-webkit-transform: skew(30deg);
+		-moz-transform: skew(30deg);
+		-o-transform:skew(30deg);
+	}
+	.index_info_tab{
+		width:37px;
+		height:23px;
+		line-height:23px;
+		text-align:center;
+		float:left;
+		font-size: 12px;
+		font-weight: 400;
+		margin-left:10px;
+		transform:skew(-30deg);
+		-webkit-transform: skew(-30deg);
+		-moz-transform: skew(-30deg);
+		-o-transform:skew(-30deg);
+		color: rgba(0,255,255,1);
+		background-color:rgba(0,255,255,0.35)
+		/* background: url(../sourceImg/9.png) no-repeat 0 0; */
+		/* background-size:cover; */
+	}
+	.index_info_tab_selected{
+		width:37px;
+		height:23px;
+		line-height:23px;
+		text-align:center;
+		float:left;
+		font-size: 12px;
+		font-weight: 400;
+		margin-left:10px;
+		transform:skew(-30deg);
+		-webkit-transform: skew(-30deg);
+		-moz-transform: skew(-30deg);
+		-o-transform:skew(-30deg);
+		color: #FFFFFF;
+		background-color:rgba(2,147,191,1)
+	}
+	.index_info_tab div{
+		transform:skew(30deg);
+		-webkit-transform: skew(30deg);
+		-moz-transform: skew(30deg);
+		-o-transform:skew(30deg);
+	}
+
+	#index_percentdiv ul li{
+		line-height: 30px;
+		list-style-type:none;
+	}
+
+	/*  percent bar */
+
+	.index_percentfont
+	{
+		font-size: 14px;
+		display: inline-block;
+		margin: 0 10px;
+		color: #ffffff;
+	}
+	.index_percent
+	{
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.index_percentvalue
+	{
+		display: inline-block;
+	}
+
+	.index_red_percent{
+		display: block; position: relative;
+		border-radius:15px;
+		background-image:url(../sourceImg/level2_red.png);
+		color: #333333;
+		height: 14px; /* 高度 */;
+		line-height: 14px; /* 必须和高度一致，文本才能垂直居中 */
+		border: 1px solid #FFFFFF
+	}
+
+	.index_orange_percent{
+		display: block; position: relative;
+		border-radius:15px;
+		background-image:url(../sourceImg/level2_orange.png);
+		color: #333333;
+		height: 14px; /* 高度 */
+		line-height: 14px; /* 必须和高度一致，文本才能垂直居中 */
+		border: 1px solid #FFFFFF
+	}
+
+	.index_yellow_percent{
+		display: block; position: relative;
+		border-radius:15px;
+		background-image:url(../sourceImg/level2_yellow.png);
+		color: #333333;
+		height: 14px; /* 高度 */
+		line-height: 14px; /* 必须和高度一致，文本才能垂直居中 */
+		border: 1px solid #FFFFFF
+	}
+}
+
+
+
+
+
+
+
+

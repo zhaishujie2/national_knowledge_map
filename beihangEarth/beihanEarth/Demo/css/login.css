@@ -1,0 +1,238 @@
+body{
+    margin:auto;
+}
+@media screen and (max-width: 1367px) {
+    .login_container {
+        width: 850px; /**宽度**/
+        height: 600px; /**高度**/
+        position: absolute; /**绝对定位**/
+        left: 50%; /**左边50%**/
+        top: 50%; /**顶部50%**/
+        margin-top: -300px; /**上移-50%**/
+        margin-left: -425px; /**左移-50%**/
+        background-position: center;
+        background-repeat: no-repeat;
+        text-align: center;
+        text-align: -webkit-center; /*谷歌*/
+        text-align: -moz-center !important; /* Firefox*/
+    }
+
+    .login_title_bg {
+        width: 250px;
+        height: 29px;
+        background-image: url(../sourceImg/login_title.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .login_form_bg {
+        width: 100%;
+        height: 450px;
+        display: table;
+        background-image: url(../sourceImg/login_form_bg.png);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .login_input_container {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: -webkit-center; /*谷歌*/
+        text-align: -moz-center; /* Firefox*/
+        text-align: center; /*IE*/
+    }
+
+    .login_input_border {
+        height: 60px;
+        width: 498px;
+        margin-left: 249px;
+        background-image: url(../sourceImg/input_border.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        vertical-align: middle;
+        margin: 0 auto;
+    }
+
+    .login_input_icon_user{
+        width:30px;
+        height: 30px;
+        margin-top:5px;
+        margin-left:5px;
+        float: left;
+        background-image: url(../sourceImg/user.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .login_input_icon_password{
+        width:30px;
+        height: 30px;
+        margin-top:5px;
+        margin-left:5px;
+        float: left;
+        background-image: url(../sourceImg/password.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .login_input_border input {
+        width: 85%;
+        height: 100%;
+        float: right;
+        font-family: "微软雅黑";
+        font-size: 24px;
+        border: none;
+        background-color: transparent;
+        color: #FFFFFF;
+        outline: none;
+    }
+
+    .login_input_border input:focus {
+        border: none;
+        background-color: transparent;
+    }
+
+    .login_input_remember {
+        height: 31px;
+        width: 498px;
+        line-height: 31px;
+        margin: 0 auto;
+    }
+
+    .login_input_remember_text {
+        color: #0A90C4;
+        font-family: "微软雅黑";
+        height: 31px;
+        line-height: 31px;
+        float: left;
+        margin-left: 10px;
+    }
+
+    .login_button {
+        width: 498px;
+        height: 61px;
+        line-height: 61px;
+        font-family: "微软雅黑";
+        font-size: 22px;
+        cursor: pointer;
+        color: #FFFFFF;
+        margin:  0 auto;
+        background-image: url(../sourceImg/login_button.png);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+@media screen and (min-width: 1367px) {
+    .login_container{
+        width:500px;/**宽度**/
+        height:458px;/**高度**/
+        position:absolute;/**绝对定位**/
+        left:50%;/**左边50%**/
+        top:50%;/**顶部50%**/
+        margin-top:-229px;/**上移-50%**/
+        margin-left:-250px;/**左移-50%**/
+        background-position: center;
+        background-repeat: no-repeat;
+        text-align: center;
+        text-align: -webkit-center;     /*谷歌*/
+        text-align: -moz-center !important;    /* Firefox*/
+    }
+
+    .login_title_bg{
+        width: 250px;
+        height: 29px;
+        background-image: url(../sourceImg/login_title.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .login_form_bg{
+        width: 100%;
+        height: 300px;
+        display:table;
+        background-image: url(../sourceImg/login_form_bg.png);
+        background-repeat:no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .login_input_container{
+        display:table-cell;
+        vertical-align:middle;
+        text-align: -webkit-center;     /*谷歌*/
+        text-align: -moz-center !important;    /* Firefox*/
+        text-align: center;                              /*IE*/
+    }
+    .login_input_border{
+        height: 40px;
+        width: 332px;
+        background-image: url(../sourceImg/input_border.png);
+        background-repeat:no-repeat;
+        background-position: center;
+        background-size: cover;
+        vertical-align: middle;
+        margin: 0 auto;
+    }
+    .login_input_icon_user{
+        width:30px;
+        height: 30px;
+        margin-top:5px;
+        margin-left:5px;
+        float: left;
+        background-image: url(../sourceImg/user.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .login_input_icon_password{
+        width:30px;
+        height: 30px;
+        margin-top:5px;
+        margin-left:5px;
+        float: left;
+        background-image: url(../sourceImg/password.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .login_input_border input{
+        width:85%;
+        height: 100%;
+        float: right;
+        font-family: "微软雅黑";
+        font-size: 24px;
+        border: none;
+        background-color: transparent;
+        color: #FFFFFF;
+        outline: none;
+    }
+    .login_input_border input:focus{
+        border: none;
+        background-color: transparent;
+    }
+    .login_input_remember{
+        height: 31px;
+        width: 332px;
+        line-height: 31px;
+        margin: 0 auto;
+    }
+    .login_input_remember_text{
+        color: #0A90C4;
+        font-family: "微软雅黑";
+        height: 31px;
+        line-height: 31px;
+        float: left;
+        margin-left: 10px;
+    }
+    .login_button{
+        width: 332px;
+        height: 40px;
+        line-height: 40px;
+        font-family: "微软雅黑";
+        font-size: 16px;
+        cursor: pointer;
+        color: #FFFFFF;
+        background-image: url(../sourceImg/login_button.png);
+        background-repeat:no-repeat;
+        background-position: center;
+        background-size: cover;
+        margin: 0 auto;
+    }
+}

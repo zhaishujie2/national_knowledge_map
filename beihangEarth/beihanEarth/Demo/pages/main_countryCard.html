@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="assets/css/custom/common.css">
+    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/custom/context.standalone.css">
+    <script src="assets/js/jquery-1.12.3/jquery.js"></script>
+    <script src="assets/js/jquery-nicescroll/jquery.nicescroll.js"></script>
+    <script src="assets/js/bootstrap/bootstrap.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/jquery.wordexport.js"></script>
+    <!--<script src="../js/jquery.PrintArea.js"></script>-->
+    <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/jquery.jqprint-0.3.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/function.js"></script>
+    <script src="../js/context.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../plugins/layer/layer.js"></script>
+    <script src="../js/jquery.tmpl.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="ks_head">
+    <div class="ks_container">
+        <div class="ks_user">
+            <div class="ks_photo">
+                <img src="assets/img/main/photo.png">
+            </div>
+            <div class="ks_name">@Administrators</div>
+        </div>
+        <div class="ks_menu ks_menu_left">
+            <a class="ks_menu_item dituHref" target="_self">
+                <img src="assets/img/main/icon_01.png">
+                <div class="ks_menu_title">地图</div>
+            </a>
+            <a class="ks_menu_item relationHref" target="_self">
+                <img src="assets/img/main/icon_02.png">
+                <div class="ks_menu_title">关系网络</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_03.png">
+                <div class="ks_menu_title">翻译</div>
+            </a>
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_04.png">
+                <div class="ks_menu_title">图谱管理</div>
+            </a>
+        </div>
+        <div class="ks_search">
+            <input type="text">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <div class="ks_menu ks_menu_right">
+            <a class="ks_menu_item" href="#">
+                <img src="assets/img/main/icon_05.png">
+                <div class="ks_menu_title">收藏</div>
+            </a>
+            <a class="ks_menu_item wordprint" href="#">
+                <img src="assets/img/main/icon_06.png">
+                <div class="ks_menu_title">打印</div>
+            </a>
+            <a class="ks_menu_item worddao" href="#">
+                <img src="assets/img/main/icon_07.png">
+                <div class="ks_menu_title">导出</div>
+            </a>
+            <a class="ks_menu_item" href="../main.html" target="_self" >
+                <img src="assets/img/main/icon_08.png">
+                <div class="ks_menu_title">返回地球</div>
+            </a>
+            <a class="ks_menu_item returnCountry">
+                <img src="assets/img/main/icon_09.png">
+                <div class="ks_menu_title">返回国家</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="ks_main" id="ks_main">
+    <div class="ks_party">
+        <div class="ks_inner" id="country_name">
+
+        </div>
+    </div>
+
+
+    <div class="ks_daochu">
+
+        <!--<div class="ks_table w-50p ks_fl" v-for="(tb,index) in table[0]" :class="index">-->
+            <!--<div class="ks_inner">-->
+                <!--<div class="ks_title">{{ index | translateTitle }}</div>-->
+                <!--<div class="ks_body">-->
+                    <!--<table class="party-table">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th v-for="(tr,index) in tb[0]" v-if="index !== 'EntityID' && index !== 'ExtremistID' && index !== 'EasternID' && index !== 'LocalforceID' && index !== 'PartyID'  ">{{ index | translate }} </th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr v-for="tr in tb">-->
+                            <!--<td v-for="(td,index) in tr" v-html="td" v-if="index !== 'EntityID' && index !== 'ExtremistID' && index !== 'EasternID' && index !== 'LocalforceID' && index !== 'PartyID'  "></td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+         <!--</div>-->
+
+  <div class="w-50p ks_fl" style="padding: 10px"v-for="(tb,index) in table[0]" :class="index" >
+        <div class=" panel panel-news" >
+            <div class="panel-heading" style="font-size: 1.6rem;">{{ index | translateTitle }}</div>
+            <div class="panel-body" style="padding: 0">
+                <table class="table table-bordered table-striped" style="margin-bottom: 0;">
+                <thead>
+                <tr>
+                     <th  v-for="(tr,index) in tb[0]" v-if="index !== 'EntityID' && index !== 'ExtremistID' && index !== 'EasternID' && index !== 'LocalforceID' && index !== 'PartyID'  ">{{ index | translate }} </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="tr in tb">
+                <td v-for="(td,index) in tr" v-html="td" v-if="index !== 'EntityID' && index !== 'ExtremistID' && index !== 'EasternID' && index !== 'LocalforceID' && index !== 'PartyID'  "></td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+  </div>
+
+        <!--<div class=" w-50p ks_fl" v-for="(tb,index) in table[0]" :class="index" style="padding: 10px">-->
+            <!--<div class="ks_inner">-->
+                <!--<div class="ks_title">{{ index | translateTitle }}</div>-->
+
+                    <!--<table class="table table-bordered">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th v-for="(tr,index) in tb[0]" v-if="index !== 'EntityID' && index !== 'ExtremistID' && index !== 'EasternID' && index !== 'LocalforceID' && index !== 'PartyID'  ">{{ index | translate }} </th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr v-for="tr in tb">-->
+                            <!--<td v-for="(td,index) in tr" v-html="td" v-if="index !== 'EntityID' && index !== 'ExtremistID' && index !== 'EasternID' && index !== 'LocalforceID' && index !== 'PartyID'  "></td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+    </div>
+
+
+</div>
+</body>
+</html>
+<script type="text/x-jquery-tmpl" id="country_name_data">
+    <div class="ks_party_flag">
+        <img src=${Logo}>
+    </div>
+    <div class="ks_party_name">
+        &nbsp;&nbsp;${EntityName} ${EntityEnName}&nbsp;&nbsp;<span class="ks_party_des">（${EntityName}文：${EntityLocalName}）</span>
+    </div>
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType") );
+        $(".dituHref").attr("href",  "main_earths.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".relationHref").attr("href",  "main_relation.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".worddao").on("click",function(e){
+            e.preventDefault();
+            $(".ks_daochu").wordExport();
+        });
+        $(".wordprint").on("click",function(e){
+            e.preventDefault();
+            $("body").jqprint();
+        });
+
+        $(".ks_head .ks_search span.glyphicon").on("click",function(){
+            var keyword = $(".ks_head .ks_search").find("input").val();
+            $.ajax({
+                type: "get",  //访问WebService使用get方式请求
+                url: HOST, //调用WebService的地址和方法名称组合
+                data: {
+                    method: "getAutoCart",
+                    keyword:encodeURI(keyword)
+                },
+                success: function (data) {
+                    var result = $(data).text();
+                    var resultData = JSON.parse(result);
+                    console.log(resultData);
+
+                    var width = $(window).width() / 1.5;
+                    var height = $(window).height() / 1.5;
+                    $.ajax({
+                        "type": "get",
+                        "url": "layer_autoCard.html",
+                        "success": function (response, status, xhr) {
+                            layer.open({
+                                type: 1,
+                                title: "自动卡片",
+                                skin: "layui-layer-lbf", //添加类名
+                                closeBtn: 1,
+                                area: [width + "px", height + "px"],
+                                shadeClose: true,
+                                content: response,
+                                success: function (layero,index) {
+                                    for (var i=0;i < resultData.length;i++){
+                                        $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                      <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+            });
+
+
+
+
+
+        });
+
+        var entityID = $.cookie("CountryEntityID");
+        var maptable = new Vue({
+            el: '#ks_main',
+            data: {
+                table: []
+            },
+            created : function(){
+                var width = $(window).width() / 1.5;
+                var height = $(window).height() / 1.5;
+                //取消浏览器默认右键的事件
+                $(document).bind("contextmenu", function (e) {
+                    return false;
+                });
+
+                $.ajax({
+                    type: "get",  //访问WebService使用get方式请求
+                    url: HOST, //调用WebService的地址和方法名称组合
+                    data: {
+                        method: "getCountryAndLogo",
+                        EntityID: GetQueryString('EntityID'),
+                    },
+                    success: function (data) {
+                        var result = $(data).text();
+                        var resultJSON = JSON.parse(result);
+                        $("#country_name_data").tmpl(resultJSON).appendTo('#country_name');
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+
+                });
+
+            },
+            mounted: function () {
+                $.ajax({
+                    type: "get",  //访问WebService使用get方式请求
+                    url: HOST, //调用WebService的地址和方法名称组合
+                    data: {
+                        method: "getPartyAndOrganizationInfo",
+                        entityID: GetQueryString('EntityID')
+                    },
+                    success: function (data) {
+
+                        var result = $(data).text();
+                        var resultJSON = JSON.parse(result);
+                        maptable.table.push(resultJSON);
+
+                        Vue.nextTick(function () {
+                            $(".ks_table .ks_body table a").on("click",function(){
+                                eval($(this).attr('href'));
+                            });
+
+                            $(".party").insertAfter(".ks_party");
+                            $(".party-table").find("tbody").niceScroll({
+                                styler: "fb",
+                                cursorcolor: "#aaa",
+                                cursorwidth: '6',
+                                cursorborderradius: '15px',
+                                background: '#eee',
+                                cursorborder: '',
+                                zindex: 5
+                            });
+
+                            var tag = "";
+                            $('td').hover(function(e){
+                                tag = $(this).html();
+                            });
+                            //组织卡片id
+                            var o_id="644629cc-2f54-437f-8d22-43e067e7a8a0";
+                            //人物卡片id
+                            var f_id = "eccab150-9d71-4cfe-ba8d-e53df756bcd4";
+                            //国家卡片id
+                            var c_id = "971696e8-09bb-46b9-85e7-c31f8d1cbc8a";
+                            //事件卡片id
+                            var e_id = "ace499fc-26b8-4ddf-9c65-336a1363934d";
+                            //事件卡片pid
+                            var e_pid = "782ec878-8331-48e5-94e3-2931c4004dd8";
+                            //其他卡片pid
+                            var other_pid = "3326dfb7-6f6c-49ee-ab05-4c3b28f00571";
+
+                            context.init({preventDoubleContext: false});
+                            context.attach('.party-table', [
+                                {
+                                    text: '创建组织卡片', action: function (e) {
+                                    window.open("http://onyunvip.oicp.net:33909/BJ-digital/admin/doLogin?username=user&password=123456&pid=" + other_pid + "&id=" + o_id + "&tag=" + encodeURI(encodeURI(tag)), "_target");
+                                }
+                                },
+                                {
+                                    text: '创建国家卡片', action: function (e) {
+                                    window.open("http://onyunvip.oicp.net:33909/BJ-digital/admin/doLogin?username=user&password=123456&pid=" + other_pid + "&id=" + c_id + "&tag=" + encodeURI(encodeURI(tag)), "_target");
+                                }
+                                },
+                                {
+                                    text: '创建人物卡片', action: function (e) {
+                                    window.open("http://onyunvip.oicp.net:33909/BJ-digital/admin/doLogin?username=user&password=123456&pid=" + other_pid + "&id=" + f_id + "&tag=" + encodeURI(encodeURI(tag)), "_target");
+                                }
+                                },
+                                {
+                                    text: '创建事件卡片', action: function (e) {
+                                    window.open("http://onyunvip.oicp.net:33909/BJ-digital/admin/doLogin?username=user&password=123456&pid=" + e_pid + "&id=" + e_id + "&tag=" + encodeURI(encodeURI(tag)), "_target");
+                                }
+                                }
+                            ]);
+                        });
+
+
+
+                    },
+                    "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                        alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                    }
+                });
+
+            },
+            filters:{
+                translateTitle : function (value) {
+                    switch (value) {
+                        case 'extremist':
+                            return '恐怖组织';
+                            break;
+                        case 'eastern':
+                            return '东突反华';
+                            break;
+                        case 'force':
+                            return '地方势力';
+                            break;
+                        case 'party':
+                            return '政党';
+                            break;
+                    }
+                },
+                translate : function (value) {
+                    switch (value) {
+                        case 'ExtremistName':
+                            return '组织名称';
+                            break;
+                        case 'Leader':
+                            return '领导';
+                            break;
+                        case 'EntityID':
+                            return '实体ID';
+                            break;
+                        case 'ExtremistID':
+                            return '恐怖组织ID';
+                            break;
+                        case 'Seats':
+                            return '议会席位';
+                            break;
+                        case 'Ideology':
+                            return '意识形态';
+                            break;
+                        case 'PartyAbName':
+                            return '缩写';
+                            break;
+                        case 'PartyName':
+                            return '政党名称';
+                            break;
+                        case 'LocalforceName':
+                            return '组织名称';
+                            break;
+                        case 'EasternName':
+                            return '组织名称';
+                            break;
+                        case 'PartyID':
+                            return '政党ID';
+                            break;
+                        case 'LocalforceID':
+                            return '地方ID';
+                            break;
+                        case 'EasternID':
+                            return '东部ID';
+                            break;
+                    }
+                }
+            }
+        });
+    });
+    function openCard(id,value){
+        window.location.href="main_countryCard.html?EntityID="+ id +"&type=" + value ;
+    }
+</script>

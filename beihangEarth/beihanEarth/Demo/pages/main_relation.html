@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="assets/css/custom/common.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="assets/js/jquery-1.12.3/jquery.js"></script>
+    <script src="assets/js/d3/d3.v3.js"></script>
+    <script src="assets/js/bootstrap/bootstrap.js"></script>
+    <script src="assets/js/jquery-nicescroll/jquery.nicescroll.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/jquery.wordexport.js"></script>
+    <script src="../plugins/layer/layer.js"></script>
+    <script src="../js/html5media.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/jquery.jqprint-0.3.js"></script>
+    <script src="../js/jquery.cookies.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/function.js"></script>
+    <script src="../js/basic.js"></script>
+
+
+</head>
+
+<body>
+
+<form class="form-inline"  style="position: absolute; top: 144px;right: 165px;z-index: 10;">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" id="searchgeocoder" placeholder="输入关键字称搜索">
+            <div class="input-group-addon" id="searchgeocoder-addon" style="cursor: pointer;"><span class="glyphicon glyphicon-search"></span></div>
+        </div>
+    </div>
+</form>
+
+<div class="ks_main" style="padding: 0;">
+    <div class="w-100p ks_fl">
+        <div class="ks_head">
+            <div class="ks_container">
+                <div class="ks_user">
+                    <div class="ks_photo">
+                        <img src="assets/img/main/photo.png">
+                    </div>
+                    <div class="ks_name">@Administrators</div>
+                </div>
+                <div class="ks_menu ks_menu_left">
+                    <a class="ks_menu_item dituHref" target="_self">
+                        <img src="assets/img/main/icon_01.png">
+                        <div class="ks_menu_title">地图</div>
+                    </a>
+                    <a class="ks_menu_item relationHref" target="_self">
+                        <img src="assets/img/main/icon_02.png">
+                        <div class="ks_menu_title">关系网络</div>
+                    </a>
+                    <a class="ks_menu_item" href="#">
+                        <img src="assets/img/main/icon_03.png">
+                        <div class="ks_menu_title">翻译</div>
+                    </a>
+                    <a class="ks_menu_item" href="#">
+                        <img src="assets/img/main/icon_04.png">
+                        <div class="ks_menu_title">图谱管理</div>
+                    </a>
+                </div>
+                <div class="ks_search">
+                    <input type="text">
+                    <span class="glyphicon glyphicon-search"></span>
+                </div>
+                <div class="ks_menu ks_menu_right">
+                    <a class="ks_menu_item" href="#">
+                        <img src="assets/img/main/icon_05.png">
+                        <div class="ks_menu_title">收藏</div>
+                    </a>
+                    <a class="ks_menu_item wordprint" href="#">
+                        <img src="assets/img/main/icon_06.png">
+                        <div class="ks_menu_title">打印</div>
+                    </a>
+                    <a class="ks_menu_item worddao" href="#">
+                        <img src="assets/img/main/icon_07.png">
+                        <div class="ks_menu_title">导出</div>
+                    </a>
+                    <a class="ks_menu_item" href="../main.html" target="_self" >
+                        <img src="assets/img/main/icon_08.png">
+                        <div class="ks_menu_title">返回地球</div>
+                    </a>
+                    <a class="ks_menu_item returnCountry">
+                        <img src="assets/img/main/icon_09.png">
+                        <div class="ks_menu_title">返回国家</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="ks_fr" style="position: absolute; right:10px; top: 140px;">
+            <div class="ks_select">
+
+                <ul class="traffic traffic-level" onselectstart="return false;" style="-moz-user-select:none;">
+                    <li dataValue="1"> <span></span> <i>一级</i></li>
+                    <li dataValue="2"> <span></span> <i>二级</i></li>
+                </ul>
+
+
+            </div>
+            <div class="ks_select">
+                <ul class="traffic traffic-type" onselectstart="return false;" style="-moz-user-select:none;">
+                    <li dataValue="all"> <span></span> <i>全部</i></li>
+                    <li dataValue="entity"> <span></span> <i>实体</i></li>
+                    <li dataValue="event"> <span></span> <i>事件</i></li>
+                    <li dataValue="document"> <span></span> <i>文档</i></li>
+                </ul>
+            </div>
+        </div>
+        <svg class="ks_relation">
+        </svg>
+    </div>
+</div>
+
+<div class="slide" >
+    <span> <img src="assets/img/main/hide.png" alt="收缩"> </span>
+</div>
+
+
+<div class="laiyuan" style="position: absolute; bottom: 10px; right: 10px; padding: 5px; border: 1px solid #d9d9d9; background: #eee;">
+    <p>目标来源: <span></span></p>
+</div>
+
+</body>
+</html>
+<script>
+    $(function () {
+
+        $(".ks_head .ks_search span.glyphicon").on("click",function(){
+            var keyword = $(".ks_head .ks_search").find("input").val();
+            $.ajax({
+                type: "get",  //访问WebService使用get方式请求
+                url: HOST, //调用WebService的地址和方法名称组合
+                data: {
+                    method: "getAutoCart",
+                    keyword:encodeURI(keyword)
+                },
+                success: function (data) {
+                    var result = $(data).text();
+                    var resultData = JSON.parse(result);
+                    console.log(resultData);
+
+                    var width = $(window).width() / 1.5;
+                    var height = $(window).height() / 1.5;
+                    $.ajax({
+                        "type": "get",
+                        "url": "layer_autoCard.html",
+                        "success": function (response, status, xhr) {
+                            layer.open({
+                                type: 1,
+                                title: "自动卡片",
+                                skin: "layui-layer-lbf", //添加类名
+                                closeBtn: 1,
+                                area: [width + "px", height + "px"],
+                                shadeClose: true,
+                                content: response,
+                                success: function (layero,index) {
+                                    for (var i=0;i < resultData.length;i++){
+                                        $(layero).find(".autoCard").append('<div class="col-xs-3 card-xs">\
+                                                    <div class="nrcard">\
+                                                     <h5 class="bg-primary" style="padding: 5px 0; text-indent: 10px;">卡片 — '+ (i+1) +'</h5>\
+                                                      <table class="table table-condensed table-bordered table-striped">\
+                                                                <tr><th>名称</th><td>'+resultData[i].name+'</td></tr>\
+                                                                <tr><th>国家</th><td>'+resultData[i].country+'</td></tr>\
+                                                                <tr><th>编号</th><td>'+resultData[i].id+'</td></tr>\
+                                                                <tr><th>来源</th><td>'+resultData[i].source+'</td></tr>\
+                                                                <tr><th>标签</th><td>'+resultData[i].tag+'</td></tr>\
+                                                                <tr><th>类型</th><td>'+resultData[i].type+'</td></tr>\
+                                                       </table>\
+                                                    </div>\
+                                           </div>');
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                },
+                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                }
+            });
+
+
+
+
+
+        });
+        //目标来源
+        var partten = /\/([^/\/?]+)\.html\?/;
+        var str = document.referrer;
+        var strres = str.match(partten);
+        var defaultLevel;
+        var defaultAssociatedEntity;
+        var defaultAssociatedEntityChina;
+
+        switch(strres[1]){
+            case 'main_countryInfo':
+                defaultLevel = 2 ;
+                defaultAssociatedEntity = 'document';
+                defaultAssociatedEntityChina = '文档';
+                break;
+            case 'main_emergency':
+                defaultLevel = 2 ;
+                defaultAssociatedEntity = 'event';
+                defaultAssociatedEntityChina = '事件';
+                break;
+            case 'main_countryCard':
+                defaultLevel = 2 ;
+                defaultAssociatedEntity = 'entity';
+                defaultAssociatedEntityChina = '实体';
+                break;
+            default:
+                defaultLevel = 2 ;
+                defaultAssociatedEntity = 'all';
+                defaultAssociatedEntityChina = '全部';
+                break;
+        }
+
+        $(".laiyuan").find("span").text(defaultAssociatedEntityChina);
+
+        $(".ks_select .traffic").eq(0).find("li").each(function(){
+            if($(this).attr("dataValue") ==  defaultLevel){
+                $(this).attr("active","true").find("span").css("background-color","#65C5FE").end().find("i").css("color","#65C5FE");
+                $(this).siblings().attr("active","false").find("span").css("background-color","#BBB").end().find("i").css("color","#BBB");
+            }
+        });
+
+
+        $(".ks_select .traffic").eq(1).find("li").each(function(){
+            if($(this).attr("dataValue") ==  defaultAssociatedEntity){
+                $(this).attr("active","true").find("span").css("background-color","#65C5FE").end().find("i").css("color","#65C5FE");
+                $(this).siblings().attr("active","false").find("span").css("background-color","#BBB").end().find("i").css("color","#BBB");
+            }
+        });
+
+
+        $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType") );
+        $(".dituHref").attr("href",  "main_earths.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".relationHref").attr("href",  "main_relation.html?EntityID=" +  $.cookie("CountryEntityID") + "&type=" +  $.cookie("CountryType")   );
+        $(".worddao").on("click",function(e){
+            e.preventDefault();
+            $("body").wordExport();
+        });
+        $(".wordprint").on("click",function(e){
+            e.preventDefault();
+            $("body").jqprint();
+        });
+
+
+
+        $.ajax({
+            "type": "get",
+            "url": "layer_relationContent.html",
+            "success": function (response, status, xhr) {
+                var height = $(window).height();
+                var width = $(window).width() / 5;
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    skin: "layui-layer-relation", //添加类名
+                    area: [width + "px", height - 175 + "px"],
+                    offset: ['145px', '0px'],
+                    shadeClose: false,
+                    shade: 0,
+                    content: response,
+                    success: function (layero, index) {
+                        $(".slide").css({
+                            'left': width + "px",
+                            'top': $(".layui-layer.layui-layer-relation").height() / 2 + $(".slide").height() / 2  + "px",
+                            'border' : '1px solid #d9d9d9'
+                        });
+
+                        $(".slide").on("click",function(){
+                            if($(this).css("left") !== "0px" ){
+                                $(".layui-layer.layui-layer-relation").animate({
+                                    left : - $(".layui-layer.layui-layer-relation").width() + "px"
+                                },500);
+                                $(this).animate({
+                                    left : 0
+                                },500)
+                            }else {
+                                $(".layui-layer.layui-layer-relation").animate({
+                                    left : 0
+                                },500);
+                                $(this).animate({
+                                    left :  $(".layui-layer.layui-layer-relation").width() + "px"
+                                },500)
+                            }
+                         });
+
+                        $.ajax({
+                            type: "get",  //访问WebService使用get方式请求
+                            url: HOST, //调用WebService的地址和方法名称组合
+                            data: {
+                                method: "getCountViews",
+                                node_type: $.cookie("CountryType"),
+                                node_id : $.cookie("CountryEntityID"),
+                                AssociatedEntity : defaultAssociatedEntity,
+                                level : defaultLevel
+                            },
+                            success: function (data) {
+                                var result = $(data).text();
+                                var resultData = JSON.parse(result);
+                                var entityData = JSON.parse(resultData.entity);
+                                var eventData = JSON.parse(resultData.event);
+                                var documentData = JSON.parse(resultData.document);
+                                var videoData = JSON.parse(resultData.video);
+                                $(layero).find(".relation_entity").find(".list-group").html("");
+                                $(layero).find(".relation_event").find(".list-group").html("");
+                                $(layero).find(".relation_table").find("tbody").html("");
+                                $(layero).find(".list-video-table").find(".panel-body").html("");
+                                for(var entityDataL in entityData){
+                                    $(layero).find(".relation_entity").find(".list-group").append(
+                                            '<li class="list-group-item">\
+                                                <div class="row">\
+                                                    <div class="col-xs-3">'+ entityDataL +'</div>\
+                                                         <div class="col-xs-9">\
+                                                             <div class="progress">\
+                                                                 <div class="progress-bar progress-bar-striped active"\
+                                                                      role="progressbar" aria-valuemin="0"\
+                                                                      aria-valuemax="100" style="width:'+ Math.round((entityData[entityDataL]/entityData["全部"] * 10000)/100).toFixed(2) +'%;">' + entityData[entityDataL] + '</div>\
+                                                             </div>\
+                                                         </div>\
+                                                     </div>\
+                                                 </li>'
+                                    );
+                                }
+                                for(var eventDataL in eventData){
+                                    $(layero).find(".relation_event").find(".list-group").append(
+                                            '<li class="list-group-item">\
+                                                <div class="row">\
+                                                    <div class="col-xs-3">'+ eventDataL +'</div>\
+                                                         <div class="col-xs-9">\
+                                                             <div class="progress">\
+                                                                 <div class="progress-bar progress-bar-striped active"\
+                                                                      role="progressbar" aria-valuemin="0"\
+                                                                      aria-valuemax="100" style="width:'+ Math.round((eventData[eventDataL]/eventData["全部"] * 10000)/100).toFixed(2) +'%;">' + eventData[eventDataL] + '</div>\
+                                                             </div>\
+                                                         </div>\
+                                                     </div>\
+                                                 </li>'
+                                    );
+                                }
+                                for(var documentDataL in documentData){
+                                    $(".relation_table").find("tbody").append("<tr><td>"+ documentData[documentDataL].Tag +"</td><td>"+ documentData[documentDataL].FileName  +"</td><<td>"+  documentData[documentDataL].FileType  +"</td>/tr>");
+                                }
+
+                                if(videoData.length == 0){
+                                    $(layero).find(".list-video-table").find(".panel-body").append("<p>暂无视频</p>");
+                                }else{
+                                    for (var videoL=0; videoL < videoData.length;videoL++ ){
+                                        $(layero).find(".list-video-table").find(".panel-body").append("<video width='100%' height='240' controls>\
+                                                    <source src='"+ videoData[videoL] +"' type='video/mp4'>\
+                                                     </video>")
+                                    }
+                                }
+
+                                var root = JSON.parse(resultData.drowing);
+
+
+
+
+
+                                $(".ks_relation").html("");
+                                var draw = function () {
+                                    var width = $(window).width() - 20;
+                                    var height = $(window).height() - 190;
+
+                                    var svg = d3.select("svg")
+                                            .attr("width", width)
+                                            .attr("height", height);
+
+                                    var force = d3.layout.force()
+                                            .nodes(root.nodes)
+                                            .links(root.edges)
+                                            .size([width, height])
+                                            .linkDistance(200)
+                                            .charge(-1500)
+                                            .start();
+
+                                    var edges_line = svg.selectAll("line")
+                                            .data(root.edges)
+                                            .enter()
+                                            .append("line")
+                                            .style("cursor", "pointer")
+                                            .style("stroke", "#337ab7")
+                                            .style("stroke-width", 4)
+                                            .on("click", function (d, i) {
+                                                console.log(d);
+                                                $(".layer-content .tab-content.selected").html('');
+                                                $(".layui-layer-relation .tab ul li").removeClass('active');
+                                                $(".layui-layer-relation .tab ul li.tab-select").addClass('active');
+                                                $(".layer-content .tab-content.list").hide();
+                                                $(".layer-content .tab-content.selected").show();
+                                                //显示连接线上的文字
+                                                var sourceVal = "";
+                                                var targetVal = "";
+                                                for (var i in d.source) {
+                                                    sourceVal += "<tr><td>" + i + "</td><td>" + d.source[i] + "</td></tr>";
+                                                }
+                                                for (var k in d.target) {
+                                                    targetVal += "<tr><td>" + k + "</td><td>" + d.target[k] + "</td></tr>";
+                                                }
+                                                $(".layer-content .tab-content.selected").html("<div class='correlation'>\
+                            <div class='col-xs-3'>关联</div>\
+                                    <div class='col-xs-9'>\
+                                    <button class='btn btn-default'>" + d.source.name + "</button>\
+                                    <button class='btn btn-default'>" + d.target.name + "</button>\
+                                    </div>\
+                                    </div>\
+                                    <div class='correlation-table main-table'>\
+                                    <h1>全部关系</h1>\
+                                    <table class='table table-bordered'>\
+                                    <thead>\
+                                    <tr>\
+                                    <th>起点</th>\
+                                    <th>终点</th>\
+                                    <th>关系</th>\
+                                    <th>文档</th>\
+                                    </tr>\
+                                    </thead>\
+                                    <tbody>\
+                                    <tr>\
+                                    <td>" + d.source.name + "</td>\
+                                    <td>" + d.target.name + "</td>\
+                                    <td>" + d.relation + "</td>\
+                                    <td>" + d.source.document + "</td>\
+                                    </tr>\
+                                    <tr>\
+                                     <td>" + d.target.name + "</td>\
+                                    <td>" + d.source.name + "</td>\
+                                    <td>" + d.relation + "</td>\
+                                    <td>" + d.target.document + "</td>\
+                                    </tr>\
+                                    </tbody>\
+                                    </table>\
+                                    </div><div class='correlation-table'><h1>" + d.source.name + "</h1>\
+                                    <table class='table table-bordered'>\
+                                    <thead>\
+                                    <tr>\
+                                    <th>属性</th>\
+                                    <th>值</th>\
+                                    </tr>\
+                                    </thead>\
+                                    <tbody>" + sourceVal + "</tbody>\
+                                    </table></div>\
+                                    <div class='correlation-table'><h1>" + d.target.name + "</h1>\
+                                    <table class='table table-bordered'>\
+                                    <thead>\
+                                    <tr>\
+                                    <th>属性</th>\
+                                    <th>值</th>\
+                                    </tr>\
+                                    </thead>\
+                                    <tbody>" + targetVal + "</tbody>\
+                                    </table></div>");
+                                            });
+
+                                    var edges_text = svg.selectAll(".linetext")
+                                            .data(root.edges)
+                                            .enter()
+                                            .append("text")
+                                            .attr("class", "linetext")
+                                            .text(function (d) {
+                                                return d.relation;
+                                            });
+
+
+                                    //定义一个线性渐变
+                                    var defs = svg.append("defs");
+
+                                    var linearGradient = defs.append("linearGradient")
+                                            .attr("id", "linearColor")
+                                            .attr("x1", "0%")
+                                            .attr("y1", "0%")
+                                            .attr("x2", "0%")
+                                            .attr("y2", "100%");
+
+                                    var a = d3.rgb(65, 155, 232);
+                                    var b = d3.rgb(51, 122, 183);
+                                    var stop1 = linearGradient.append("stop")
+                                            .attr("offset", "0%")
+                                            .style("stop-color", a.toString());
+
+                                    var stop2 = linearGradient.append("stop")
+                                            .attr("offset", "100%")
+                                            .style("stop-color", b.toString());
+                                    //线性渐变结束
+
+                                    var nodes_circle = svg.selectAll("circle") //节点的图片
+                                            .data(root.nodes)
+                                            .enter()
+                                            .append("circle")
+                                            .style("cursor", "pointer")
+                                            .attr("r",50)      //半径
+                                            .attr("class","circle") //类 控制样
+                                            .on("mouseover", function (d, i) {
+                                                //显示连接线上的文字
+                                                edges_text.style("fill-opacity", function (edge) {
+                                                    if (edge.source === d || edge.target === d) {
+                                                        return 1.0;
+                                                    }
+                                                });
+                                            })
+                                            .on("mouseout", function (d, i) {
+                                                //隐去连接线上的文字
+                                                edges_text.style("fill-opacity", function (edge) {
+                                                    if (edge.source === d || edge.target === d) {
+                                                        return 0.0;
+                                                    }
+                                                });
+                                            })
+                                            .on("mousedown", function (d, i) {
+
+                                                var mouseflag =true;
+
+                                                $(document).one("mousemove",function(e){
+                                                    mouseflag = false;
+                                                });
+
+                                                $(document).one("mouseup",function(e){
+                                                    if(mouseflag === true ){
+                                                        $(layero).find(".layer-content .tab-content.selected").html('\   <div class="correlation">\
+                                                  <div class="col-xs-3"><img src="' + d.image + '" ></div>\
+                                                  <div class="col-xs-9"><h1> 节点名称：' + d.name + '</h1><p>节点类型：' + d.nodeType + '</p></div>\
+                                              </div>\
+                                              <div class="correlation-table attrtable">\
+                                                <table class="table table-bordered">\
+                                                <thead>\
+                                                <tr>\
+                                                <th>属性</th>\
+                                                <th>值</th>\
+                                                </tr>\
+                                                </thead>\
+                                                <tbody>\
+                                                </tbody>\
+                                                </table></div>\
+                                                        <div class="correlation-table select-table">\
+                                                    <h1>多媒体</h1>\
+                                                    <div class="panel panel-default">\
+                                                    <div class="panel-body">\
+                                                    </div>\
+                                                    </div>\
+                                                    </div>\
+                                              <div class="correlation">\
+                                                  <div class="col-xs-3">关联</div>\
+                                                  <div class="col-xs-9 gx"></div>\
+                                              </div>\
+                                              <div class="correlation-table main-table">\
+                                                    <h1>全部关系</h1>\
+                                                    <table class="table table-bordered">\
+                                                    <thead>\
+                                                    <tr>\
+                                                    <th>起点</th>\
+                                                    <th>终点</th>\
+                                                    <th>关系</th>\
+                                                    <th>关联文档</th>\
+                                                    </tr>\
+                                                    </thead>\
+                                                    <tbody>\
+                                                    </tbody>\
+                                                    </table>\
+                                                    </div>');
+                                                        $(".layui-layer-relation .tab ul li").removeClass('active');
+                                                        $(".layui-layer-relation .tab ul li.tab-select").addClass('active');
+                                                        $(".layer-content .tab-content.list").hide();
+                                                        $(".layer-content .tab-content.selected").show();
+                                                        var targetArray = [];
+                                                        var sourceArray = [];
+                                                        for (var bl = 0; bl < root.edges.length; bl++) {
+                                                            if (d.index == root.edges[bl].source.index) {
+                                                                targetArray.push({
+                                                                    name: root.edges[bl].target.name,
+                                                                    document: root.edges[bl].target.document,
+                                                                    relation: root.edges[bl].relation
+                                                                });
+                                                            } else if (d.index == root.edges[bl].target.index) {
+                                                                sourceArray.push({
+                                                                    name: root.edges[bl].source.name,
+                                                                    document: root.edges[bl].source.document,
+                                                                    relation: root.edges[bl].relation
+                                                                });
+                                                            }
+                                                        }
+
+                                                        $(".layer-content").find(".correlation").find(".col-xs-9.gx").html('').append("<button class='btn btn-default' style='color:red;'>" + d.name + "</button>");
+                                                        for (var tl = 0; tl < targetArray.length; tl++) {
+                                                            $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + targetArray[tl].name + "</button>");
+                                                            $(".layer-content").find(".main-table").find("tbody").append("<tr><td style='color:red;'>" + d.name + "</td><td>" + targetArray[tl].name + "</td><td>" + targetArray[tl].relation + "</td><td>" + targetArray[tl].document + "</td></tr>");
+                                                        }
+                                                        for (var al = 0; al < sourceArray.length; al++) {
+                                                            $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + sourceArray[al].name + "</button>");
+                                                            $(".layer-content").find(".main-table").find("tbody").append("<tr><td>" + sourceArray[al].name + "</td><td style='color:red;'>" + d.name + "</td><td>" + sourceArray[al].relation + "</td><td>" + sourceArray[al].document + "</td></tr>");
+                                                        }
+
+                                                        for(var attrtableL in d ){
+                                                            if(attrtableL == "name" || attrtableL == "document" || attrtableL == "image" || attrtableL == "type" || attrtableL == "nodeType" ) {
+                                                                $(".attrtable").find("table").find("tbody").append("<tr><td>" + attrtableL + "</td><td>" + d[attrtableL] + "</td></tr>");
+                                                            }
+                                                        }
+                                                        if(d.video.length == 0){
+                                                            $(".select-table").find(".panel-body").append("<p>暂无视频</p>");
+                                                        }else{
+                                                            for(var videoL = 0;videoL < d.video.length;videoL ++ ){
+                                                                $(".select-table").find(".panel-body").append("<video width='100%' height='240' controls>\
+                                                    <source src='"+d.video[videoL] +"' type='video/mp4'>\
+                                                     </video>");
+                                                            }
+                                                        }
+
+
+
+                                                    }
+                                                });
+
+
+
+
+
+                                            })
+                                            .style("fill", "url(#" + linearGradient.attr("id") + ")")
+                                            .call(force.drag);
+
+
+
+                                    var nodes_text = svg.selectAll(".nodetext")
+                                            .data(root.nodes)
+                                            .enter()
+                                            .append("text")
+                                            .attr("class", "nodetext")
+                                            .on("mouseover", function (d, i) {
+                                                //显示连接线上的文字
+                                                edges_text.style("fill-opacity", function (edge) {
+                                                    if (edge.source === d || edge.target === d) {
+                                                        return 1.0;
+                                                    }
+                                                });
+                                            })
+                                            .on("mouseout", function (d, i) {
+                                                //隐去连接线上的文字
+                                                edges_text.style("fill-opacity", function (edge) {
+                                                    if (edge.source === d || edge.target === d) {
+                                                        return 0.0;
+                                                    }
+                                                });
+                                            })
+                                            .on("mousedown", function (d, i) {
+
+                                                var mouseflag =true;
+
+                                                $(document).one("mousemove",function(e){
+                                                    mouseflag = false;
+                                                });
+
+                                                $(document).one("mouseup",function(e){
+                                                    if(mouseflag === true ){
+                                                        $(layero).find(".layer-content .tab-content.selected").html('\   <div class="correlation">\
+                                                  <div class="col-xs-3"><img src="' + d.image + '" ></div>\
+                                                  <div class="col-xs-9"><h1> 节点名称：' + d.name + '</h1><p>节点类型：' + d.nodeType + '</p></div>\
+                                              </div>\
+                                              <div class="correlation-table attrtable">\
+                                                <table class="table table-bordered">\
+                                                <thead>\
+                                                <tr>\
+                                                <th>属性</th>\
+                                                <th>值</th>\
+                                                </tr>\
+                                                </thead>\
+                                                <tbody>\
+                                                </tbody>\
+                                                </table></div>\
+                                                        <div class="correlation-table select-table">\
+                                                    <h1>多媒体</h1>\
+                                                    <div class="panel panel-default">\
+                                                    <div class="panel-body">\
+                                                    </div>\
+                                                    </div>\
+                                                    </div>\
+                                              <div class="correlation">\
+                                                  <div class="col-xs-3">关联</div>\
+                                                  <div class="col-xs-9 gx"></div>\
+                                              </div>\
+                                              <div class="correlation-table main-table">\
+                                                    <h1>全部关系</h1>\
+                                                    <table class="table table-bordered">\
+                                                    <thead>\
+                                                    <tr>\
+                                                    <th>起点</th>\
+                                                    <th>终点</th>\
+                                                    <th>关系</th>\
+                                                    <th>关联文档</th>\
+                                                    </tr>\
+                                                    </thead>\
+                                                    <tbody>\
+                                                    </tbody>\
+                                                    </table>\
+                                                    </div>');
+                                                        $(".layui-layer-relation .tab ul li").removeClass('active');
+                                                        $(".layui-layer-relation .tab ul li.tab-select").addClass('active');
+                                                        $(".layer-content .tab-content.list").hide();
+                                                        $(".layer-content .tab-content.selected").show();
+                                                        var targetArray = [];
+                                                        var sourceArray = [];
+                                                        for (var bl = 0; bl < root.edges.length; bl++) {
+                                                            if (d.index == root.edges[bl].source.index) {
+                                                                targetArray.push({
+                                                                    name: root.edges[bl].target.name,
+                                                                    document: root.edges[bl].target.document,
+                                                                    relation: root.edges[bl].relation
+                                                                });
+                                                            } else if (d.index == root.edges[bl].target.index) {
+                                                                sourceArray.push({
+                                                                    name: root.edges[bl].source.name,
+                                                                    document: root.edges[bl].source.document,
+                                                                    relation: root.edges[bl].relation
+                                                                });
+                                                            }
+                                                        }
+
+                                                        $(".layer-content").find(".correlation").find(".col-xs-9.gx").html('').append("<button class='btn btn-default' style='color:red;'>" + d.name + "</button>");
+                                                        for (var tl = 0; tl < targetArray.length; tl++) {
+                                                            $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + targetArray[tl].name + "</button>");
+                                                            $(".layer-content").find(".main-table").find("tbody").append("<tr><td style='color:red;'>" + d.name + "</td><td>" + targetArray[tl].name + "</td><td>" + targetArray[tl].relation + "</td><td>" + targetArray[tl].document + "</td></tr>");
+                                                        }
+                                                        for (var al = 0; al < sourceArray.length; al++) {
+                                                            $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + sourceArray[al].name + "</button>");
+                                                            $(".layer-content").find(".main-table").find("tbody").append("<tr><td>" + sourceArray[al].name + "</td><td style='color:red;'>" + d.name + "</td><td>" + sourceArray[al].relation + "</td><td>" + sourceArray[al].document + "</td></tr>");
+                                                        }
+
+                                                        for(var attrtableL in d ){
+                                                            if(attrtableL == "name" || attrtableL == "document" || attrtableL == "image" || attrtableL == "type" || attrtableL == "nodeType" ) {
+                                                                $(".attrtable").find("table").find("tbody").append("<tr><td>" + attrtableL + "</td><td>" + d[attrtableL] + "</td></tr>");
+                                                            }
+                                                        }
+                                                        if(d.video.length == 0){
+                                                            $(".select-table").find(".panel-body").append("<p>暂无视频</p>");
+                                                        }else{
+                                                            for(var videoL = 0;videoL < d.video.length;videoL ++ ){
+                                                                $(".select-table").find(".panel-body").append("<video width='100%' height='240' controls>\
+                                                    <source src='"+d.video[videoL] +"' type='video/mp4'>\
+                                                     </video>");
+                                                            }
+                                                        }
+
+
+
+                                                    }
+                                                });
+
+
+
+
+
+                                            })
+                                            .text(function (d) {
+                                                if(d.name.length > 4 ){
+                                                    return d.name.substring(0,4) + "..";
+                                                }else{
+                                                    return d.name;
+                                                }
+                                            })
+                                            .call(force.drag);
+
+
+
+
+
+                                    force.on("tick", function () {
+
+                                        root.nodes.forEach(function (d, i) {
+                                            d.x = d.x - 50 < 0 ? 50 : d.x;
+                                            d.y = d.y - 50 < 0 ? 50 : d.y;
+                                        });
+
+                                        //更新连接线的位置
+                                        edges_line.attr("x1", function (d) {
+                                            return d.source.x;
+                                        });
+                                        edges_line.attr("y1", function (d) {
+                                            return d.source.y;
+                                        });
+                                        edges_line.attr("x2", function (d) {
+                                            return d.target.x;
+                                        });
+                                        edges_line.attr("y2", function (d) {
+                                            return d.target.y;
+                                        });
+
+                                        //更新连接线上文字的位置
+                                        edges_text.attr("x", function (d) {
+                                            return (d.source.x + d.target.x) / 2;
+                                        });
+
+                                        edges_text.attr("y", function (d) {
+                                            return (d.source.y + d.target.y) / 2;
+                                        });
+
+                                        nodes_circle.attr("cx", function (d) {
+                                            return d.x;
+                                        });
+                                        nodes_circle.attr("cy", function (d) {
+                                            return d.y
+                                        });
+                                        nodes_text.attr("x", function (d) {
+                                            return d.x - nodes_circle.attr("r") + 15;
+                                        });
+                                        nodes_text.attr("y", function (d) {
+                                            return d.y + 5;
+                                        });
+                                    });
+                                    return svg;
+                                };
+                                var svg = draw();
+
+                                //网络图搜索
+                                $("#searchgeocoder-addon").off("click").on("click",function(){
+                                    var re =  new RegExp($("#searchgeocoder").val());//设置正则表达式 search方法 查到即返回 无需g全局 无效i大小写
+                                     for(var i = 0; i < root.nodes.length;i++){
+                                         var ostr =  root.nodes[i].name;//所要匹配的字符串，字符串第一个位置从0开始
+                                         if(ostr !== undefined){
+                                             var pos  = ostr.search(re);
+                                             if(pos !== -1 ){
+                                                 root.nodes[i].search = true;
+                                             }else{
+                                                 root.nodes[i].search = false;
+                                             }
+                                         }
+                                     }
+
+//                                 var aColor = d3.rgb(10, 155, 232);
+//                                 var bColor = d3.rgb(10, 122, 183);
+//                                    var defs = svg.selectAll("defs").selectAll("linearGradient").selectAll("stop").style("stop-color",function(d,i){
+//                                        if(i === 0){
+//                                            return aColor.toString();
+//                                        }else if(i === 1){
+//                                            return bColor.toString();
+//                                        }
+//                                    });
+
+
+                                    svg.selectAll(".nodetext").style("fill", function(d,i){
+                                        if(d.search){
+                                            return "red";
+                                        }else if(!d.search){
+                                            return "white";
+                                        }
+                                    });
+                                });
+
+
+
+
+
+                            },
+                            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                            }
+                        });
+
+
+
+                        $(".ks_select .traffic").find("li").on("click",function(){
+                            $(this).attr("active","true").find("span").css("background-color","#65C5FE").end().find("i").css("color","#65C5FE");
+                            $(this).siblings().attr("active","false").find("span").css("background-color","#BBB").end().find("i").css("color","#BBB");
+
+                            var type;
+                            var level;
+                            $(".traffic-type").find("li").each(function(){
+                                if($(this).attr("active") =="true"){
+                                    type = $(this).attr("dataValue");
+                                }
+                            });
+                            $(".traffic-level").find("li").each(function(){
+                                if($(this).attr("active") =="true"){
+                                    level = $(this).attr("dataValue");
+                                }
+                            });
+
+
+                            $.ajax({
+                                type: "get",  //访问WebService使用get方式请求
+                                url: HOST, //调用WebService的地址和方法名称组合
+                                data: {
+                                    method: "getCountViews",
+                                    node_type:$.cookie("CountryType"),
+                                    node_id :  $.cookie("CountryEntityID"),
+                                    AssociatedEntity : type,
+                                    level : level
+                                },
+                                success: function (data) {
+
+                                    $(".layui-layer-relation .tab ul li").removeClass('active');
+                                    $(".layui-layer-relation .tab ul li.tab-select").next().addClass('active');
+                                    $(".layer-content .tab-content.list").show();
+                                    $(".layer-content .tab-content.selected").hide();
+
+                                    var result = $(data).text();
+                                    var resultData = JSON.parse(result);
+
+                                    var entityData = JSON.parse(resultData.entity);
+                                    var eventData = JSON.parse(resultData.event);
+                                    var documentData = JSON.parse(resultData.document);
+                                    var videoData = JSON.parse(resultData.video);
+                                    $(layero).find(".relation_entity").find(".list-group").html("");
+                                    $(layero).find(".relation_event").find(".list-group").html("");
+                                    $(layero).find(".relation_table").find("tbody").html("");
+                                    $(layero).find(".list-video-table").find(".panel-body").html("");
+
+                                    for(var entityDataL in entityData){
+                                        $(layero).find(".relation_entity").find(".list-group").append(
+                                                '<li class="list-group-item">\
+                                                    <div class="row">\
+                                                        <div class="col-xs-3">'+ entityDataL +'</div>\
+                                                         <div class="col-xs-9">\
+                                                             <div class="progress">\
+                                                                 <div class="progress-bar progress-bar-striped active"\
+                                                                      role="progressbar" aria-valuemin="0"\
+                                                                      aria-valuemax="100" style="width:'+ Math.round((entityData[entityDataL]/entityData["全部"] * 10000)/100).toFixed(2) +'%;">' + entityData[entityDataL] + '</div>\
+                                                             </div>\
+                                                         </div>\
+                                                     </div>\
+                                                 </li>'
+                                        );
+                                    }
+                                    for(var eventDataL in eventData){
+                                        $(layero).find(".relation_event").find(".list-group").append(
+                                                '<li class="list-group-item">\
+                                                    <div class="row">\
+                                                        <div class="col-xs-3">'+ eventDataL +'</div>\
+                                                         <div class="col-xs-9">\
+                                                             <div class="progress">\
+                                                                 <div class="progress-bar progress-bar-striped active"\
+                                                                      role="progressbar" aria-valuemin="0"\
+                                                                      aria-valuemax="100" style="width:'+ Math.round((eventData[eventDataL]/eventData["全部"] * 10000)/100).toFixed(2) +'%;">' + eventData[eventDataL] + '</div>\
+                                                             </div>\
+                                                         </div>\
+                                                     </div>\
+                                                 </li>'
+                                        );
+                                    }
+                                    for(var documentDataL in documentData){
+                                        $(".relation_table").find("tbody").append("<tr><td>"+ documentData[documentDataL].Tag +"</td><td>"+ documentData[documentDataL].FileName  +"</td><<td>"+  documentData[documentDataL].FileType  +"</td>/tr>");
+                                    }
+
+                                    if(videoData.length == 0){
+                                        $(layero).find(".list-video-table").find(".panel-body").append("<p>暂无视频</p>");
+                                    }else{
+                                        for (var videoL=0; videoL < videoData.length;videoL++ ){
+                                            $(layero).find(".list-video-table").find(".panel-body").append("<video width='100%' height='240' controls>\
+                                                    <source src='"+ videoData[videoL] +"' type='video/mp4'>\
+                                                     </video>")
+                                        }
+                                    }
+
+
+                                    var root = JSON.parse(resultData.drowing);
+                                    $(".ks_relation").html("");
+                                    var draw = function () {
+                                        var width = $(window).width() - 20;
+                                        var height = $(window).height() - 190;
+
+                                        var svg = d3.select("svg")
+                                                .attr("width", width)
+                                                .attr("height", height);
+
+                                        var force = d3.layout.force()
+                                                .nodes(root.nodes)
+                                                .links(root.edges)
+                                                .size([width, height])
+                                                .linkDistance(200)
+                                                .charge(-1500)
+                                                .start();
+
+                                        var edges_line = svg.selectAll("line")
+                                                .data(root.edges)
+                                                .enter()
+                                                .append("line")
+                                                .style("cursor", "pointer")
+                                                .style("stroke", "#337ab7")
+                                                .style("stroke-width", 4)
+                                                .on("click", function (d, i) {
+                                                    console.log(d);
+                                                    $(".layer-content .tab-content.selected").html('');
+                                                    $(".layui-layer-relation .tab ul li").removeClass('active');
+                                                    $(".layui-layer-relation .tab ul li.tab-select").addClass('active');
+                                                    $(".layer-content .tab-content.list").hide();
+                                                    $(".layer-content .tab-content.selected").show();
+                                                    //显示连接线上的文字
+                                                    var sourceVal = "";
+                                                    var targetVal = "";
+                                                    for (var i in d.source) {
+                                                        sourceVal += "<tr><td>" + i + "</td><td>" + d.source[i] + "</td></tr>";
+                                                    }
+                                                    for (var k in d.target) {
+                                                        targetVal += "<tr><td>" + k + "</td><td>" + d.target[k] + "</td></tr>";
+                                                    }
+                                                    $(".layer-content .tab-content.selected").html("<div class='correlation'>\
+                            <div class='col-xs-3'>关联</div>\
+                                    <div class='col-xs-9'>\
+                                    <button class='btn btn-default'>" + d.source.name + "</button>\
+                                    <button class='btn btn-default'>" + d.target.name + "</button>\
+                                    </div>\
+                                    </div>\
+                                    <div class='correlation-table main-table'>\
+                                    <h1>全部关系</h1>\
+                                    <table class='table table-bordered'>\
+                                    <thead>\
+                                    <tr>\
+                                    <th>起点</th>\
+                                    <th>终点</th>\
+                                    <th>关系</th>\
+                                    <th>文档</th>\
+                                    </tr>\
+                                    </thead>\
+                                    <tbody>\
+                                    <tr>\
+                                    <td>" + d.source.name + "</td>\
+                                    <td>" + d.target.name + "</td>\
+                                    <td>" + d.relation + "</td>\
+                                    <td>" + d.source.document + "</td>\
+                                    </tr>\
+                                    <tr>\
+                                     <td>" + d.target.name + "</td>\
+                                    <td>" + d.source.name + "</td>\
+                                    <td>" + d.relation + "</td>\
+                                    <td>" + d.target.document + "</td>\
+                                    </tr>\
+                                    </tbody>\
+                                    </table>\
+                                    </div><div class='correlation-table'><h1>" + d.source.name + "</h1>\
+                                    <table class='table table-bordered'>\
+                                    <thead>\
+                                    <tr>\
+                                    <th>属性</th>\
+                                    <th>值</th>\
+                                    </tr>\
+                                    </thead>\
+                                    <tbody>" + sourceVal + "</tbody>\
+                                    </table></div>\
+                                    <div class='correlation-table'><h1>" + d.target.name + "</h1>\
+                                    <table class='table table-bordered'>\
+                                    <thead>\
+                                    <tr>\
+                                    <th>属性</th>\
+                                    <th>值</th>\
+                                    </tr>\
+                                    </thead>\
+                                    <tbody>" + targetVal + "</tbody>\
+                                    </table></div>");
+                                                });
+
+                                        var edges_text = svg.selectAll(".linetext")
+                                                .data(root.edges)
+                                                .enter()
+                                                .append("text")
+                                                .attr("class", "linetext")
+                                                .text(function (d) {
+                                                    return d.relation;
+                                                });
+
+
+                                        //定义一个线性渐变
+                                        var defs = svg.append("defs");
+
+                                        var linearGradient = defs.append("linearGradient")
+                                                .attr("id", "linearColor")
+                                                .attr("x1", "0%")
+                                                .attr("y1", "0%")
+                                                .attr("x2", "0%")
+                                                .attr("y2", "100%");
+
+                                        var a = d3.rgb(65, 155, 232);
+                                        var b = d3.rgb(51, 122, 183);
+                                        var stop1 = linearGradient.append("stop")
+                                                .attr("offset", "0%")
+                                                .style("stop-color", a.toString());
+
+                                        var stop2 = linearGradient.append("stop")
+                                                .attr("offset", "100%")
+                                                .style("stop-color", b.toString());
+                                        //线性渐变结束
+
+                                        var nodes_circle = svg.selectAll("circle") //节点的图片
+                                                .data(root.nodes)
+                                                .enter()
+                                                .append("circle")
+                                                .style("cursor", "pointer")
+                                                .attr("r",50)      //半径
+                                                .attr("class","circle") //类 控制样
+                                                .on("mouseover", function (d, i) {
+                                                    //显示连接线上的文字
+                                                    edges_text.style("fill-opacity", function (edge) {
+                                                        if (edge.source === d || edge.target === d) {
+                                                            return 1.0;
+                                                        }
+                                                    });
+                                                })
+                                                .on("mouseout", function (d, i) {
+                                                    //隐去连接线上的文字
+                                                    edges_text.style("fill-opacity", function (edge) {
+                                                        if (edge.source === d || edge.target === d) {
+                                                            return 0.0;
+                                                        }
+                                                    });
+                                                })
+                                                .on("mousedown", function (d, i) {
+
+                                                    var mouseflag =true;
+
+                                                    $(document).one("mousemove",function(e){
+                                                        mouseflag = false;
+                                                    });
+
+                                                    $(document).one("mouseup",function(e){
+                                                        if(mouseflag === true ){
+                                                            $(layero).find(".layer-content .tab-content.selected").html('\   <div class="correlation">\
+                                                  <div class="col-xs-3"><img src="' + d.image + '" ></div>\
+                                                  <div class="col-xs-9"><h1> 节点名称：' + d.name + '</h1><p>节点类型：' + d.nodeType + '</p></div>\
+                                              </div>\
+                                              <div class="correlation-table attrtable">\
+                                                <table class="table table-bordered">\
+                                                <thead>\
+                                                <tr>\
+                                                <th>属性</th>\
+                                                <th>值</th>\
+                                                </tr>\
+                                                </thead>\
+                                                <tbody>\
+                                                </tbody>\
+                                                </table></div>\
+                                                        <div class="correlation-table select-table">\
+                                                    <h1>多媒体</h1>\
+                                                    <div class="panel panel-default">\
+                                                    <div class="panel-body">\
+                                                    </div>\
+                                                    </div>\
+                                                    </div>\
+                                              <div class="correlation">\
+                                                  <div class="col-xs-3">关联</div>\
+                                                  <div class="col-xs-9 gx"></div>\
+                                              </div>\
+                                              <div class="correlation-table main-table">\
+                                                    <h1>全部关系</h1>\
+                                                    <table class="table table-bordered">\
+                                                    <thead>\
+                                                    <tr>\
+                                                    <th>起点</th>\
+                                                    <th>终点</th>\
+                                                    <th>关系</th>\
+                                                    <th>关联文档</th>\
+                                                    </tr>\
+                                                    </thead>\
+                                                    <tbody>\
+                                                    </tbody>\
+                                                    </table>\
+                                                    </div>');
+                                                            $(".layui-layer-relation .tab ul li").removeClass('active');
+                                                            $(".layui-layer-relation .tab ul li.tab-select").addClass('active');
+                                                            $(".layer-content .tab-content.list").hide();
+                                                            $(".layer-content .tab-content.selected").show();
+                                                            var targetArray = [];
+                                                            var sourceArray = [];
+                                                            for (var bl = 0; bl < root.edges.length; bl++) {
+                                                                if (d.index == root.edges[bl].source.index) {
+                                                                    targetArray.push({
+                                                                        name: root.edges[bl].target.name,
+                                                                        document: root.edges[bl].target.document,
+                                                                        relation: root.edges[bl].relation
+                                                                    });
+                                                                } else if (d.index == root.edges[bl].target.index) {
+                                                                    sourceArray.push({
+                                                                        name: root.edges[bl].source.name,
+                                                                        document: root.edges[bl].source.document,
+                                                                        relation: root.edges[bl].relation
+                                                                    });
+                                                                }
+                                                            }
+
+                                                            $(".layer-content").find(".correlation").find(".col-xs-9.gx").html('').append("<button class='btn btn-default' style='color:red;'>" + d.name + "</button>");
+                                                            for (var tl = 0; tl < targetArray.length; tl++) {
+                                                                $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + targetArray[tl].name + "</button>");
+                                                                $(".layer-content").find(".main-table").find("tbody").append("<tr><td style='color:red;'>" + d.name + "</td><td>" + targetArray[tl].name + "</td><td>" + targetArray[tl].relation + "</td><td>" + targetArray[tl].document + "</td></tr>");
+                                                            }
+                                                            for (var al = 0; al < sourceArray.length; al++) {
+                                                                $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + sourceArray[al].name + "</button>");
+                                                                $(".layer-content").find(".main-table").find("tbody").append("<tr><td>" + sourceArray[al].name + "</td><td style='color:red;'>" + d.name + "</td><td>" + sourceArray[al].relation + "</td><td>" + sourceArray[al].document + "</td></tr>");
+                                                            }
+
+                                                            for(var attrtableL in d ){
+                                                                if(attrtableL == "name" || attrtableL == "document" || attrtableL == "image" || attrtableL == "type" || attrtableL == "nodeType" ) {
+                                                                    $(".attrtable").find("table").find("tbody").append("<tr><td>" + attrtableL + "</td><td>" + d[attrtableL] + "</td></tr>");
+                                                                }
+                                                            }
+                                                            if(d.video.length == 0){
+                                                                $(".select-table").find(".panel-body").append("<p>暂无视频</p>");
+                                                            }else{
+                                                                for(var videoL = 0;videoL < d.video.length;videoL ++ ){
+                                                                    $(".select-table").find(".panel-body").append("<video width='100%' height='240' controls>\
+                                                    <source src='"+d.video[videoL] +"' type='video/mp4'>\
+                                                     </video>");
+                                                                }
+                                                            }
+
+
+
+                                                        }
+                                                    });
+
+
+
+
+
+                                                })
+                                                .style("fill", "url(#" + linearGradient.attr("id") + ")")
+                                                .call(force.drag);
+
+
+
+                                        var nodes_text = svg.selectAll(".nodetext")
+                                                .data(root.nodes)
+                                                .enter()
+                                                .append("text")
+                                                .attr("class", "nodetext")
+                                                .on("mouseover", function (d, i) {
+                                                    //显示连接线上的文字
+                                                    edges_text.style("fill-opacity", function (edge) {
+                                                        if (edge.source === d || edge.target === d) {
+                                                            return 1.0;
+                                                        }
+                                                    });
+                                                })
+                                                .on("mouseout", function (d, i) {
+                                                    //隐去连接线上的文字
+                                                    edges_text.style("fill-opacity", function (edge) {
+                                                        if (edge.source === d || edge.target === d) {
+                                                            return 0.0;
+                                                        }
+                                                    });
+                                                })
+                                                .on("mousedown", function (d, i) {
+
+                                                    var mouseflag =true;
+
+                                                    $(document).one("mousemove",function(e){
+                                                        mouseflag = false;
+                                                    });
+
+                                                    $(document).one("mouseup",function(e){
+                                                        if(mouseflag === true ){
+                                                            $(layero).find(".layer-content .tab-content.selected").html('\   <div class="correlation">\
+                                                  <div class="col-xs-3"><img src="' + d.image + '" ></div>\
+                                                  <div class="col-xs-9"><h1> 节点名称：' + d.name + '</h1><p>节点类型：' + d.nodeType + '</p></div>\
+                                              </div>\
+                                              <div class="correlation-table attrtable">\
+                                                <table class="table table-bordered">\
+                                                <thead>\
+                                                <tr>\
+                                                <th>属性</th>\
+                                                <th>值</th>\
+                                                </tr>\
+                                                </thead>\
+                                                <tbody>\
+                                                </tbody>\
+                                                </table></div>\
+                                                        <div class="correlation-table select-table">\
+                                                    <h1>多媒体</h1>\
+                                                    <div class="panel panel-default">\
+                                                    <div class="panel-body">\
+                                                    </div>\
+                                                    </div>\
+                                                    </div>\
+                                              <div class="correlation">\
+                                                  <div class="col-xs-3">关联</div>\
+                                                  <div class="col-xs-9 gx"></div>\
+                                              </div>\
+                                              <div class="correlation-table main-table">\
+                                                    <h1>全部关系</h1>\
+                                                    <table class="table table-bordered">\
+                                                    <thead>\
+                                                    <tr>\
+                                                    <th>起点</th>\
+                                                    <th>终点</th>\
+                                                    <th>关系</th>\
+                                                    <th>关联文档</th>\
+                                                    </tr>\
+                                                    </thead>\
+                                                    <tbody>\
+                                                    </tbody>\
+                                                    </table>\
+                                                    </div>');
+                                                            $(".layui-layer-relation .tab ul li").removeClass('active');
+                                                            $(".layui-layer-relation .tab ul li.tab-select").addClass('active');
+                                                            $(".layer-content .tab-content.list").hide();
+                                                            $(".layer-content .tab-content.selected").show();
+                                                            var targetArray = [];
+                                                            var sourceArray = [];
+                                                            for (var bl = 0; bl < root.edges.length; bl++) {
+                                                                if (d.index == root.edges[bl].source.index) {
+                                                                    targetArray.push({
+                                                                        name: root.edges[bl].target.name,
+                                                                        document: root.edges[bl].target.document,
+                                                                        relation: root.edges[bl].relation
+                                                                    });
+                                                                } else if (d.index == root.edges[bl].target.index) {
+                                                                    sourceArray.push({
+                                                                        name: root.edges[bl].source.name,
+                                                                        document: root.edges[bl].source.document,
+                                                                        relation: root.edges[bl].relation
+                                                                    });
+                                                                }
+                                                            }
+
+                                                            $(".layer-content").find(".correlation").find(".col-xs-9.gx").html('').append("<button class='btn btn-default' style='color:red;'>" + d.name + "</button>");
+                                                            for (var tl = 0; tl < targetArray.length; tl++) {
+                                                                $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + targetArray[tl].name + "</button>");
+                                                                $(".layer-content").find(".main-table").find("tbody").append("<tr><td style='color:red;'>" + d.name + "</td><td>" + targetArray[tl].name + "</td><td>" + targetArray[tl].relation + "</td><td>" + targetArray[tl].document + "</td></tr>");
+                                                            }
+                                                            for (var al = 0; al < sourceArray.length; al++) {
+                                                                $(".layer-content").find(".correlation").find(".col-xs-9.gx").append("<button class='btn btn-default'>" + sourceArray[al].name + "</button>");
+                                                                $(".layer-content").find(".main-table").find("tbody").append("<tr><td>" + sourceArray[al].name + "</td><td style='color:red;'>" + d.name + "</td><td>" + sourceArray[al].relation + "</td><td>" + sourceArray[al].document + "</td></tr>");
+                                                            }
+
+                                                            for(var attrtableL in d ){
+                                                                if(attrtableL == "name" || attrtableL == "document" || attrtableL == "image" || attrtableL == "type" || attrtableL == "nodeType" ) {
+                                                                    $(".attrtable").find("table").find("tbody").append("<tr><td>" + attrtableL + "</td><td>" + d[attrtableL] + "</td></tr>");
+                                                                }
+                                                            }
+                                                            if(d.video.length == 0){
+                                                                $(".select-table").find(".panel-body").append("<p>暂无视频</p>");
+                                                            }else{
+                                                                for(var videoL = 0;videoL < d.video.length;videoL ++ ){
+                                                                    $(".select-table").find(".panel-body").append("<video width='100%' height='240' controls>\
+                                                    <source src='"+d.video[videoL] +"' type='video/mp4'>\
+                                                     </video>");
+                                                                }
+                                                            }
+
+
+
+                                                        }
+                                                    });
+
+
+
+
+
+                                                })
+                                                .text(function (d) {
+                                                    if(d.name.length > 4 ){
+                                                        return d.name.substring(0,4) + "..";
+                                                    }else{
+                                                        return d.name;
+                                                    }
+                                                })
+                                                .call(force.drag);
+
+
+
+
+
+                                        force.on("tick", function () {
+
+                                            root.nodes.forEach(function (d, i) {
+                                                d.x = d.x - 50 < 0 ? 50 : d.x;
+                                                d.y = d.y - 50 < 0 ? 50 : d.y;
+                                            });
+
+                                            //更新连接线的位置
+                                            edges_line.attr("x1", function (d) {
+                                                return d.source.x;
+                                            });
+                                            edges_line.attr("y1", function (d) {
+                                                return d.source.y;
+                                            });
+                                            edges_line.attr("x2", function (d) {
+                                                return d.target.x;
+                                            });
+                                            edges_line.attr("y2", function (d) {
+                                                return d.target.y;
+                                            });
+
+                                            //更新连接线上文字的位置
+                                            edges_text.attr("x", function (d) {
+                                                return (d.source.x + d.target.x) / 2;
+                                            });
+
+                                            edges_text.attr("y", function (d) {
+                                                return (d.source.y + d.target.y) / 2;
+                                            });
+
+                                            nodes_circle.attr("cx", function (d) {
+                                                return d.x;
+                                            });
+                                            nodes_circle.attr("cy", function (d) {
+                                                return d.y
+                                            });
+                                            nodes_text.attr("x", function (d) {
+                                                return d.x - nodes_circle.attr("r") + 15;
+                                            });
+                                            nodes_text.attr("y", function (d) {
+                                                return d.y + 5;
+                                            });
+                                        });
+                                        return svg;
+                                    };
+                                    var svgtwo = draw();
+
+                                    //网络图搜索
+                                    $("#searchgeocoder-addon").off("click").on("click",function(){
+                                        var re =  new RegExp($("#searchgeocoder").val());//设置正则表达式 search方法 查到即返回 无需g全局 无效i大小写
+                                        for(var i = 0; i < root.nodes.length;i++){
+                                            var ostr =  root.nodes[i].name;//所要匹配的字符串，字符串第一个位置从0开始
+                                            if(ostr !== undefined){
+                                                var pos  = ostr.search(re);
+                                                if(pos !== -1 ){
+                                                    root.nodes[i].search = true;
+                                                }else{
+                                                    root.nodes[i].search = false;
+                                                }
+                                            }
+                                        }
+                                        svgtwo.selectAll(".nodetext").style("fill", function(d,i){
+                                            if(d.search){
+                                                return "red";
+                                            }else if(!d.search){
+                                                return "white";
+                                            }
+                                        });
+                                    });
+
+
+                                },
+                                "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                                    alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+                                }
+                            });
+
+
+
+
+                        });
+
+
+
+                        $(".layui-layer-page .layui-layer-content").niceScroll({
+                            styler: "fb",
+                            cursorcolor: "#959595",
+                            cursorwidth: '6',
+                            cursorborderradius: '15px',
+                            background: '#eee',
+                            cursorborder: '',
+                            zindex: 5
+                            //        autohidemode: false //是否开启不隐藏滚动条
+                        });
+                    }
+                });
+
+            },
+            "error": function (xhr, errorText, errorStatus) {  //访问错误后的回调函数  第一个参数对象 第二个错误的文本 第三个错误的类型
+                alert("ajax访问错误:" + xhr.status + " " + xhr.statusText);        //错误的编号 和文本
+            }
+        });
+
+        $(".returnCountry").attr("href","../pages/countryOverview.html?EntityID=10002&type=Country");
+
+        //"assets/data/relation.json"  HOST + "?method=getNeoGraphy"
+       // component_head("body", "prepend"); //加载头组件
+
+
+    });
+
+
+
+</script>
